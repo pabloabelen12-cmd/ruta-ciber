@@ -1,0 +1,39 @@
+RUTA CIBER · cómo instalar la app
+=================================
+
+Esta carpeta es la app completa. Para instalarla en el iPhone y en Windows
+hay que ponerla en internet una vez (gratis, con GitHub Pages). Después
+funciona como una app normal y también sin conexión.
+
+1) PUBLICARLA (una sola vez, unos 10 minutos, desde la laptop)
+   - Crea una cuenta gratis en https://github.com
+   - Pulsa "New repository". Nombre: ruta-ciber. Público. Create repository.
+   - Pulsa "uploading an existing file" y arrastra TODO lo que hay dentro
+     de esta carpeta (index.html, manifest.webmanifest, sw.js y la carpeta
+     icons). Pulsa "Commit changes".
+   - Ve a Settings > Pages. En "Branch" elige "main" y "/ (root)". Save.
+   - En uno o dos minutos tu app estará en:
+     https://TU-USUARIO.github.io/ruta-ciber/
+
+2) INSTALARLA EN WINDOWS
+   - Abre esa dirección en Microsoft Edge o en Google Chrome.
+   - Pulsa el icono de "Instalar" que aparece a la derecha de la barra de
+     direcciones (o el menú ... > Aplicaciones > Instalar este sitio
+     como aplicación).
+   - Quedará en el menú Inicio y en la barra de tareas, con su propia
+     ventana, como cualquier programa.
+
+3) INSTALARLA EN EL IPHONE
+   - Abre la misma dirección en Safari.
+   - Toca el botón Compartir (el cuadrado con la flecha hacia arriba).
+   - Elige "Agregar a pantalla de inicio" y luego "Agregar".
+   - Se abre a pantalla completa, sin barra del navegador.
+
+4) TU PROGRESO
+   - Cada dispositivo guarda su propio progreso, también sin internet.
+   - Para pasarlo de la laptop al teléfono (o al revés): Progreso >
+     "copiar mi progreso", envíatelo por WhatsApp o correo, y en el otro
+     dispositivo pégalo en "restaurar".
+
+PRUEBA RÁPIDA SIN PUBLICAR: haz doble clic en index.html y se abre en el
+navegador. Así funciona, pero no se instala como app ni trabaja sin internet.
