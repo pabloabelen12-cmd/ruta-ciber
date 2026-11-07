@@ -61,7 +61,6 @@ html.still .sweep{display:none}
 body.wall .show{opacity:.35;pointer-events:auto}
 body.wall .show:hover{opacity:1}
 @media (max-width:640px){.stat{display:none}}
-@media (prefers-reduced-motion:reduce){.sweep{display:none}.cur{animation:none}}
 </style>
 </head>
 <body>
@@ -98,7 +97,8 @@ body.wall .show:hover{opacity:1}
   const qs = new URLSearchParams(location.search);
   const WALL = qs.has("wall");           // ?wall → solo el fondo (para captura)
   const STATIC = qs.has("static");        // ?static → congelar tras simular
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // La animación es lo que pidió: se mantiene aunque Windows tenga desactivados los efectos de animación.
+  const reduce = false;
   const store = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k,v); } catch(e){} } };
 
   /* ── Interfaz ── */
