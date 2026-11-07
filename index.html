@@ -147,6 +147,7 @@ input[type=checkbox]{accent-color:var(--acc);width:18px;height:18px}
 .checks .box{flex:none;font-family:var(--f-mono);font-size:13px;color:var(--dim);margin-top:1px}
 .checks .box::before{content:"[ ]"}
 .checks .on{border-color:rgba(62,229,143,.35);background:var(--acc-soft)}
+.checks small.auto{display:block;margin-top:4px;font-family:var(--f-mono);font-size:11px;color:var(--cyan)}
 .checks .on .box{color:var(--acc)} .checks .on .box::before{content:"[x]"}
 .checks.static li{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
 .cmd{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:4px;padding:8px 8px 8px 12px;background:#020604;min-width:0}
@@ -2262,6 +2263,11 @@ const PRACTICE = {
   p4u12: [[0,"Lee los requisitos y el temario del PEN-200."]]
 };
 
+/* Pasos que se marcan solos: unidad → { nº de enlace de práctica (desde 0): nº de paso (desde 0) }. */
+const AUTO_STEP = { s01:{0:0,1:1}, s02:{0:0}, s14:{0:0}, s21:{1:1}, p2u04:{0:0}, p2u19:{1:1}, p2u23:{0:0}, p3u03:{0:0}, p4u01:{0:0}, p4u09:{0:0} };
+/* Pasos que se marcan al entrar en una pestaña de la app. */
+const AUTO_ROUTE = { tarjetas: [["s01",3]] };
+
 </script>
 <script>
 "use strict";
@@ -2653,7 +2659,8 @@ function viewUnit(u) {
     ${u.blocks > 1 ? `<div class="spread"><div class="row"><span class="eyebrow">bloques de esta unidad</span>${blocksHtml(u, s)}<span class="muted small mono">${s.done ? u.blocks : s.blocksDone}/${u.blocks}</span></div>${s.done ? "" : `<div class="row"><button class="btn sm" data-action="block-minus" data-id="${u.id}" ${s.blocksDone ? "" : "disabled"}>−</button><button class="btn sm" data-action="block-plus" data-id="${u.id}" ${s.blocksDone >= u.blocks - 1 ? "disabled" : ""}>+1 bloque hecho</button></div>`}</div>` : ""}
     <span class="eyebrow">pasos · ${u.steps.filter((_, k) => s.steps[k]).length} de ${u.steps.length} marcados</span>
     ${s.done ? "" : `<p class="muted small">Cuando termines cada paso, tócalo para marcarlo con [x]. La flag solo se captura con todos marcados.</p>`}
-    <ul class="checks">${u.steps.map((t, k) => `<li><button data-action="step" data-id="${u.id}" data-k="${k}" class="${s.steps[k] ? "on" : ""}" aria-pressed="${!!s.steps[k]}"><span class="box"></span><span>${fmt(t)}</span></button></li>`).join("")}</ul>
+    <ul class="checks">${u.steps.map((t, k) => { const li = autoFor(u, k), viaRoute = Object.entries(AUTO_ROUTE).find(([, l]) => l.some(([i, kk]) => i === u.id && kk === k)); const tag = s.steps[k] ? "" : li !== null ? `<small class="auto">↗ se marca solo al pulsar «abrir» en el enlace ${li + 1}</small>` : viaRoute ? `<small class="auto">↗ se marca solo al entrar en la pestaña ${esc(viaRoute[0])}</small>` : ""; return `<li><button data-action="step" data-id="${u.id}" data-k="${k}" class="${s.steps[k] ? "on" : ""}" aria-pressed="${!!s.steps[k]}"><span class="box"></span><span>${fmt(t)}${tag}</span></button></li>`; }).join("")}</ul>
+    ${s.done || locked || stepsOk(u, s) ? "" : `<div class="row"><button class="btn sm" data-action="steps-all" data-id="${u.id}">ya hice todos los pasos · marcarlos</button></div>`}
     ${ui.revealHint[u.id] ? `<div class="reveal"><span class="eyebrow">pista</span><p>${fmt(u.hint)}</p></div>` : `<div class="row"><button class="btn ghost" data-action="reveal-hint" data-id="${u.id}">¿Atascado más de 20 minutos? Ver pista</button></div>`}
   </section>`;
   let check = "";
@@ -2689,6 +2696,15 @@ function viewUnit(u) {
   const lockBanner = locked && !s.done ? `<div class="lockbox"><b>vista previa</b><span>Puedes leerla, pero se hace en orden: primero la ${label} ${num(u.i - 1)}.</span></div>` : "";
   return `${head}${lockBanner}<div class="timer" id="timerbox"></div>${stepper}${recall}${practice}${check}${close}`;
 }
+function autoMark(id, k, why) {
+  const u = UNIT[id]; if (!u || !u.steps[k] || isLocked(u)) return false;
+  const s = sess(id); if (s.done || s.steps[k]) return false;
+  for (let j = 0; j < u.steps.length; j++) s.steps[j] = !!s.steps[j];
+  s.steps[k] = true; ensureStarted(u.p); save();
+  toast(`[x] paso ${k + 1} marcado${why ? " · " + why : ""}`);
+  return true;
+}
+const autoFor = (u, k) => { const m = AUTO_STEP[u.id]; if (!m) return null; for (const [li, st] of Object.entries(m)) if (+st === k) return +li; return null; };
 function practiceItems(u) {
   const P = PRACTICE[u.id];
   if (!P) return (u.links || []).map(([t, url]) => ({ t, url, d: "" }));
@@ -2699,7 +2715,7 @@ function practiceHtml(u) {
   return `<div class="practice"><span class="eyebrow">dónde practicar · qué harás exactamente</span>${items.map((p, k) => {
     const internal = p.url.startsWith("#");
     let host = "en esta app"; if (!internal) { try { host = new URL(p.url).hostname.replace(/^www\./, ""); } catch (e) { host = ""; } }
-    return `<div class="prac"><span class="pn">${k + 1}</span><div class="pb"><b>${esc(p.t)}</b><small>${esc(host)}</small>${p.d ? `<p>${fmt(p.d)}</p>` : ""}</div><a class="btn sm ${internal ? "" : "primary"}" href="${esc(p.url)}"${internal ? "" : ' target="_blank" rel="noopener"'}>${internal ? "ir" : "abrir ↗"}</a></div>`;
+    return `<div class="prac"><span class="pn">${k + 1}</span><div class="pb"><b>${esc(p.t)}</b><small>${esc(host)}</small>${p.d ? `<p>${fmt(p.d)}</p>` : ""}</div><a class="btn sm ${internal ? "" : "primary"}" href="${esc(p.url)}" data-action="open-link" data-id="${u.id}" data-li="${k}"${internal ? "" : ' target="_blank" rel="noopener"'}>${internal ? "ir" : "abrir ↗"}</a></div>`;
   }).join("")}</div>`;
 }
 function nextAfter(u) {
@@ -3003,6 +3019,8 @@ document.addEventListener("click", e => {
     case "reveal-keys": ui.revealKeys[id] = true; break;
     case "reveal-hint": ui.revealHint[id] = true; break;
     case "step": { if (!U || isLocked(U) || sess(id).done) { if (sess(id).done) break; toast("Primero termina la unidad anterior"); return; } const s = sess(id), k = +b.dataset.k; for (let j = 0; j < U.steps.length; j++) s.steps[j] = !!s.steps[j]; s.steps[k] = !s.steps[k]; save(); break; }
+    case "open-link": { if (!U) return; const k = AUTO_STEP[id] && AUTO_STEP[id][b.dataset.li]; if (k !== undefined && autoMark(id, +k, "abriste el enlace")) setTimeout(render, 400); return; }
+    case "steps-all": { if (!U || isLocked(U) || sess(id).done) return; const s = sess(id); U.steps.forEach((_, j) => s.steps[j] = true); save(); toast(`[x] ${U.steps.length} pasos marcados`); break; }
     case "flag": { const s = sess(id); s[b.dataset.f] = !s[b.dataset.f]; save(); break; }
     case "block-plus": { const s = sess(id); if (s.blocksDone < U.blocks - 1) { s.blocksDone += 1; ensureStarted(U.p); save(); toast(`bloque ${s.blocksDone} de ${U.blocks} hecho`); } break; }
     case "block-minus": { const s = sess(id); if (s.blocksDone > 0) { s.blocksDone -= 1; save(); } break; }
@@ -3104,8 +3122,10 @@ document.addEventListener("submit", e => {
     addCard(q, a, "Tarjeta propia"); save(); toast("tarjeta añadida para hoy"); render();
   }
 });
-window.addEventListener("hashchange", () => { if (route() !== "tarjetas") ui.review = null; render(); });
+function routeAuto() { (AUTO_ROUTE[route()] || []).forEach(([id, k]) => autoMark(id, k, "entraste en " + route())); }
+window.addEventListener("hashchange", () => { if (route() !== "tarjetas") ui.review = null; routeAuto(); render(); });
 
+routeAuto();
 render();
 initSync();
 
