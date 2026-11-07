@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nueva pestaña</title>
+<meta name="theme-color" content="#030806">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23030806'/%3E%3Ctext x='32' y='42' font-family='monospace' font-size='30' font-weight='700' text-anchor='middle' fill='%233EE58F'%3E%3E_%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030806; --acc:#3EE58F; --acc2:#9DFFC8; --cyan:#5ED6EE; --dim:#5f7d6c; --line:rgba(62,229,143,.22);
+  --panel:rgba(3,12,8,.58); --f:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:#d8f5e4;font-family:var(--f);overflow:hidden}
+canvas{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+#back{filter:blur(1.1px);opacity:.9}
+.fx{position:fixed;inset:0;pointer-events:none}
+.vignette{background:radial-gradient(ellipse at 50% 45%,rgba(3,8,6,0) 0%,rgba(3,8,6,.15) 45%,rgba(3,8,6,.85) 100%)}
+.center-glow{background:radial-gradient(ellipse 38% 30% at 50% 46%,rgba(3,8,6,.78) 0%,rgba(3,8,6,.45) 55%,rgba(3,8,6,0) 100%)}
+.scan{background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0,rgba(0,0,0,0) 2px,rgba(0,0,0,.18) 3px);mix-blend-mode:multiply}
+.sweep{background:linear-gradient(to bottom,rgba(62,229,143,0),rgba(62,229,143,.05) 50%,rgba(62,229,143,0));height:28vh;animation:sweep 9s linear infinite}
+@keyframes sweep{from{transform:translateY(-30vh)}to{transform:translateY(130vh)}}
+main{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:16px;transition:opacity .4s}
+body.wall main,body.wall .corner{opacity:0;pointer-events:none}
+.prompt{font-size:clamp(13px,1.4vw,16px);color:var(--acc);letter-spacing:.02em;min-height:1.4em;text-shadow:0 0 8px rgba(62,229,143,.55)}
+.prompt .u{color:var(--cyan)} .prompt .p{color:var(--dim)}
+.cur{display:inline-block;width:.6em;height:1.1em;background:var(--acc);vertical-align:-.18em;margin-left:2px;animation:blink 1s steps(1) infinite;box-shadow:0 0 8px var(--acc)}
+@keyframes blink{50%{opacity:0}}
+.clock{font-weight:800;font-size:clamp(64px,11vw,168px);line-height:.95;letter-spacing:-.03em;color:#eafff3;
+  text-shadow:0 0 18px rgba(62,229,143,.55),0 0 48px rgba(62,229,143,.25);position:relative}
+.clock .sec{font-size:.28em;font-weight:400;color:var(--acc);letter-spacing:0;margin-left:.15em;vertical-align:.25em}
+.clock.glitch{animation:gl .28s steps(2) 1}
+@keyframes gl{0%{transform:translate(2px,-1px);text-shadow:-3px 0 var(--cyan),3px 0 #ff3b6b}50%{transform:translate(-2px,1px);text-shadow:3px 0 var(--cyan),-3px 0 #ff3b6b}100%{transform:none}}
+.date{font-size:clamp(13px,1.3vw,17px);color:var(--acc2);opacity:.8;text-transform:lowercase;letter-spacing:.12em}
+form{width:min(640px,100%);margin-top:8px}
+.search{display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(0,0,0,.4),0 10px 40px rgba(0,0,0,.5);transition:border-color .2s,box-shadow .2s}
+.search:focus-within{border-color:rgba(62,229,143,.7);box-shadow:0 0 0 1px rgba(62,229,143,.25),0 0 28px rgba(62,229,143,.18),0 10px 40px rgba(0,0,0,.5)}
+.search span{color:var(--acc);font-weight:600}
+.search input{flex:1;min-width:0;background:none;border:0;outline:0;color:#eafff3;font:inherit;font-size:16px}
+.search input::placeholder{color:#6f8f7d}
+.links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:6px;max-width:900px}
+.links a{display:flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:rgba(3,12,8,.5);
+  color:#cdeedb;text-decoration:none;font-size:13px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:all .15s}
+.links a b{color:var(--acc);font-weight:600}
+.links a:hover,.links a:focus-visible{border-color:var(--acc);color:#fff;box-shadow:0 0 18px rgba(62,229,143,.25);transform:translateY(-1px);outline:none}
+.corner{position:fixed;right:16px;bottom:14px;display:flex;gap:8px;align-items:center;font-size:11px;color:var(--dim);transition:opacity .4s}
+.corner button{font:inherit;font-size:11px;color:var(--dim);background:rgba(3,12,8,.6);border:1px solid var(--line);border-radius:6px;padding:5px 9px;cursor:pointer}
+.corner button:hover{color:var(--acc);border-color:var(--acc)}
+.stat{position:fixed;left:16px;bottom:14px;font-size:11px;color:var(--dim);line-height:1.6;pointer-events:none;transition:opacity .4s}
+.stat b{color:var(--acc);font-weight:400}
+body.wall .stat{opacity:0}
+body.wall .center-glow{opacity:0}
+.center-glow{transition:opacity .4s}
+html.still .sweep{display:none}
+.show{position:fixed;right:16px;bottom:14px;opacity:0;pointer-events:none}
+body.wall .show{opacity:.35;pointer-events:auto}
+body.wall .show:hover{opacity:1}
+@media (max-width:640px){.stat{display:none}}
+@media (prefers-reduced-motion:reduce){.sweep{display:none}.cur{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="back" aria-hidden="true"></canvas>
+<canvas id="front" aria-hidden="true"></canvas>
+<div class="fx center-glow"></div>
+<div class="fx vignette"></div>
+<div class="fx scan"></div>
+<div class="fx sweep"></div>
+
+<main>
+  <div class="prompt" id="prompt"></div>
+  <div class="clock" id="clock">00:00<span class="sec">00</span></div>
+  <div class="date" id="date"></div>
+  <form action="https://search.brave.com/search" method="get" role="search">
+    <label class="search"><span>&gt;_</span><input id="q" name="q" type="search" placeholder="buscar con brave…" autocomplete="off" aria-label="Buscar con Brave"></label>
+  </form>
+  <nav class="links" aria-label="Accesos rápidos">
+    <a href="https://pabloabelen12-cmd.github.io/ruta-ciber/"><b>~/</b>ruta-ciber</a>
+    <a href="https://tryhackme.com/dashboard"><b>01</b>tryhackme</a>
+    <a href="https://learn.cylabacademy.org/library"><b>02</b>picoctf · cylab</a>
+    <a href="https://overthewire.org/wargames/bandit/"><b>03</b>bandit</a>
+    <a href="https://gchq.github.io/CyberChef/"><b>04</b>cyberchef</a>
+    <a href="https://www.youtube.com/"><b>05</b>youtube</a>
+  </nav>
+</main>
+
+<div class="stat" id="stat"></div>
+<div class="corner"><button id="hide" type="button" title="Tecla H">ocultar todo · H</button></div>
+<button class="corner show" id="showbtn" type="button" style="border:1px solid var(--line);background:rgba(3,12,8,.6);color:var(--acc);font:inherit;font-size:11px;border-radius:6px;padding:5px 9px;cursor:pointer">mostrar · H</button>
+
+<script>
+(() => {
+  const qs = new URLSearchParams(location.search);
+  const WALL = qs.has("wall");           // ?wall → solo el fondo (para captura)
+  const STATIC = qs.has("static");        // ?static → congelar tras simular
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const store = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k,v); } catch(e){} } };
+
+  /* ── Interfaz ── */
+  const body = document.body;
+  if (WALL || store.get("fondo.wall") === "1") body.classList.add("wall");
+  if (WALL) { document.getElementById("showbtn").remove(); }
+  const toggle = () => { body.classList.toggle("wall"); store.set("fondo.wall", body.classList.contains("wall") ? "1" : "0"); if (!body.classList.contains("wall")) q.focus(); };
+  document.getElementById("hide").onclick = toggle;
+  const sb = document.getElementById("showbtn"); if (sb) sb.onclick = toggle;
+  const q = document.getElementById("q");
+  addEventListener("keydown", e => {
+    if (e.target === q) { if (e.key === "Escape") q.blur(); return; }
+    if (e.key === "h" || e.key === "H") toggle();
+    else if (e.key === "/" ) { e.preventDefault(); if (body.classList.contains("wall")) toggle(); q.focus(); }
+  });
+  if (!WALL) setTimeout(() => q.focus({ preventScroll: true }), 60);
+
+  const clock = document.getElementById("clock"), dateEl = document.getElementById("date");
+  const pad = n => String(n).padStart(2, "0");
+  let lastMin = -1;
+  function tick() {
+    const d = new Date();
+    clock.innerHTML = `${pad(d.getHours())}:${pad(d.getMinutes())}<span class="sec">${pad(d.getSeconds())}</span>`;
+    if (d.getMinutes() !== lastMin) {
+      if (lastMin !== -1) { clock.classList.remove("glitch"); void clock.offsetWidth; clock.classList.add("glitch"); }
+      lastMin = d.getMinutes();
+      dateEl.textContent = d.toLocaleDateString("es-DO", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    }
+  }
+  tick(); setInterval(tick, 1000);
+
+  const h = new Date().getHours();
+  const greet = h < 12 ? "./buenos_dias" : h < 19 ? "./buenas_tardes" : "./buenas_noches";
+  const promptEl = document.getElementById("prompt");
+  const full = greet + " --objetivo=hoy";
+  let i = 0;
+  const head = `<span class="u">pablo@ruta-ciber</span><span class="p">:~$</span> `;
+  (function type() {
+    promptEl.innerHTML = head + full.slice(0, i) + '<span class="cur"></span>';
+    if (i++ < full.length) setTimeout(type, reduce ? 0 : 45 + Math.random() * 60);
+  })();
+
+  const stat = document.getElementById("stat");
+  const nav = navigator;
+  stat.innerHTML = `<b>●</b> sesión segura · ${(nav.userAgentData && nav.userAgentData.platform) || "windows"}<br><b>●</b> ${screen.width}×${screen.height} · ${nav.hardwareConcurrency || "?"} núcleos`;
+
+  /* ── Lluvia de código en 3 capas ── */
+  const GLYPHS = ("ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ" + "0123456789ABCDEF" + "<>/{}[]$#*+=:;").split("");
+  const backC = document.getElementById("back"), frontC = document.getElementById("front");
+  const bctx = backC.getContext("2d"), fctx = frontC.getContext("2d");
+  const LAYERS = [
+    { ctx: bctx, size: 12, speed: 0.30, alpha: 0.42, trail: 26, dens: 0.65, col: [46, 160, 104] },
+    { ctx: fctx, size: 17, speed: 0.50, alpha: 0.78, trail: 22, dens: 0.7, col: [62, 229, 143] },
+    { ctx: fctx, size: 26, speed: 0.80, alpha: 1.00, trail: 18, dens: 0.22, col: [92, 245, 165] }
+  ];
+  let W = 0, H = 0, DPR = 1;
+
+  function makeAtlas(L) {
+    const s = Math.round(L.size * DPR), cell = Math.ceil(s * 1.25), pad = Math.ceil(s * 0.6);
+    const box = cell + pad * 2;
+    const mk = (fill, glow) => {
+      const c = document.createElement("canvas"); c.width = box * GLYPHS.length; c.height = box;
+      const x = c.getContext("2d");
+      x.font = `600 ${s}px "JetBrains Mono", "MS Gothic", monospace`; x.textAlign = "center"; x.textBaseline = "middle";
+      x.fillStyle = fill; if (glow) { x.shadowColor = glow; x.shadowBlur = s * 0.7; }
+      GLYPHS.forEach((g, k) => x.fillText(g, k * box + box / 2, box / 2));
+      return c;
+    };
+    const [r, g, b] = L.col;
+    L.box = box; L.step = s * 1.05; L.colW = s * 0.95;
+    L.body = mk(`rgb(${r},${g},${b})`, L.size > 20 ? `rgba(${r},${g},${b},.55)` : null);
+    L.head = mk("#eafff3", "rgba(157,255,200,.95)");
+    L.cyan = mk("#5ED6EE", "rgba(94,214,238,.6)");
+  }
+  function makeDrops(L) {
+    const cols = Math.ceil(W / L.colW) + 1, rows = Math.ceil(H / L.step) + 1;
+    L.rows = rows; L.drops = [];
+    for (let c = 0; c < cols; c++) {
+      if (Math.random() > L.dens) continue;
+      L.drops.push(newDrop(L, c, true));
+    }
+  }
+  function newDrop(L, c, initial) {
+    const len = Math.round(L.trail * (0.6 + Math.random() * 0.8));
+    return {
+      c, x: c * L.colW + L.colW / 2,
+      y: initial ? Math.random() * (L.rows + len) - len : -Math.random() * L.rows * 0.6,
+      v: L.speed * (0.6 + Math.random() * 0.8), len,
+      g: Array.from({ length: len + 2 }, () => (Math.random() * GLYPHS.length) | 0),
+      cyan: Math.random() < 0.06
+    };
+  }
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth * DPR; H = innerHeight * DPR;
+    for (const c of [backC, frontC]) { c.width = W; c.height = H; }
+    LAYERS.forEach(L => { makeAtlas(L); makeDrops(L); });
+  }
+
+  function drawLayer(L, dt) {
+    const ctx = L.ctx, box = L.box, half = box / 2;
+    for (const d of L.drops) {
+      d.y += d.v * dt;
+      if (Math.random() < 0.04 * dt) d.g[(Math.random() * d.g.length) | 0] = (Math.random() * GLYPHS.length) | 0;
+      const headRow = Math.floor(d.y);
+      if (headRow - d.len > L.rows) { Object.assign(d, newDrop(L, d.c, false)); continue; }
+      for (let k = 0; k < d.len; k++) {
+        const row = headRow - k; if (row < 0 || row > L.rows) continue;
+        const gi = d.g[(row % d.g.length + d.g.length) % d.g.length];
+        const t = k / d.len;
+        ctx.globalAlpha = L.alpha * (k === 0 ? 1 : Math.pow(1 - t, 1.6) * 0.95);
+        const atlas = k === 0 ? L.head : (d.cyan && k < 3 ? L.cyan : L.body);
+        ctx.drawImage(atlas, gi * box, 0, box, box, d.x - half, row * L.step - half, box, box);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  let last = performance.now(), acc = 0, running = true;
+  const FRAME = 1000 / 30;
+  function frame(now) {
+    if (!running) return;
+    const elapsed = now - last; last = now; acc += elapsed;
+    if (acc >= FRAME) {
+      const dt = Math.min(acc / FRAME, 3); acc = 0;
+      bctx.clearRect(0, 0, W, H); fctx.clearRect(0, 0, W, H);
+      drawLayer(LAYERS[0], dt); drawLayer(LAYERS[1], dt); drawLayer(LAYERS[2], dt);
+    }
+    requestAnimationFrame(frame);
+  }
+  function simulate(n) { for (let k = 0; k < n; k++) LAYERS.forEach(L => L.drops.forEach(d => { d.y += d.v; })); }
+
+  function start() {
+    resize();
+    if (STATIC || reduce) {
+      document.documentElement.classList.add("still");
+      simulate(STATIC ? 80 : 40);
+      bctx.clearRect(0, 0, W, H); fctx.clearRect(0, 0, W, H);
+      LAYERS.forEach(L => drawLayer(L, 0));
+      document.documentElement.dataset.ready = "1";
+      return;
+    }
+    requestAnimationFrame(t => { last = t; frame(t); });
+    document.documentElement.dataset.ready = "1";
+  }
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { resize(); if (STATIC || reduce) LAYERS.forEach(L => drawLayer(L, 0)); }, 150); });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) running = false;
+    else if (!running && !STATIC && !reduce) { running = true; last = performance.now(); requestAnimationFrame(frame); }
+  });
+  (document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]) : Promise.resolve()).then(start);
+})();
+</script>
+</body>
+</html>
