@@ -2310,6 +2310,11 @@ const num = i => pad(i + 1);
 /* ════════ Estado ════════ */
 const LS_KEY = "rutaciber.v1";
 const IN_CLAUDE = !!(window.claude && window.claude.use);
+let deferredInstall = null, justInstalled = false;
+const isStandalone = () => !!((window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone);
+const isIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent || "");
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstall = e; if (typeof render === "function") render(); });
+window.addEventListener("appinstalled", () => { deferredInstall = null; justInstalled = true; if (typeof toast === "function") toast("Ruta Ciber instalada"); if (typeof render === "function") render(); });
 const phaseBlank = () => ({ start: null, passedAt: null, override: false, ms: {}, exam: null });
 function defaultState() {
   return { v: 2, updatedAt: 0, sessions: {}, cards: [], reviews: {}, agenda: [], reviewLog: {}, decision: [null, null, null, null, null],
@@ -2594,7 +2599,7 @@ function viewHoy() {
   const agMin = ag.reduce((s2, a) => s2 + (+a.min || 0), 0);
   return `<div class="head">${cmdline("hoy")}<h1>${greeting()}<span class="cur"></span></h1>
     <p class="muted small mono">${fmtLong(t)} · ${nb.cur ? `ahora: ${esc(nb.cur[2].toLowerCase())}` : "sin bloque fijo ahora"}${nb.nxt ? ` · luego: ${esc(nb.nxt[2].toLowerCase())} a las ${to12(nb.nxt[0])}` : ""}</p></div>
-    ${hero}${dayNote}
+    ${installCard()}${hero}${dayNote}
     <div class="grid2">
       <div class="card"><div class="spread"><h3>Tarjetas de hoy</h3><span class="pill ${due ? "flag" : "good"}">${due} pendientes</span></div>
         <p class="muted small">${due ? "Repásalas en tu bloque de las 9:00 p. m. Unos 15 minutos." : "Nada pendiente. Al capturar una unidad se añaden tarjetas nuevas."}</p>
@@ -2605,6 +2610,12 @@ function viewHoy() {
     </div>
     <div class="card"><div class="spread"><h3>Tu agenda de hoy</h3><a class="btn sm" href="#agenda">+ tarea</a></div>
       ${ag.length ? `<div>${ag.map(agRow).join("")}</div><p class="muted small">${fmtDur(agMin)} planificados en tareas.</p>` : `<p class="muted small">Sin tareas propias para hoy. El horario fijo está en Horario.</p>`}</div>`;
+}
+function installCard() {
+  if (IN_CLAUDE || isStandalone() || justInstalled) return "";
+  if (deferredInstall) return `<div class="card"><div class="spread"><div><h3>Instala Ruta Ciber en esta computadora</h3><p class="muted small">Tendrá su icono en el menú Inicio y se abrirá en su propia ventana, también sin internet.</p></div><button class="btn primary" data-action="install">./instalar</button></div></div>`;
+  if (isIOS()) return `<div class="card"><h3>Instálala en tu iPhone</h3><ol class="small"><li>Toca el botón <b>Compartir</b> de Safari (el cuadrado con la flecha hacia arriba).</li><li>Elige <b>Agregar a pantalla de inicio</b> y luego <b>Agregar</b>.</li><li>Abre Ruta Ciber desde el icono verde: se verá a pantalla completa.</li></ol><p class="muted small">Tiene que ser Safari: en otros navegadores del iPhone no aparece esa opción.</p></div>`;
+  return "";
 }
 function greeting() { const h = new Date().getHours(); return h < 12 ? "Buenos días" : h < 19 ? "Buenas tardes" : "Buenas noches"; }
 const termCard = (path, body, hot) => `<div class="term ${hot ? "hot" : ""}"><div class="term-bar"><i></i><i></i><i></i><span>~/${esc(path)}</span></div><div class="term-body">${body}</div></div>`;
@@ -2986,6 +2997,7 @@ document.addEventListener("click", e => {
   const a = b.dataset.action, id = b.dataset.id, U = id ? UNIT[id] : null;
   switch (a) {
     case "jump": { e.preventDefault(); const el = document.getElementById(b.dataset.to); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    case "install": if (deferredInstall) { const ev = deferredInstall; ev.prompt(); ev.userChoice.then(c => { if (c && c.outcome === "accepted") { deferredInstall = null; justInstalled = true; } render(); }).catch(() => {}); } return;
     case "start-route": ensureStarted(1); save(); toast("Día 1. A por la sesión 01."); location.hash = "u-" + LESSONS[0].id; return;
     case "reveal-keys": ui.revealKeys[id] = true; break;
     case "reveal-hint": ui.revealHint[id] = true; break;
