@@ -306,7 +306,7 @@ const LESSONS = [
 /* ───────── SEMANA 1 ───────── */
 { id:"s01", w:1, day:"Lun", title:"Monta tu laboratorio",
   goal:"Tener todas tus cuentas listas y entender qué hace un hacker ético.",
-  links:[["TryHackMe (crear cuenta)","https://tryhackme.com"],["picoCTF (crear cuenta)","https://play.picoctf.org"]],
+  links:[["TryHackMe (crear cuenta)","https://tryhackme.com"],["CyLab Academy, antes picoCTF (crear cuenta)","https://learn.cylabacademy.org/"]],
   concept:[
     "Un **hacker ético** hace lo mismo que un atacante, pero con permiso por escrito del dueño del sistema. Su trabajo es encontrar los fallos antes que los criminales y explicar cómo arreglarlos.",
     "En las empresas hay dos equipos: el **red team** (equipo rojo) simula ataques reales y el **blue team** (equipo azul) vigila, detecta y responde. Tú apuntas al rojo, pero vas a aprender los dos.",
@@ -315,7 +315,7 @@ const LESSONS = [
   flow:["Te contratan","Firmas el permiso","Atacas el sistema","Encuentras fallos","Entregas el informe"],
   steps:[
     "Crea tu cuenta en TryHackMe con tu correo.",
-    "Crea tu cuenta en picoCTF.",
+    "Crea tu cuenta en CyLab Security Academy (el nuevo nombre de picoCTF). Si ya tenías cuenta de picoCTF, entra con ella.",
     "En Documentos de Windows, crea la carpeta “Cuaderno-hacker”. Ahí guardarás notas y capturas.",
     "Abre la pestaña Tarjetas de esta app: ahí vivirán tus tarjetas de repaso. No necesitas instalar nada más.",
     "Escribe en tu cuaderno qué crees que hace un hacker ético en un día normal. Lo releerás al final de la Fase 1."
@@ -402,7 +402,7 @@ const LESSONS = [
 { id:"s05", w:1, day:"Sáb", title:"picoCTF: tus primeros retos",
   goal:"Resolver los 3 retos más fáciles de General Skills y entender qué es una flag.",
   sat:true,
-  links:[["picoGym (retos de práctica)","https://play.picoctf.org/practice"],["CyberChef (convertir hexadecimal, Base64...)","https://gchq.github.io/CyberChef/"]],
+  links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"],["CyberChef (convertir hexadecimal, Base64...)","https://gchq.github.io/CyberChef/"]],
   concept:[
     "En un **CTF** (captura la bandera) cada reto esconde un texto secreto llamado **flag**. En picoCTF tiene la forma `picoCTF{...}`. Cuando la encuentras, la pegas y ganas los puntos.",
     "Muchos retos usan otras formas de escribir datos. El **hexadecimal** usa 0-9 y a-f: `0x41` vale 65, que en la tabla ASCII es la letra A. El **binario** solo usa 0 y 1.",
@@ -410,7 +410,7 @@ const LESSONS = [
   ],
   flow:["Leer el reto","Buscar pistas","Probar","Encontrar picoCTF{...}","Enviar la flag"],
   steps:[
-    "En picoGym filtra por la categoría General Skills y ordena por más resueltos.",
+    "En la biblioteca de retos, filtra Category: General Skills y Difficulty: Easy.",
     "Resuelve los 3 primeros. Antes de mirar la pista, dale 20 minutos a cada uno.",
     "Para cada reto, anota en el cuaderno qué probaste y qué funcionó.",
     "Descanso de 15 minutos a mitad de la sesión."
@@ -523,14 +523,14 @@ const LESSONS = [
 { id:"s10", w:2, day:"Sáb", title:"picoCTF y repaso largo",
   goal:"Resolver 3 retos más de General Skills y repasar toda la semana mezclada.",
   sat:true,
-  links:[["picoGym","https://play.picoctf.org/practice"]],
+  links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"]],
   concept:[
     "Hoy mezclas temas. Cuesta más que repetir uno solo, pero te enseña a reconocer qué tipo de problema tienes delante. Así funciona un CTF real y un trabajo real.",
     "Método para cualquier reto: **1** lee el enunciado dos veces, **2** anota qué te dan (archivo, enlace, texto), **3** piensa qué categoría es, **4** prueba lo más simple primero."
   ],
   flow:["Leer dos veces","¿Qué me dan?","¿Qué categoría es?","Probar lo simple"],
   steps:[
-    "Bloque 1 (50 min): 3 retos nuevos de General Skills en picoGym.",
+    "Bloque 1 (50 min): 3 retos nuevos de General Skills en la biblioteca de retos.",
     "Descanso de 15 minutos lejos de la pantalla.",
     "Bloque 2 (50 min): repasa todas tus tarjetas pendientes y crea 3 nuevas con lo que te costó.",
     "Anota en el cuaderno qué reto te gustó más y por qué."
@@ -645,7 +645,7 @@ const LESSONS = [
 { id:"s15", w:3, day:"Sáb", title:"picoCTF: Web Exploitation",
   goal:"Resolver 2 o 3 retos web fáciles usando lo que sabes de HTTP.",
   sat:true,
-  links:[["picoGym, categoría Web Exploitation","https://play.picoctf.org/practice"]],
+  links:[["Retos picoCTF: Web Exploitation","https://learn.cylabacademy.org/library"]],
   concept:[
     "Muchos retos web fáciles esconden la flag en lo que el navegador ya recibió: **comentarios en el código fuente** (Ctrl + U), archivos CSS o JavaScript, o **cookies**.",
     "El archivo `robots.txt` le dice a los buscadores qué no indexar. A veces revela rutas que alguien quería esconder.",
@@ -653,7 +653,7 @@ const LESSONS = [
   ],
   flow:["Código fuente","CSS y JS","Cookies","robots.txt","Flag"],
   steps:[
-    "Bloque 1 (50 min): en picoGym, filtra Web Exploitation y empieza por el más resuelto.",
+    "Bloque 1 (50 min): en la biblioteca de retos, filtra Web Exploitation y Difficulty: Easy, y empieza por el primero.",
     "Revisa en orden: código fuente, archivos enlazados, cookies, robots.txt.",
     "Descanso de 15 minutos.",
     "Bloque 2 (50 min): un segundo y, si da tiempo, un tercer reto web. Anota qué revisaste en cada uno."
@@ -867,7 +867,7 @@ const LESSONS = [
 },
 { id:"s24", w:5, day:"Jue", title:"picoCTF: Cryptography",
   goal:"Resolver 2 retos fáciles de criptografía y entender por qué el cifrado César es débil.",
-  links:[["picoGym, categoría Cryptography","https://play.picoctf.org/practice"],["CyberChef","https://gchq.github.io/CyberChef/"]],
+  links:[["Retos picoCTF: Cryptography","https://learn.cylabacademy.org/library"],["CyberChef","https://gchq.github.io/CyberChef/"]],
   concept:[
     "El **cifrado César** desplaza cada letra un número fijo de posiciones. ROT13 es un César con desplazamiento 13.",
     "Es débil porque solo hay **25 desplazamientos útiles**: se pueden probar todos en segundos. A eso se le llama **fuerza bruta**.",
@@ -875,7 +875,7 @@ const LESSONS = [
   ],
   flow:["Texto cifrado","Probar los 25 desplazamientos","Ver cuál tiene sentido","Flag"],
   steps:[
-    "En picoGym, filtra Cryptography y elige los dos más resueltos.",
+    "En la biblioteca de retos, filtra Cryptography y Difficulty: Easy, y elige los dos primeros.",
     "Usa CyberChef para probar codificaciones y desplazamientos.",
     "Anota para cada reto qué tipo de codificación o cifrado era y cómo lo reconociste."
   ],
@@ -891,7 +891,7 @@ const LESSONS = [
 { id:"s25", w:5, day:"Sáb", title:"Mini-CTF mezclado",
   goal:"Practicar como en una competencia real: categorías mezcladas y con reloj.",
   sat:true,
-  links:[["picoGym","https://play.picoctf.org/practice"]],
+  links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"]],
   concept:[
     "Hoy juegas un mini-CTF: una hora resolviendo retos fáciles de distintas categorías.",
     "Regla: **20 minutos sin ayuda** en cada reto antes de pedir pista. Si a los 40 minutos no avanzas, pasas al siguiente y lo anotas para después.",
@@ -977,7 +977,7 @@ const LESSONS = [
 { id:"s29", w:6, day:"Jue", title:"Prueba sin ayuda",
   goal:"Resolver retos nuevos sin pistas y medir cuánto tardas.",
   test:true,
-  links:[["picoGym","https://play.picoctf.org/practice"],["OverTheWire Bandit","https://overthewire.org/wargames/bandit/"]],
+  links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"],["OverTheWire Bandit","https://overthewire.org/wargames/bandit/"]],
   concept:[
     "Esta es tu prueba. Elige retos que **no hayas visto antes**: uno de General Skills, uno de Web Exploitation, uno de Cryptography y el siguiente nivel de Bandit.",
     "Sin pistas ni soluciones. Si a los 30 minutos no lo tienes, márcalo como no resuelto y pasa al siguiente. El resultado no tiene que ser perfecto: tiene que ser real."
@@ -1459,13 +1459,13 @@ const P2 = [
 },
 { id:"p2u23", mod:"Práctica", lvl:3, blocks:3, title:"picoCTF: llega a 20 retos",
   goal:"Practicar mezclando categorías hasta sumar 20 retos resueltos en total.",
-  links:[["picoGym","https://play.picoctf.org/practice"]],
+  links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"]],
   concept:[
     "Llevas meses aprendiendo piezas sueltas. Ahora las mezclas: General Skills, Web, Cryptography y Forensics.",
     "Mismas reglas de siempre: 20 minutos sin ayuda, luego pista; anota cada reto en tu cuaderno.",
-    "Empieza por los más resueltos de cada categoría y sube poco a poco."
+    "Empieza por Difficulty: Easy en cada categoría y sube a Medium poco a poco."
   ],
-  steps:["Mira cuántos retos llevas resueltos en tu perfil de picoCTF.","Bloque 1: resuelve retos mezclando categorías.","Bloque 2: sigue mezclando.","Bloque 3: termina hasta llegar a 20 en total."],
+  steps:["Mira cuántos retos llevas resueltos en tu perfil de CyLab Academy (antes picoCTF).","Bloque 1: resuelve retos mezclando categorías.","Bloque 2: sigue mezclando.","Bloque 3: termina hasta llegar a 20 en total."],
   hint:"Si una categoría se te resiste, haz uno fácil de otra y vuelve después: mezclar ayuda.",
   quiz:[
     {q:"¿Por qué mezclar categorías en vez de hacer una sola?",o:["Es más rápido","Te enseña a reconocer qué tipo de problema tienes","Da más puntos","No hay diferencia"],a:1,e:"La práctica mezclada mejora la capacidad de identificar el problema."},
@@ -1940,7 +1940,7 @@ const P4 = [
 },
 { id:"p4u04", mod:"Comunidad", lvl:3, blocks:2, title:"CTF en equipo",
   goal:"Participar en una competencia CTF real con un equipo.",
-  links:[["CTFtime: calendario de competencias","https://ctftime.org/"],["picoCTF","https://picoctf.org/"]],
+  links:[["CTFtime: calendario de competencias","https://ctftime.org/"],["picoCTF (competencia anual)","https://cylabacademy.org/competitors.html"]],
   concept:[
     "En una competencia **CTF en equipo** cada persona se especializa en una categoría (web, cripto, forense...) y se reparten los retos. Es como trabaja un equipo real.",
     "**CTFtime** lista competencias de todo el mundo, muchas en línea y gratuitas. picoCTF celebra una competencia anual cada primavera.",
@@ -2171,21 +2171,21 @@ const GATES = {
 
 /* Dónde practicar: por unidad, [índice de enlace, "qué harás"] o ["url", "título", "qué harás"]. */
 const PRACTICE = {
-  s01: [[0,"Pulsa Sign up, crea tu cuenta gratis con tu correo y confirma el correo de verificación."],[1,"Regístrate (Register), confirma tu correo y entra en picoGym para ver la lista de retos."]],
+  s01: [[0,"Pulsa Sign up, crea tu cuenta gratis con tu correo y confirma el correo de verificación."],[1,"picoCTF ahora se llama CyLab Security Academy. Pulsa Sign up, crea tu cuenta gratis y confirma el correo. Si ya tenías cuenta de picoCTF, usa Log in: tu progreso sigue ahí. Luego abre Challenge Library para ver los retos."]],
   s02: [[0,"Pulsa Enroll en la ruta, abre la primera sala y responde todas las preguntas de sus tareas."]],
   s03: [[0,"En la misma ruta, abre la segunda sala y termina todas sus tareas."]],
   s04: [["#tarjetas","Tus tarjetas (en esta app)","Crea al menos 3 tarjetas con lo que olvidaste y haz un repaso completo de las pendientes."]],
-  s05: [[0,"Filtra por General Skills, ordena por más resueltos y resuelve los 3 primeros. Pega cada flag en la casilla del reto."],[1,"Si un reto te da texto en hexadecimal o Base64, pégalo en Input y añade la receta From Hex o From Base64."]],
+  s05: [[0,"Abre Challenge Library. En Category marca General Skills y en Difficulty marca Easy. Resuelve los 3 primeros. Pega cada flag en la casilla del reto."],[1,"Si un reto te da texto en hexadecimal o Base64, pégalo en Input y añade la receta From Hex o From Base64."]],
   s06: [[0,"Pulsa Join Room y completa todas las tareas. Las respuestas van en las casillas de cada tarea."]],
   s07: [[0,"Completa todas las tareas y, al final, repasa el esquema del modelo OSI que trae la sala."]],
   s08: [[0,"Haz solo la primera mitad de las tareas, hasta TCP y UDP incluidos."]],
   s09: [[0,"Termina las tareas que te faltan de la sala."]],
-  s10: [[0,"Resuelve 3 retos nuevos de General Skills que no hayas hecho antes."]],
+  s10: [[0,"Resuelve 3 retos nuevos de General Skills. Activa Hide Solved para ocultar los que ya hiciste."]],
   s11: [[0,"Completa todas las tareas. En la parte práctica usa la herramienta de consultas que trae la propia sala."]],
   s12: [[0,"Haz la primera mitad: peticiones, partes de una URL y métodos."]],
   s13: [[0,"Termina la sala: códigos de estado, cabeceras y cookies, incluida la web de práctica del final."]],
   s14: [["https://es.wikipedia.org/","Wikipedia (solo para observar)","Abre la página, pulsa F12, entra en la pestaña Red y recarga con F5. Localiza el método, el código de estado y la cabecera User-Agent de la primera petición."]],
-  s15: [[0,"Filtra Web Exploitation y ordena por más resueltos. Revisa en orden: código fuente (Ctrl + U), archivos CSS y JS, cookies y robots.txt."]],
+  s15: [[0,"En Challenge Library marca Category: Web Exploitation y Difficulty: Easy. Revisa en orden: código fuente (Ctrl + U), archivos CSS y JS, cookies y robots.txt."]],
   s16: [[0,"Lee el objetivo y conéctate desde PowerShell con ssh bandit0@bandit.labs.overthewire.org -p 2220. La contraseña viene en la propia página."]],
   s17: [[0,"Lee el objetivo del nivel 1 al 2 y resuélvelo."],[1,"Lee el objetivo del nivel 2 al 3 y resuélvelo."]],
   s18: [[0,"Nivel 3 al 4: busca el archivo oculto."],[1,"Nivel 4 al 5: usa file para encontrar el único archivo de texto."]],
@@ -2194,7 +2194,7 @@ const PRACTICE = {
   s21: [[0,"Completa todas las tareas de la sala."],[1,"Lee solo los nombres de los 10 riesgos y abre el primero."]],
   s22: [[0,"Completa todas las tareas de la sala."],[1,"Busca CVE-2021-44228 y anota su puntuación CVSS y qué software afectaba."]],
   s23: [[0,"Nivel 11 al 12: haz ROT13 con tr y rangos de letras."],[1,"Nivel 12 al 13: en una carpeta temporal, repite file y descomprimir hasta llegar al texto."]],
-  s24: [[0,"Filtra Cryptography, ordena por más resueltos y resuelve los 2 primeros."],[1,"Usa la receta ROT13 y cambia la cantidad hasta que aparezca texto con sentido."]],
+  s24: [[0,"En Challenge Library marca Category: Cryptography y Difficulty: Easy, y resuelve los 2 primeros."],[1,"Usa la receta ROT13 y cambia la cantidad hasta que aparezca texto con sentido."]],
   s25: [[0,"Juega una hora mezclando General Skills, Web y Cryptography. 20 minutos sin ayuda por reto."]],
   s26: [["https://tryhackme.com/room/dnsindetail","DNS in Detail (repaso)","Solo si fallaste preguntas de DNS: vuelve a la tarea de tipos de registro."],["https://tryhackme.com/room/httpindetail","HTTP in Detail (repaso)","Solo si fallaste HTTP: vuelve a la tarea de códigos de estado."]],
   s27: [["https://overthewire.org/wargames/bandit/","OverTheWire Bandit","Si fallaste un comando, vuelve a hacer el nivel donde lo usaste."]],
@@ -2225,7 +2225,7 @@ const PRACTICE = {
   p2u21: [[0,"Descarga el instalador de Windows. Acepta instalar Npcap cuando te lo pregunte."],[1,"Completa todas las tareas de la sala."]],
   p2u22: [[0,"Busca sha256 y hexdigest en la documentación si te atascas."]],
   p2u23: [[0,"Mezcla General Skills, Web, Cryptography y Forensics hasta llegar a 20 retos resueltos en total."]],
-  p2u24: [["https://play.picoctf.org/practice","picoGym","Abre el reto que elegiste para tener el enunciado delante mientras escribes el writeup."]],
+  p2u24: [["https://learn.cylabacademy.org/library","Biblioteca de retos picoCTF","Abre el reto que elegiste para tener el enunciado delante mientras escribes el writeup."]],
 
   p3u01: [[0,"Completa todas las tareas de la sala."],[1,"Completa todas las tareas de la sala."]],
   p3u02: [[1,"Haz primero esta sala."],[0,"Luego completa esta."]],
@@ -2651,7 +2651,8 @@ function viewUnit(u) {
     ${practiceHtml(u)}
     ${u.cmds ? `<div class="list"><span class="eyebrow">en tu laptop (Windows) o dentro del servidor de práctica</span>${u.cmds.map(([d, c]) => `<div class="cmd"><div><small>${esc(d)}</small><code>${esc(c)}</code></div><button class="btn sm" data-action="copy" data-text="${esc(c)}">copiar</button></div>`).join("")}</div>` : ""}
     ${u.blocks > 1 ? `<div class="spread"><div class="row"><span class="eyebrow">bloques de esta unidad</span>${blocksHtml(u, s)}<span class="muted small mono">${s.done ? u.blocks : s.blocksDone}/${u.blocks}</span></div>${s.done ? "" : `<div class="row"><button class="btn sm" data-action="block-minus" data-id="${u.id}" ${s.blocksDone ? "" : "disabled"}>−</button><button class="btn sm" data-action="block-plus" data-id="${u.id}" ${s.blocksDone >= u.blocks - 1 ? "disabled" : ""}>+1 bloque hecho</button></div>`}</div>` : ""}
-    <span class="eyebrow">pasos</span>
+    <span class="eyebrow">pasos · ${u.steps.filter((_, k) => s.steps[k]).length} de ${u.steps.length} marcados</span>
+    ${s.done ? "" : `<p class="muted small">Cuando termines cada paso, tócalo para marcarlo con [x]. La flag solo se captura con todos marcados.</p>`}
     <ul class="checks">${u.steps.map((t, k) => `<li><button data-action="step" data-id="${u.id}" data-k="${k}" class="${s.steps[k] ? "on" : ""}" aria-pressed="${!!s.steps[k]}"><span class="box"></span><span>${fmt(t)}</span></button></li>`).join("")}</ul>
     ${ui.revealHint[u.id] ? `<div class="reveal"><span class="eyebrow">pista</span><p>${fmt(u.hint)}</p></div>` : `<div class="row"><button class="btn ghost" data-action="reveal-hint" data-id="${u.id}">¿Atascado más de 20 minutos? Ver pista</button></div>`}
   </section>`;
@@ -2682,7 +2683,7 @@ function viewUnit(u) {
     <div><span class="eyebrow">calidad de tu proceso: ${procScore(u, s)}/5</span><div class="proc" style="margin-top:6px">${procItems(u, s).map(x => `<span class="pill ${x.ok ? "good" : ""}">${x.ok ? "✓" : "·"} ${esc(x.k)}</span>`).join("")}</div></div>
     ${s.done ? `<div class="flagbox"><span class="eyebrow">flag capturada · ${fmtShort(s.doneAt)}</span><span class="mono">flag{f${u.p}_${num(u.i)}_${u.id}_ok}</span>${nextAfter(u)}</div>`
       : locked ? `<div class="lockbox"><b>bloqueada</b><span>Primero captura la ${label} ${num(u.i - 1)}.</span></div>`
-      : `<div class="list"><span class="eyebrow">para capturar la flag</span>${req.map(x => `<span class="small mono" style="color:${x.ok ? "var(--acc)" : "var(--muted)"}">${x.ok ? "[x]" : "[ ]"} ${esc(x.k)}</span>`).join("")}</div>
+      : `<div class="list"><span class="eyebrow">para capturar la flag</span>${req.map(x => { const sec = x.k.startsWith("Escribir") ? "sec0" : x.k.startsWith("Marcar") ? "sec1" : "sec2"; const extra = x.k.startsWith("Marcar") ? ` (${u.steps.filter((_, k) => s.steps[k]).length} de ${u.steps.length})` : ""; return x.ok ? `<span class="small mono" style="color:var(--acc)">[x] ${esc(x.k)}${extra}</span>` : `<a href="#u-${u.id}" data-action="jump" data-to="${sec}" class="small mono" style="color:var(--warn)">[ ] ${esc(x.k)}${extra} · ir ahí ↑</a>`; }).join("")}</div>
          <div class="row"><button class="btn flagbtn" data-action="capture" data-id="${u.id}" ${canCapture ? "" : "disabled"}>capturar la flag</button>${canCapture && procScore(u, s) < 5 ? `<span class="muted small">Lo que falta en tu proceso quedará registrado.</span>` : ""}</div>`}
   </section>`;
   const lockBanner = locked && !s.done ? `<div class="lockbox"><b>vista previa</b><span>Puedes leerla, pero se hace en orden: primero la ${label} ${num(u.i - 1)}.</span></div>` : "";
@@ -3012,7 +3013,7 @@ document.addEventListener("click", e => {
     case "capture": {
       const s = sess(id); if (s.done || !U) return;
       if (isLocked(U)) { toast("Primero captura la anterior"); return; }
-      const miss = reqItems(U, s).find(x => !x.ok); if (miss) { toast("Falta: " + miss.k.toLowerCase()); return; }
+      const miss = reqItems(U, s).find(x => !x.ok); if (miss) { toast("Falta: " + miss.k.toLowerCase()); const el = document.getElementById(miss.k.startsWith("Escribir") ? "sec0" : miss.k.startsWith("Marcar") ? "sec1" : "sec2"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
       s.done = true; s.doneAt = todayStr(); s.blocksDone = U.blocks; ensureStarted(U.p);
       U.cards.forEach(([q, ans]) => addCard(q, ans, `Fase ${U.p} · ${U.title}`));
       save(); toast(`⚑ flag capturada${U.cards.length ? ` · ${U.cards.length} tarjetas nuevas` : ""}`);
