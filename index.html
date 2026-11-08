@@ -155,6 +155,7 @@ input[type=checkbox]{accent-color:var(--acc);width:18px;height:18px}
 .cmd small{color:var(--muted);font-size:12px}
 .cmd code{background:none;padding:0;font-size:13px;color:var(--acc);overflow-x:auto;white-space:nowrap;display:block}
 .cmd code::before{content:"PS> ";color:var(--dim)}
+.linux .cmd code::before{content:"$ "}
 .links{display:flex;flex-wrap:wrap;gap:8px}
 .practice{display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid var(--line2);border-radius:var(--r);background:var(--bg)}
 .prac{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
@@ -410,31 +411,34 @@ const LESSONS = [
   cards:[["¿Qué fija más la memoria: releer o recordar sin mirar?","Recordar sin mirar (práctica de recuerdo)."],["¿Cómo es una buena tarjeta?","Una sola pregunta corta con una respuesta clara."]],
   keys:["Recordar sin mirar fija más que releer.","El repaso espaciado muestra cada tarjeta justo antes de olvidarla.","Una tarjeta = una pregunta corta."]
 },
-{ id:"s05", w:1, day:"Sáb", title:"picoCTF: tus primeros retos",
-  goal:"Resolver tus 3 primeros retos (Obedient Cat, Nice netcat… y Magikarp Ground Mission) y entender qué es una flag.",
+{ id:"s05", w:1, day:"Sáb", title:"La terminal desde cero", cmdsShell:"linux",
+  goal:"Aprender a moverte y leer archivos en una terminal Linux, y resolver tu primer reto con lo aprendido.",
   sat:true,
-  links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"],["CyberChef (convertir hexadecimal, Base64...)","https://gchq.github.io/CyberChef/"]],
+  links:[["Biblioteca de retos picoCTF (y su terminal)","https://learn.cylabacademy.org/library"],["CTF Primer, capítulo 2: The Shell","https://primer.picoctf.org/#_the_shell"]],
   concept:[
-    "En un **CTF** (captura la bandera) cada reto esconde un texto secreto llamado **flag**. En picoCTF tiene la forma `picoCTF{...}`. Cuando la encuentras, la pegas y ganas los puntos.",
-    "Muchos retos usan otras formas de escribir datos. El **hexadecimal** usa 0-9 y a-f: `0x41` vale 65, que en la tabla ASCII es la letra A. El **binario** solo usa 0 y 1.",
-    "**Base64** es una codificación, no un cifrado: cualquiera la deshace sin clave. Suele terminar en `=` y usa letras, números, + y /."
+    "La **terminal** (también llamada shell o consola) es una forma de usar la computadora **escribiendo órdenes** en vez de hacer clic. Es la herramienta número uno de un hacker: casi todos los servidores del mundo usan Linux y se manejan así.",
+    "Cada orden es un **comando**: primero el nombre, después las **opciones** (empiezan por guion) y después los **argumentos** (sobre qué actúa). En `ls -l Documentos`: `ls` es el comando, `-l` la opción y `Documentos` el argumento.",
+    "El texto que aparece antes del cursor es el **prompt**, por ejemplo `pablo@webshell:~$`. La `~` significa **tu carpeta personal**. Una **ruta** es la dirección de un archivo: `/` es la raíz (la carpeta de más arriba) y las carpetas se separan con `/`, como `/home/pablo/practica`.",
+    "Linux distingue mayúsculas: `Flag` y `flag` son archivos distintos. Y no hay papelera: lo que borras con `rm` desaparece para siempre.",
+    "No tienes que instalar nada: CyLab te da una terminal Linux dentro del navegador. Se abre con el botón **>_** del espacio de trabajo."
   ],
-  flow:["Leer el reto","Buscar pistas","Probar","Encontrar picoCTF{...}","Enviar la flag"],
+  flow:["Escribes un comando","Pulsas Enter","Lees la respuesta","Siguiente comando"],
   steps:[
-    "Abre la biblioteca de retos, filtra **Category: General Skills** y **Difficulty: Easy**, y abre la terminal con el botón >_ (la guía de abajo te lo explica).",
-    "Resuelve el reto 1, **Obedient Cat**, siguiendo su guía.",
-    "Resuelve el reto 2, **Nice netcat…**. Descansa 15 minutos después.",
-    "Resuelve el reto 3, **Magikarp Ground Mission**.",
-    "Anota en tu cuaderno, para cada reto, qué comandos usaste y qué hace cada uno."
+    "Abre la biblioteca de retos, entra en cualquier reto con **Open in Workspace** y pulsa **>_** para abrir la terminal. La primera guía de abajo te lo explica.",
+    "Lee el capítulo 2 del CTF Primer (enlace 2, o la pestaña **CTF Primer** dentro del workspace). Si el inglés pesa, usa el botón de traducir de Brave.",
+    "Haz el **ejercicio guiado** de abajo en la terminal, comando por comando, leyendo qué responde cada uno.",
+    "Resuelve tu primer reto, **Obedient Cat**, siguiendo su guía. Solo necesitas wget, ls y cat.",
+    "Sin mirar, escribe en tu cuaderno qué hace cada comando de hoy. Luego compara con la lista de comandos."
   ],
-  hint:"Si un texto termina en = o ==, prueba a decodificarlo como Base64 en CyberChef.",
+  cmds:[["Dónde estoy","pwd"],["Qué hay aquí","ls"],["Ver también archivos ocultos y detalles","ls -la"],["Crear una carpeta","mkdir practica"],["Entrar a una carpeta","cd practica"],["Subir a la carpeta de arriba","cd .."],["Volver a tu carpeta personal","cd ~"],["Crear un archivo con texto","echo hola > saludo.txt"],["Leer un archivo","cat saludo.txt"],["Copiar un archivo","cp saludo.txt copia.txt"],["Descargar un archivo de internet","wget dirección-del-archivo"],["Ver el manual de un comando (sal con q)","man ls"],["Limpiar la pantalla","clear"]],
+  hint:"Si un comando se queda colgado, pulsa Ctrl + C para cancelarlo. Con las flechas ↑ y ↓ recuperas los comandos que ya escribiste, y con Tab la terminal completa los nombres.",
   quiz:[
-    {q:"¿Qué letra es 0x41 en ASCII?", o:["a","A","4","Z"], a:1, e:"0x41 en hexadecimal es 65 en decimal, y 65 es la A mayúscula en ASCII."},
-    {q:"Base64 es…", o:["Un cifrado que necesita clave","Una codificación que cualquiera puede deshacer","Un virus","Un tipo de contraseña"], a:1, e:"Base64 solo cambia la forma de escribir los datos. No protege nada."},
-    {q:"¿Qué forma tiene una flag de picoCTF?", o:["FLAG-1234","picoCTF{...}","<flag>","#pico"], a:1, e:"Las flags de picoCTF van dentro de picoCTF{ }."}
+    {q:"¿Qué hace pwd?", o:["Cambia la contraseña","Muestra en qué carpeta estás","Lista los archivos","Borra la pantalla"], a:1, e:"pwd (print working directory) te dice la ruta de la carpeta en la que estás."},
+    {q:"Estás en /home/pablo/practica. ¿Adónde te lleva cd ..?", o:["A /","A /home/pablo","A /home/pablo/practica","Da un error"], a:1, e:"Los dos puntos .. son la carpeta de arriba."},
+    {q:"¿Qué muestra ls -la que ls no muestra?", o:["Nada distinto","Los archivos ocultos (empiezan por punto) y sus detalles","Solo las carpetas","El contenido de los archivos"], a:1, e:"-a muestra los ocultos y -l los detalles: permisos, tamaño y fecha."}
   ],
-  cards:[["¿Cuánto vale 0x41 en decimal y qué letra es?","65, la letra A."],["¿Base64 es cifrado o codificación?","Codificación: se deshace sin clave."],["¿Qué es una flag en un CTF?","El texto secreto que demuestra que resolviste el reto."]],
-  keys:["Una flag es el texto secreto que prueba que resolviste el reto.","0x41 = 65 = A.","Base64 es codificación, no cifrado."]
+  cards:[["¿Qué hace pwd?","Muestra la carpeta en la que estás."],["¿Cómo subes a la carpeta de arriba?","cd .."],["¿Qué significa ~ en la terminal?","Tu carpeta personal."],["¿Cómo ves los archivos ocultos?","ls -la"],["¿Qué tecla autocompleta nombres en la terminal?","Tab"],["¿Cómo cancelas un comando colgado?","Ctrl + C"]],
+  keys:["Comando + opciones + argumentos.","pwd dónde estoy, ls qué hay, cd moverme, cat leer.","Tab autocompleta, Ctrl + C cancela, ↑ repite."]
 },
 /* ───────── SEMANA 2 ───────── */
 { id:"s06", w:2, day:"Lun", title:"What Is Networking?",
@@ -532,29 +536,32 @@ const LESSONS = [
   cards:[["Puerto de HTTPS","443"],["Puerto de HTTP","80"],["Puerto de SSH","22"],["Puerto de DNS","53"]],
   keys:["Puertos clave: 22 SSH, 53 DNS, 80 HTTP, 443 HTTPS.","Hay 65 536 puertos (0 a 65535).","Escanear puertos revela qué servicios hay."]
 },
-{ id:"s10", w:2, day:"Sáb", title:"picoCTF y repaso largo",
-  goal:"Resolver Wave a flag y Tab, Tab, Attack (y si da tiempo Python Wrangling) y repasar toda la semana mezclada.",
+{ id:"s10", w:2, day:"Sáb", title:"Terminal 2: hablar con servidores", cmdsShell:"linux",
+  goal:"Conectarte a servidores con nc y ssh, ejecutar programas descargados y repasar la semana.",
   sat:true,
-  links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"]],
+  links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"],["CyberChef","https://gchq.github.io/CyberChef/"]],
   concept:[
-    "Hoy mezclas temas. Cuesta más que repetir uno solo, pero te enseña a reconocer qué tipo de problema tienes delante. Así funciona un CTF real y un trabajo real.",
-    "Método para cualquier reto: **1** lee el enunciado dos veces, **2** anota qué te dan (archivo, enlace, texto), **3** piensa qué categoría es, **4** prueba lo más simple primero."
+    "`nc` (**netcat**) abre una conexión con un **servidor** en un **puerto** y te deja leer lo que responde y escribirle. Es como llamar por teléfono a un programa: `nc servidor puerto`. Ya sabes qué es un puerto por esta semana de redes.",
+    "`ssh` te da una terminal completa **dentro de otra computadora**: `ssh usuario@servidor -p puerto`. Al escribir la contraseña no se ve nada: es normal, por seguridad. Para salir escribes `exit`.",
+    "Las computadoras guardan cada letra como un número: es el código **ASCII**. 65 es la A, 66 la B, 97 la a. Muchos retos te dan números que en realidad son letras.",
+    "Un programa descargado no se puede ejecutar hasta darle permiso: `chmod +x archivo`. Después se ejecuta con `./archivo`. El `./` significa «el programa que está en esta carpeta»."
   ],
-  flow:["Leer dos veces","¿Qué me dan?","¿Qué categoría es?","Probar lo simple"],
+  flow:["Tu terminal","nc o ssh","Servidor del reto","Lees la respuesta","Flag"],
   steps:[
-    "Bloque 1 (50 min): resuelve **Wave a flag** y **Tab, Tab, Attack** siguiendo sus guías. Si te sobra tiempo, **Python Wrangling** (es Medium: si no da tiempo, otro día).",
+    "Bloque 1 (50 min): resuelve **Nice netcat…** y **Magikarp Ground Mission** siguiendo sus guías.",
+    "Si te sobra tiempo, resuelve **Wave a flag**.",
     "Descanso de 15 minutos lejos de la pantalla.",
-    "Bloque 2 (50 min): repasa todas tus tarjetas pendientes y crea 3 nuevas con lo que te costó.",
-    "Anota en el cuaderno qué reto te gustó más y por qué."
+    "Bloque 2 (50 min): repasa todas tus tarjetas pendientes y crea 3 nuevas con los comandos de esta semana."
   ],
-  hint:"Si un reto te da un archivo raro, en Windows puedes abrirlo con el Bloc de notas para ver si hay texto legible dentro.",
+  cmds:[["Conectarte a un servicio","nc servidor puerto"],["Entrar a otra máquina","ssh usuario@servidor -p puerto"],["Salir de esa máquina","exit"],["Dar permiso de ejecución","chmod +x archivo"],["Ejecutar un programa de esta carpeta","./archivo"],["Pedirle ayuda a un programa","./archivo -h"]],
+  hint:"Si nc se queda en silencio, el servidor espera que escribas algo. Si ya terminó de hablar, pulsa Ctrl + C para cortar.",
   quiz:[
-    {q:"¿Qué haces primero ante un reto nuevo?", o:["Buscar la solución en internet","Leer el enunciado dos veces","Probar herramientas al azar","Pedir la pista"], a:1, e:"Muchos retos se resuelven entendiendo bien lo que piden."},
-    {q:"Te dan una IP y el reto dice que hay un servicio web. ¿Qué puerto pruebas primero?", o:["22","53","80 o 443","3389"], a:2, e:"Los servicios web suelen estar en el 80 (HTTP) o el 443 (HTTPS)."},
-    {q:"Un mensaje roto por el camino se reenvió solo. ¿Qué protocolo se usó?", o:["UDP","TCP","ICMP","Ninguno"], a:1, e:"TCP reenvía lo que se pierde. UDP no."}
+    {q:"¿Qué hace nc servidor.net 1234?", o:["Descarga un archivo","Abre una conexión con ese servidor en el puerto 1234","Cambia la contraseña","Apaga el servidor"], a:1, e:"netcat conecta con un servidor y un puerto para hablar con el programa que escucha ahí."},
+    {q:"¿Qué letra es el 65 en ASCII?", o:["a","A","6","Z"], a:1, e:"65 es la A mayúscula; la a minúscula es 97."},
+    {q:"Descargas un programa y al ejecutarlo dice Permission denied. ¿Qué haces?", o:["Lo borras","chmod +x programa","cd programa","cat programa"], a:1, e:"chmod +x le da permiso de ejecución."}
   ],
-  cards:[["Método para empezar cualquier reto","Leer dos veces, ver qué me dan, pensar la categoría, probar lo simple."]],
-  keys:["Mezclar temas cuesta más pero enseña a reconocer problemas.","Método: leer, qué me dan, categoría, lo simple primero."]
+  cards:[["Comando para conectar con un servidor y un puerto","nc servidor puerto"],["Comando para entrar a otra máquina","ssh usuario@servidor -p puerto"],["¿Qué letra es 65 en ASCII?","A"],["¿Cómo haces ejecutable un archivo?","chmod +x archivo"],["¿Qué significa ./ delante de un programa?","Que está en la carpeta actual."]],
+  keys:["nc conecta con un puerto; ssh te da una terminal remota.","ASCII: cada letra es un número (65 = A).","chmod +x y ./programa para ejecutar."]
 },
 /* ───────── SEMANA 3 ───────── */
 { id:"s11", w:3, day:"Lun", title:"DNS in Detail",
@@ -883,7 +890,8 @@ const LESSONS = [
   concept:[
     "El **cifrado César** desplaza cada letra un número fijo de posiciones. ROT13 es un César con desplazamiento 13.",
     "Es débil porque solo hay **25 desplazamientos útiles**: se pueden probar todos en segundos. A eso se le llama **fuerza bruta**.",
-    "**CyberChef** es una herramienta gratuita en el navegador para codificar, decodificar y probar cifrados sencillos sin instalar nada."
+    "**CyberChef** es una herramienta gratuita en el navegador para codificar, decodificar y probar cifrados sencillos sin instalar nada.",
+    "No confundas cifrar con codificar: **Base64** o el hexadecimal son **codificaciones**, otra forma de escribir lo mismo, y cualquiera las deshace sin clave. Un cifrado sí necesita una clave."
   ],
   flow:["Texto cifrado","Probar los 25 desplazamientos","Ver cuál tiene sentido","Flag"],
   steps:[
@@ -2187,12 +2195,12 @@ const PRACTICE = {
   s02: [[0,"Pulsa Enroll en la ruta, abre la primera sala y responde todas las preguntas de sus tareas."]],
   s03: [[0,"En la misma ruta, abre la segunda sala y termina todas sus tareas."]],
   s04: [["#tarjetas","Tus tarjetas (en esta app)","Crea al menos 3 tarjetas con lo que olvidaste y haz un repaso completo de las pendientes."]],
-  s05: [[0,"Abre la biblioteca y sigue las guías de abajo: primero cómo usar la terminal y después los 3 retos, uno por uno."],[1,"La usarás en el reto 2. También está como pestaña dentro del workspace de CyLab, junto a Terminal."]],
+  s05: [[0,"Abre cualquier reto en el workspace solo para usar su terminal (>_). Después sigue el ejercicio guiado y la guía de Obedient Cat."],[1,"Lee las secciones 2.1 a 2.5. Cada vez que aparezca un comando, escríbelo tú en la terminal."]],
   s06: [[0,"Pulsa Join Room y completa todas las tareas. Las respuestas van en las casillas de cada tarea."]],
   s07: [[0,"Completa todas las tareas y, al final, repasa el esquema del modelo OSI que trae la sala."]],
   s08: [[0,"Haz solo la primera mitad de las tareas, hasta TCP y UDP incluidos."]],
   s09: [[0,"Termina las tareas que te faltan de la sala."]],
-  s10: [[0,"Busca cada reto por su nombre en Search y sigue su guía de abajo. Activa Hide Solved para ocultar los que ya hiciste."]],
+  s10: [[0,"Busca Nice netcat…, Magikarp Ground Mission y Wave a flag por su nombre y sigue sus guías."],[1,"La usarás en Nice netcat: operación From Decimal. También está como pestaña dentro del workspace."]],
   s11: [[0,"Completa todas las tareas. En la parte práctica usa la herramienta de consultas que trae la propia sala."]],
   s12: [[0,"Haz la primera mitad: peticiones, partes de una URL y métodos."]],
   s13: [[0,"Termina la sala: códigos de estado, cabeceras y cookies, incluida la web de práctica del final."]],
@@ -2207,7 +2215,7 @@ const PRACTICE = {
   s22: [[0,"Completa todas las tareas de la sala."],[1,"Busca CVE-2021-44228 y anota su puntuación CVSS y qué software afectaba."]],
   s23: [[0,"Nivel 11 al 12: haz ROT13 con tr y rangos de letras."],[1,"Nivel 12 al 13: en una carpeta temporal, repite file y descomprimir hasta llegar al texto."]],
   s24: [[0,"Busca Mod 26 y The Numbers por su nombre y sigue sus guías."],[1,"La usarás en Mod 26: operación ROT13. También está como pestaña dentro del workspace."]],
-  s25: [[0,"Busca First Grep, Bases y Glory of the Garden por su nombre. 20 minutos sin ayuda por reto."]],
+  s25: [[0,"Busca First Grep, Bases y Glory of the Garden por su nombre (y Tab, Tab, Attack si te sobra tiempo). 20 minutos sin ayuda por reto."]],
   s26: [["https://tryhackme.com/room/dnsindetail","DNS in Detail (repaso)","Solo si fallaste preguntas de DNS: vuelve a la tarea de tipos de registro."],["https://tryhackme.com/room/httpindetail","HTTP in Detail (repaso)","Solo si fallaste HTTP: vuelve a la tarea de códigos de estado."]],
   s27: [["https://overthewire.org/wargames/bandit/","OverTheWire Bandit","Si fallaste un comando, vuelve a hacer el nivel donde lo usaste."]],
   s28: [["#tarjetas","Tus tarjetas (en esta app)","Deja las tarjetas pendientes en cero."]],
@@ -2275,7 +2283,7 @@ const PRACTICE = {
 };
 
 /* Pasos que se marcan solos: unidad → { nº de enlace de práctica (desde 0): nº de paso (desde 0) }. */
-const AUTO_STEP = { s01:{0:0,1:1}, s05:{0:0}, s02:{0:0}, s14:{0:0}, s21:{1:1}, p2u04:{0:0}, p2u19:{1:1}, p2u23:{0:0}, p3u03:{0:0}, p4u01:{0:0}, p4u09:{0:0} };
+const AUTO_STEP = { s01:{0:0,1:1}, s05:{0:0,1:1}, s02:{0:0}, s14:{0:0}, s21:{1:1}, p2u04:{0:0}, p2u19:{1:1}, p2u23:{0:0}, p3u03:{0:0}, p4u01:{0:0}, p4u09:{0:0} };
 /* Pasos que se marcan al entrar en una pestaña de la app. */
 const AUTO_ROUTE = { tarjetas: [["s01",3]] };
 
@@ -2440,6 +2448,23 @@ const GUIDE_HOSTS = [["cylabacademy", "cylab"], ["tryhackme.com", "thm"], ["over
 /* Guías de retos concretos, por unidad. */
 const UNIT_GUIDES = {
   s10: [
+    { t: "Reto · Nice netcat…: hablar con un servidor y traducir números", s: [
+      "Busca `Nice netcat`, ábrelo en el workspace y pulsa **Launch Instance**. Aparece un comando parecido a `nc servidor.net 12345`. El tuyo tendrá otro servidor y otro número de puerto.",
+      "Copia el comando **sin el símbolo $** del principio, pégalo en la terminal y pulsa Enter. `nc` (netcat) abre una conexión con ese servidor y ese puerto.",
+      "El servidor responde con muchos números, uno por línea. Cada número es una letra en código **ASCII** (lo viste en esta sesión: 65 es la A).",
+      "Selecciona con el ratón todos los números, de arriba abajo, y clic derecho → Copiar. Si la terminal se queda esperando, pulsa `Ctrl + C` para cortar la conexión.",
+      "Arriba del panel derecho pulsa la pestaña **CyberChef**. Pega los números en el cuadro **Input**.",
+      "En la lista **Operations** (a la izquierda de CyberChef) busca `From Decimal` y arrástralo al cuadro **Recipe**. En **Delimiter** elige **Line feed** (salto de línea).",
+      "En **Output** aparece el texto traducido: es la flag. Cópiala y envíala."
+    ], learn: "`nc servidor puerto` conecta con un servicio; los números ASCII se traducen con From Decimal en CyberChef." },
+    { t: "Reto · Magikarp Ground Mission: entrar por SSH y moverte entre carpetas", s: [
+      "Busca `Magikarp`, ábrelo y pulsa **Launch Instance** (si tienes otra instancia corriendo, párala antes con ■). Te dará un comando `ssh ctf-player@servidor -p puerto` y una **contraseña**.",
+      "Pega el comando `ssh` en la terminal y pulsa Enter. Si pregunta «Are you sure you want to continue connecting?», escribe `yes` y Enter.",
+      "Cuando pida **password**, pega la contraseña del reto y pulsa Enter. **No se ve mientras la pegas**: es normal.",
+      "Ya estás dentro de otra computadora. Escribe `ls` para ver qué archivos hay y `cat nombre-del-archivo` para leer cada uno.",
+      "La flag está repartida en **varias partes** en carpetas distintas, y los archivos te dicen adónde ir. Para moverte usa `cd`: `cd /` te lleva a la carpeta raíz (la de arriba del todo) y `cd ~` vuelve a tu carpeta personal. Después de cada `cd`, haz `ls` otra vez.",
+      "Junta las partes **en orden** sin espacios, envía la flag y escribe `exit` para salir del servidor."
+    ], learn: "`ssh usuario@servidor -p puerto` entra a otra máquina; `cd` cambia de carpeta; `/` es la raíz y `~` tu carpeta personal." },
     { t: "Reto · Wave a flag: ejecutar un programa y pedirle ayuda", s: [
       "Busca `Wave a flag` (General Skills, Easy), ábrelo en el workspace y abre la terminal con **>_**.",
       "Clic derecho en el enlace del programa → **Copiar dirección del enlace**. En la terminal: `wget ` + pegar + Enter.",
@@ -2447,21 +2472,7 @@ const UNIT_GUIDES = {
       "Los archivos descargados no tienen permiso para ejecutarse. Dáselo con `chmod +x warm` (`chmod` cambia permisos; `+x` significa «ejecutable»).",
       "Ejecútalo con `./warm`. El `./` significa «el programa que está en esta carpeta».",
       "Lee lo que responde: te pide una opción. Las opciones van después del nombre con un guion, y la más común en Linux es `-h` (help, ayuda). Pruébala y aparecerá la flag."
-    ], learn: "`chmod +x` hace ejecutable un archivo, `./programa` lo ejecuta y `-h` pide la ayuda de casi cualquier herramienta." },
-    { t: "Reto · Tab, Tab, Attack: descomprimir y autocompletar con Tab", s: [
-      "Busca `Tab, Tab, Attack`, ábrelo y descarga el archivo `.zip` con `wget` (clic derecho en el enlace → Copiar dirección).",
-      "Escribe `unzip ` y las 3 primeras letras del archivo, y pulsa la tecla **Tab**: la terminal completa el nombre sola. Pulsa Enter. `unzip` descomprime archivos .zip.",
-      "Aparece una carpeta con un nombre larguísimo, y dentro hay más carpetas, una dentro de otra. Escribe `cd ` + las primeras letras + **Tab** + Enter. Repite: `ls` para ver qué hay y `cd` + Tab para entrar.",
-      "Truco: con `cd ` + letras + Tab, Tab, Tab… puedes completar varias carpetas de golpe.",
-      "En la última carpeta hay un programa. Ejecútalo con `./` + Tab + Enter. Si dice *Permission denied*, primero `chmod +x` + Tab."
-    ], learn: "La tecla **Tab** autocompleta nombres: ahorra tiempo y evita errores. `unzip` descomprime." },
-    { t: "Reto · Python Wrangling (Medium): ejecutar un script de Python", s: [
-      "Busca `Python Wrangling`. Te da 3 archivos: un **script** de Python, una **contraseña** y la **flag cifrada**. Descarga los 3 con `wget`, uno por uno.",
-      "Mira la contraseña con `cat` + el nombre del archivo de contraseña (Tab te ayuda). Selecciónala y cópiala.",
-      "Ejecuta el script sin nada más: `python3 ` + nombre del script. Te mostrará cómo se usa: con `-e` cifra y con `-d` descifra.",
-      "Ahora: `python3 nombre-del-script -d nombre-de-la-flag-cifrada`. Cuando pida la contraseña, pégala y pulsa Enter.",
-      "Sale la flag. Si dice que la contraseña es incorrecta, comprueba que no copiaste espacios de más."
-    ], learn: "`python3 script.py` ejecuta un programa de Python. Ejecutarlo sin opciones suele mostrar cómo se usa." }
+    ], learn: "`chmod +x` hace ejecutable un archivo, `./programa` lo ejecuta y `-h` pide la ayuda de casi cualquier herramienta." }
   ],
   s15: [
     { t: "Reto · Insp3ct0r: leer el código de una web", s: [
@@ -2515,34 +2526,38 @@ const UNIT_GUIDES = {
       "Descarga la imagen `garden.jpg` con `wget`. Si la abres, solo ves un jardín.",
       "Una imagen es un archivo binario, pero puede llevar texto escondido. `strings` saca todo el texto legible: `strings garden.jpg`.",
       "Sale demasiado texto. Combínalo con `grep` usando la barra `|` (pipe), que pasa la salida de un comando al siguiente: `strings garden.jpg | grep pico`."
-    ], learn: "`strings` saca texto de archivos binarios; `|` encadena comandos." }
+    ], learn: "`strings` saca texto de archivos binarios; `|` encadena comandos." },
+    { t: "Extra · Tab, Tab, Attack: descomprimir y autocompletar con Tab", s: [
+      "Busca `Tab, Tab, Attack`, ábrelo y descarga el archivo `.zip` con `wget` (clic derecho en el enlace → Copiar dirección).",
+      "Escribe `unzip ` y las 3 primeras letras del archivo, y pulsa la tecla **Tab**: la terminal completa el nombre sola. Pulsa Enter. `unzip` descomprime archivos .zip.",
+      "Aparece una carpeta con un nombre larguísimo, y dentro hay más carpetas, una dentro de otra. Escribe `cd ` + las primeras letras + **Tab** + Enter. Repite: `ls` para ver qué hay y `cd` + Tab para entrar.",
+      "Truco: con `cd ` + letras + Tab, Tab, Tab… puedes completar varias carpetas de golpe.",
+      "En la última carpeta hay un programa. Ejecútalo con `./` + Tab + Enter. Si dice *Permission denied*, primero `chmod +x` + Tab."
+    ], learn: "La tecla **Tab** autocompleta nombres: ahorra tiempo y evita errores. `unzip` descomprime." }
   ],
   s05: [
-    { t: "Reto 1 · Obedient Cat: descargar un archivo y leerlo", s: [
+    { t: "Ejercicio guiado · tu primera vez en la terminal", s: [
+      "Abre la terminal (**>_** en el workspace). Escribe `pwd` y pulsa Enter. Te responde la ruta de tu carpeta actual, algo como `/home/tu-usuario`. Esa es tu carpeta personal, la `~`.",
+      "Escribe `ls` y Enter. Muestra lo que hay en la carpeta. Ahora `ls -la`: aparecen también los archivos **ocultos** (los que empiezan por punto, como `.bashrc`) y detalles como tamaño y fecha.",
+      "Crea una carpeta para practicar: `mkdir practica`. Comprueba con `ls` que aparece.",
+      "Entra en ella: `cd practica`. Fíjate cómo cambia el prompt. Comprueba dónde estás con `pwd`.",
+      "Crea un archivo con texto: `echo hola hacker > saludo.txt`. El símbolo `>` guarda lo que sale del comando dentro de un archivo. Comprueba con `ls`.",
+      "Lee el archivo: `cat saludo.txt`. Debe salir «hola hacker».",
+      "Copia el archivo: `cp saludo.txt copia.txt` y comprueba con `ls` que ahora hay dos.",
+      "Prueba el autocompletado: escribe `cat co` y pulsa **Tab**. La terminal completa `copia.txt` sola. Pulsa Enter.",
+      "Pulsa la flecha **↑**: vuelve el último comando. Así no tienes que reescribirlo.",
+      "Sube a la carpeta de arriba con `cd ..` y comprueba con `pwd`. Luego vuelve a tu carpeta personal desde cualquier sitio con `cd ~`.",
+      "Abre el manual de un comando: `man ls`. Muévete con las flechas y sal pulsando **q**. Todo comando tiene su manual.",
+      "Escribe `clear` para limpiar la pantalla. Si en algún momento algo se queda colgado, **Ctrl + C** lo cancela."
+    ], learn: "`pwd` dónde estoy, `ls` qué hay, `mkdir` crear carpeta, `cd` moverme, `echo … >` crear archivo, `cat` leer, `cp` copiar, `man` ayuda." },
+    { t: "Tu primer reto · Obedient Cat: descargar un archivo y leerlo", s: [
       "En la biblioteca (Category: General Skills, Difficulty: Easy) escribe `Obedient Cat` en **Search**, abre el reto y pulsa **Open in Workspace**. Abre la terminal con **>_**.",
       "El enunciado tiene un enlace llamado **flag**. **No hagas clic normal**: haz **clic derecho** sobre él → **Copiar dirección del enlace**.",
       "En la terminal escribe `wget ` (con un espacio al final), pega la dirección con clic derecho → Pegar y pulsa Enter. `wget` descarga archivos de internet.",
       "Escribe `ls` y Enter. `ls` lista los archivos de la carpeta: debe aparecer uno llamado `flag`.",
       "Escribe `cat flag` y Enter. `cat` muestra lo que hay dentro de un archivo. Ahí está la flag.",
       "Selecciónala con el ratón, clic derecho → Copiar, pégala en **FLAG** y pulsa **Submit**."
-    ], learn: "`wget` descarga, `ls` lista lo que hay, `cat` muestra el contenido de un archivo." },
-    { t: "Reto 2 · Nice netcat…: hablar con un servidor y traducir números", s: [
-      "Busca `Nice netcat`, ábrelo en el workspace y pulsa **Launch Instance**. Aparece un comando parecido a `nc servidor.net 12345`. El tuyo tendrá otro servidor y otro número de puerto.",
-      "Copia el comando **sin el símbolo $** del principio, pégalo en la terminal y pulsa Enter. `nc` (netcat) abre una conexión con ese servidor y ese puerto.",
-      "El servidor responde con muchos números, uno por línea. Cada número es una letra en código **ASCII** (lo viste en esta sesión: 65 es la A).",
-      "Selecciona con el ratón todos los números, de arriba abajo, y clic derecho → Copiar. Si la terminal se queda esperando, pulsa `Ctrl + C` para cortar la conexión.",
-      "Arriba del panel derecho pulsa la pestaña **CyberChef**. Pega los números en el cuadro **Input**.",
-      "En la lista **Operations** (a la izquierda de CyberChef) busca `From Decimal` y arrástralo al cuadro **Recipe**. En **Delimiter** elige **Line feed** (salto de línea).",
-      "En **Output** aparece el texto traducido: es la flag. Cópiala y envíala."
-    ], learn: "`nc servidor puerto` conecta con un servicio; los números ASCII se traducen con From Decimal en CyberChef." },
-    { t: "Reto 3 · Magikarp Ground Mission: entrar por SSH y moverte entre carpetas", s: [
-      "Busca `Magikarp`, ábrelo y pulsa **Launch Instance** (si tienes otra instancia corriendo, párala antes con ■). Te dará un comando `ssh ctf-player@servidor -p puerto` y una **contraseña**.",
-      "Pega el comando `ssh` en la terminal y pulsa Enter. Si pregunta «Are you sure you want to continue connecting?», escribe `yes` y Enter.",
-      "Cuando pida **password**, pega la contraseña del reto y pulsa Enter. **No se ve mientras la pegas**: es normal.",
-      "Ya estás dentro de otra computadora. Escribe `ls` para ver qué archivos hay y `cat nombre-del-archivo` para leer cada uno.",
-      "La flag está repartida en **varias partes** en carpetas distintas, y los archivos te dicen adónde ir. Para moverte usa `cd`: `cd /` te lleva a la carpeta raíz (la de arriba del todo) y `cd ~` vuelve a tu carpeta personal. Después de cada `cd`, haz `ls` otra vez.",
-      "Junta las partes **en orden** sin espacios, envía la flag y escribe `exit` para salir del servidor."
-    ], learn: "`ssh usuario@servidor -p puerto` entra a otra máquina; `cd` cambia de carpeta; `/` es la raíz y `~` tu carpeta personal." }
+    ], learn: "`wget` descarga, `ls` lista lo que hay, `cat` muestra el contenido de un archivo." }
   ]
 };
 
@@ -2934,7 +2949,7 @@ function viewUnit(u) {
     ${u.code ? `<div class="codebox"><div class="cb-bar"><span>ejemplo</span><button class="btn sm" data-action="copy" data-text="${esc(u.code)}">copiar</button></div><pre><code>${esc(u.code)}</code></pre></div>` : ""}
     ${practiceHtml(u)}
     ${guidesHtml(u)}
-    ${u.cmds ? `<div class="list"><span class="eyebrow">en tu laptop (Windows) o dentro del servidor de práctica</span>${u.cmds.map(([d, c]) => `<div class="cmd"><div><small>${esc(d)}</small><code>${esc(c)}</code></div><button class="btn sm" data-action="copy" data-text="${esc(c)}">copiar</button></div>`).join("")}</div>` : ""}
+    ${u.cmds ? `<div class="list${u.cmdsShell === "linux" ? " linux" : ""}"><span class="eyebrow">${u.cmdsShell === "linux" ? "en la terminal de CyLab (botón >_ del workspace) · comandos de linux" : "en tu laptop (Windows) o dentro del servidor de práctica"}</span>${u.cmds.map(([d, c]) => `<div class="cmd"><div><small>${esc(d)}</small><code>${esc(c)}</code></div><button class="btn sm" data-action="copy" data-text="${esc(c)}">copiar</button></div>`).join("")}</div>` : ""}
     ${u.blocks > 1 ? `<div class="spread"><div class="row"><span class="eyebrow">bloques de esta unidad</span>${blocksHtml(u, s)}<span class="muted small mono">${s.done ? u.blocks : s.blocksDone}/${u.blocks}</span></div>${s.done ? "" : `<div class="row"><button class="btn sm" data-action="block-minus" data-id="${u.id}" ${s.blocksDone ? "" : "disabled"}>−</button><button class="btn sm" data-action="block-plus" data-id="${u.id}" ${s.blocksDone >= u.blocks - 1 ? "disabled" : ""}>+1 bloque hecho</button></div>`}</div>` : ""}
     <span class="eyebrow">pasos · ${u.steps.filter((_, k) => s.steps[k]).length} de ${u.steps.length} marcados</span>
     ${s.done ? "" : `<p class="muted small">Cuando termines cada paso, tócalo para marcarlo con [x]. La flag solo se captura con todos marcados.</p>`}
