@@ -163,6 +163,16 @@ input[type=checkbox]{accent-color:var(--acc);width:18px;height:18px}
 .prac .pb{display:flex;flex-direction:column;gap:2px;min-width:0}
 .prac .pb small{font-family:var(--f-mono);font-size:11.5px;color:var(--cyan)}
 .prac .pb p{font-size:14px;color:var(--ink)}
+.guides{display:flex;flex-direction:column;gap:8px}
+.guide{border:1px solid var(--line2);border-radius:var(--r);background:var(--bg);overflow:hidden}
+.guide summary{cursor:pointer;list-style:none;padding:12px 14px;font-weight:600;font-size:14.5px;display:flex;gap:10px;align-items:center}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::before{content:"[+]";font-family:var(--f-mono);font-size:12px;color:var(--acc);flex:none}
+.guide[open] summary::before{content:"[-]"}
+.guide[open] summary{border-bottom:1px solid var(--line)}
+.guide ol{margin:0;padding:12px 16px 12px 40px;display:flex;flex-direction:column;gap:9px;font-size:14px;line-height:1.55}
+.guide li::marker{color:var(--acc);font-family:var(--f-mono);font-weight:700}
+.guide .learn{margin:0 14px 14px;padding:10px 12px;border-left:2px solid var(--acc);background:var(--acc-soft);font-size:13.5px}
 .reveal{border:1px dashed var(--line2);border-radius:4px;padding:12px 14px;background:var(--bg);display:flex;flex-direction:column;gap:8px}
 .lockbox{border:1px solid rgba(255,97,112,.35);background:var(--bad-soft);border-radius:4px;padding:14px;display:flex;flex-direction:column;gap:8px;font-family:var(--f-mono);font-size:13px}
 .q{display:flex;flex-direction:column;gap:8px}
@@ -401,7 +411,7 @@ const LESSONS = [
   keys:["Recordar sin mirar fija más que releer.","El repaso espaciado muestra cada tarjeta justo antes de olvidarla.","Una tarjeta = una pregunta corta."]
 },
 { id:"s05", w:1, day:"Sáb", title:"picoCTF: tus primeros retos",
-  goal:"Resolver los 3 retos más fáciles de General Skills y entender qué es una flag.",
+  goal:"Resolver tus 3 primeros retos (Obedient Cat, Nice netcat… y Magikarp Ground Mission) y entender qué es una flag.",
   sat:true,
   links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"],["CyberChef (convertir hexadecimal, Base64...)","https://gchq.github.io/CyberChef/"]],
   concept:[
@@ -411,10 +421,11 @@ const LESSONS = [
   ],
   flow:["Leer el reto","Buscar pistas","Probar","Encontrar picoCTF{...}","Enviar la flag"],
   steps:[
-    "En la biblioteca de retos, filtra Category: General Skills y Difficulty: Easy.",
-    "Resuelve los 3 primeros. Antes de mirar la pista, dale 20 minutos a cada uno.",
-    "Para cada reto, anota en el cuaderno qué probaste y qué funcionó.",
-    "Descanso de 15 minutos a mitad de la sesión."
+    "Abre la biblioteca de retos, filtra **Category: General Skills** y **Difficulty: Easy**, y abre la terminal con el botón >_ (la guía de abajo te lo explica).",
+    "Resuelve el reto 1, **Obedient Cat**, siguiendo su guía.",
+    "Resuelve el reto 2, **Nice netcat…**. Descansa 15 minutos después.",
+    "Resuelve el reto 3, **Magikarp Ground Mission**.",
+    "Anota en tu cuaderno, para cada reto, qué comandos usaste y qué hace cada uno."
   ],
   hint:"Si un texto termina en = o ==, prueba a decodificarlo como Base64 en CyberChef.",
   quiz:[
@@ -2176,7 +2187,7 @@ const PRACTICE = {
   s02: [[0,"Pulsa Enroll en la ruta, abre la primera sala y responde todas las preguntas de sus tareas."]],
   s03: [[0,"En la misma ruta, abre la segunda sala y termina todas sus tareas."]],
   s04: [["#tarjetas","Tus tarjetas (en esta app)","Crea al menos 3 tarjetas con lo que olvidaste y haz un repaso completo de las pendientes."]],
-  s05: [[0,"Abre Challenge Library. En Category marca General Skills y en Difficulty marca Easy. Resuelve los 3 primeros. Pega cada flag en la casilla del reto."],[1,"Si un reto te da texto en hexadecimal o Base64, pégalo en Input y añade la receta From Hex o From Base64."]],
+  s05: [[0,"Abre la biblioteca y sigue las guías de abajo: primero cómo usar la terminal y después los 3 retos, uno por uno."],[1,"La usarás en el reto 2. También está como pestaña dentro del workspace de CyLab, junto a Terminal."]],
   s06: [[0,"Pulsa Join Room y completa todas las tareas. Las respuestas van en las casillas de cada tarea."]],
   s07: [[0,"Completa todas las tareas y, al final, repasa el esquema del modelo OSI que trae la sala."]],
   s08: [[0,"Haz solo la primera mitad de las tareas, hasta TCP y UDP incluidos."]],
@@ -2264,9 +2275,74 @@ const PRACTICE = {
 };
 
 /* Pasos que se marcan solos: unidad → { nº de enlace de práctica (desde 0): nº de paso (desde 0) }. */
-const AUTO_STEP = { s01:{0:0,1:1}, s02:{0:0}, s14:{0:0}, s21:{1:1}, p2u04:{0:0}, p2u19:{1:1}, p2u23:{0:0}, p3u03:{0:0}, p4u01:{0:0}, p4u09:{0:0} };
+const AUTO_STEP = { s01:{0:0,1:1}, s05:{0:0}, s02:{0:0}, s14:{0:0}, s21:{1:1}, p2u04:{0:0}, p2u19:{1:1}, p2u23:{0:0}, p3u03:{0:0}, p4u01:{0:0}, p4u09:{0:0} };
 /* Pasos que se marcan al entrar en una pestaña de la app. */
 const AUTO_ROUTE = { tarjetas: [["s01",3]] };
+
+/* Guías paso a paso. Cada guía: { t: título, s: [pasos], learn: "qué aprendiste" }.
+   PLATFORM_GUIDES se muestra solo en las unidades que usan esa plataforma. */
+const PLATFORM_GUIDES = {
+  cylab: { t: "Cómo se resuelve un reto en CyLab (picoCTF), paso a paso", s: [
+    "Abre la biblioteca de retos. Arriba a la derecha hay tres filtros: en **Category** elige la categoría que pide la sesión (por ejemplo General Skills) y en **Difficulty** elige **Easy**. Si no filtras, salen primero los retos de Inteligencia Artificial, que no son para esta etapa.",
+    "Haz clic en el nombre del reto. Se abre una ventana: pulsa **Open in Workspace** (abajo a la derecha). Ahora tienes la lista de retos a la izquierda y el reto en el centro.",
+    "En la columna de la derecha pulsa el botón **>_**. Se abre la pestaña **Terminal**: es una computadora Linux dentro del navegador, ya preparada con todas las herramientas. Ahí escribes los comandos y pulsas Enter.",
+    "Para **pegar** en la terminal: clic derecho → Pegar, o `Ctrl + Shift + V`. Para **copiar** desde la terminal: selecciona el texto con el ratón y clic derecho → Copiar. Dentro de la terminal, `Ctrl + C` no copia: detiene el programa que está corriendo.",
+    "Si el reto dice **INSTANCE · Launch Instance**, pulsa ese botón primero. Crea tu propio servidor del reto y entonces aparecen el comando, el servidor y el puerto que debes usar. Solo puedes tener **una instancia a la vez**: si en el cuadro de abajo a la derecha hay otra corriendo, párala con el botón cuadrado ■.",
+    "Lee el enunciado dos veces y pregúntate: ¿me dan un archivo, un comando `nc` o un comando `ssh`? Eso te dice qué hacer (lo explican las guías de cada reto).",
+    "La flag casi siempre tiene la forma `picoCTF{...}`. Cópiala **completa**, con las llaves, pégala en la casilla **FLAG** y pulsa **Submit**. Si sale en verde, el reto queda resuelto.",
+    "Las pistas (**Reveal hint**) no quitan puntos aquí, pero úsalas solo después de 20 minutos intentándolo: el esfuerzo es lo que te enseña."
+  ]},
+  thm: { t: "Cómo se hace una sala de TryHackMe, paso a paso", s: [
+    "Abre el enlace de la sala y pulsa el botón **Join Room** (unirte a la sala). Si te pide iniciar sesión, entra con tu cuenta.",
+    "La sala está dividida en **Tasks** (tareas). Haz clic en el título de cada tarea para desplegarla y lee el texto completo antes de responder.",
+    "Al final de cada tarea hay preguntas con una casilla. Escribe la respuesta y pulsa **Submit**. Si es correcta, se pone en verde. Si una pregunta dice **No answer needed**, solo pulsa **Complete**.",
+    "Si una tarea tiene un botón verde **Start Machine**, púlsalo y espera 1 o 2 minutos: arranca la máquina de práctica y aparece su dirección IP arriba.",
+    "Si necesitas una terminal para atacar esa máquina, pulsa el botón azul **Start AttackBox** (arriba de la página). Se abre una computadora Linux en el navegador; no tienes que instalar nada.",
+    "¿Atascado? Pulsa **Hint** junto a la pregunta, si lo hay. Si no, vuelve a leer la tarea: casi siempre la respuesta está en el texto.",
+    "La sala está terminada cuando la barra de progreso de arriba llega al 100 %."
+  ]},
+  bandit: { t: "Cómo se juega Bandit desde tu laptop, paso a paso", s: [
+    "En Windows pulsa la tecla Windows, escribe **PowerShell** y ábrelo. Windows 10 y 11 ya traen `ssh`, no tienes que instalar nada.",
+    "Para entrar a un nivel escribe `ssh banditN@bandit.labs.overthewire.org -p 2220`, cambiando la N por el número del nivel (por ejemplo `bandit0`). Pulsa Enter.",
+    "La primera vez pregunta «Are you sure you want to continue connecting?» Escribe `yes` y Enter.",
+    "Cuando pida **password**, pega la contraseña con **clic derecho** (en PowerShell el clic derecho pega). **No se ve nada mientras escribes o pegas**: es normal, es por seguridad. Pulsa Enter.",
+    "Ya estás dentro de un servidor Linux. Lee en la página del nivel el apartado **Level Goal**: te dice dónde está la contraseña del siguiente nivel.",
+    "Cuando la encuentres, selecciónala con el ratón (al seleccionar en PowerShell se copia) y guárdala en tu cuaderno. Sin ella no puedes volver a ese nivel.",
+    "Escribe `exit` para salir y conéctate al siguiente nivel con su número y la contraseña que encontraste."
+  ]}
+};
+const GUIDE_HOSTS = [["cylabacademy", "cylab"], ["tryhackme.com", "thm"], ["overthewire.org", "bandit"]];
+
+/* Guías de retos concretos, por unidad. */
+const UNIT_GUIDES = {
+  s05: [
+    { t: "Reto 1 · Obedient Cat: descargar un archivo y leerlo", s: [
+      "En la biblioteca (Category: General Skills, Difficulty: Easy) escribe `Obedient Cat` en **Search**, abre el reto y pulsa **Open in Workspace**. Abre la terminal con **>_**.",
+      "El enunciado tiene un enlace llamado **flag**. **No hagas clic normal**: haz **clic derecho** sobre él → **Copiar dirección del enlace**.",
+      "En la terminal escribe `wget ` (con un espacio al final), pega la dirección con clic derecho → Pegar y pulsa Enter. `wget` descarga archivos de internet.",
+      "Escribe `ls` y Enter. `ls` lista los archivos de la carpeta: debe aparecer uno llamado `flag`.",
+      "Escribe `cat flag` y Enter. `cat` muestra lo que hay dentro de un archivo. Ahí está la flag.",
+      "Selecciónala con el ratón, clic derecho → Copiar, pégala en **FLAG** y pulsa **Submit**."
+    ], learn: "`wget` descarga, `ls` lista lo que hay, `cat` muestra el contenido de un archivo." },
+    { t: "Reto 2 · Nice netcat…: hablar con un servidor y traducir números", s: [
+      "Busca `Nice netcat`, ábrelo en el workspace y pulsa **Launch Instance**. Aparece un comando parecido a `nc servidor.net 12345`. El tuyo tendrá otro servidor y otro número de puerto.",
+      "Copia el comando **sin el símbolo $** del principio, pégalo en la terminal y pulsa Enter. `nc` (netcat) abre una conexión con ese servidor y ese puerto.",
+      "El servidor responde con muchos números, uno por línea. Cada número es una letra en código **ASCII** (lo viste en esta sesión: 65 es la A).",
+      "Selecciona con el ratón todos los números, de arriba abajo, y clic derecho → Copiar. Si la terminal se queda esperando, pulsa `Ctrl + C` para cortar la conexión.",
+      "Arriba del panel derecho pulsa la pestaña **CyberChef**. Pega los números en el cuadro **Input**.",
+      "En la lista **Operations** (a la izquierda de CyberChef) busca `From Decimal` y arrástralo al cuadro **Recipe**. En **Delimiter** elige **Line feed** (salto de línea).",
+      "En **Output** aparece el texto traducido: es la flag. Cópiala y envíala."
+    ], learn: "`nc servidor puerto` conecta con un servicio; los números ASCII se traducen con From Decimal en CyberChef." },
+    { t: "Reto 3 · Magikarp Ground Mission: entrar por SSH y moverte entre carpetas", s: [
+      "Busca `Magikarp`, ábrelo y pulsa **Launch Instance** (si tienes otra instancia corriendo, párala antes con ■). Te dará un comando `ssh ctf-player@servidor -p puerto` y una **contraseña**.",
+      "Pega el comando `ssh` en la terminal y pulsa Enter. Si pregunta «Are you sure you want to continue connecting?», escribe `yes` y Enter.",
+      "Cuando pida **password**, pega la contraseña del reto y pulsa Enter. **No se ve mientras la pegas**: es normal.",
+      "Ya estás dentro de otra computadora. Escribe `ls` para ver qué archivos hay y `cat nombre-del-archivo` para leer cada uno.",
+      "La flag está repartida en **varias partes** en carpetas distintas, y los archivos te dicen adónde ir. Para moverte usa `cd`: `cd /` te lleva a la carpeta raíz (la de arriba del todo) y `cd ~` vuelve a tu carpeta personal. Después de cada `cd`, haz `ls` otra vez.",
+      "Junta las partes **en orden** sin espacios, envía la flag y escribe `exit` para salir del servidor."
+    ], learn: "`ssh usuario@servidor -p puerto` entra a otra máquina; `cd` cambia de carpeta; `/` es la raíz y `~` tu carpeta personal." }
+  ]
+};
 
 </script>
 <script>
@@ -2655,6 +2731,7 @@ function viewUnit(u) {
     ${u.flow ? `<div class="flow" aria-label="Esquema">${u.flow.map(n => `<span class="node">${esc(n)}</span>`).join('<span class="arr">→</span>')}</div>` : ""}
     ${u.code ? `<div class="codebox"><div class="cb-bar"><span>ejemplo</span><button class="btn sm" data-action="copy" data-text="${esc(u.code)}">copiar</button></div><pre><code>${esc(u.code)}</code></pre></div>` : ""}
     ${practiceHtml(u)}
+    ${guidesHtml(u)}
     ${u.cmds ? `<div class="list"><span class="eyebrow">en tu laptop (Windows) o dentro del servidor de práctica</span>${u.cmds.map(([d, c]) => `<div class="cmd"><div><small>${esc(d)}</small><code>${esc(c)}</code></div><button class="btn sm" data-action="copy" data-text="${esc(c)}">copiar</button></div>`).join("")}</div>` : ""}
     ${u.blocks > 1 ? `<div class="spread"><div class="row"><span class="eyebrow">bloques de esta unidad</span>${blocksHtml(u, s)}<span class="muted small mono">${s.done ? u.blocks : s.blocksDone}/${u.blocks}</span></div>${s.done ? "" : `<div class="row"><button class="btn sm" data-action="block-minus" data-id="${u.id}" ${s.blocksDone ? "" : "disabled"}>−</button><button class="btn sm" data-action="block-plus" data-id="${u.id}" ${s.blocksDone >= u.blocks - 1 ? "disabled" : ""}>+1 bloque hecho</button></div>`}</div>` : ""}
     <span class="eyebrow">pasos · ${u.steps.filter((_, k) => s.steps[k]).length} de ${u.steps.length} marcados</span>
@@ -2717,6 +2794,13 @@ function practiceHtml(u) {
     let host = "en esta app"; if (!internal) { try { host = new URL(p.url).hostname.replace(/^www\./, ""); } catch (e) { host = ""; } }
     return `<div class="prac"><span class="pn">${k + 1}</span><div class="pb"><b>${esc(p.t)}</b><small>${esc(host)}</small>${p.d ? `<p>${fmt(p.d)}</p>` : ""}</div><a class="btn sm ${internal ? "" : "primary"}" href="${esc(p.url)}" data-action="open-link" data-id="${u.id}" data-li="${k}"${internal ? "" : ' target="_blank" rel="noopener"'}>${internal ? "ir" : "abrir ↗"}</a></div>`;
   }).join("")}</div>`;
+}
+function guidesHtml(u) {
+  const urls = [...practiceItems(u).map(p => p.url), ...(u.links || []).map(l => l[1])];
+  const plat = [...new Set(GUIDE_HOSTS.filter(([h]) => urls.some(x => x.includes(h))).map(([, k]) => k))].map(k => PLATFORM_GUIDES[k]);
+  const all = [...plat, ...(UNIT_GUIDES[u.id] || [])];
+  if (!all.length) return "";
+  return `<div class="guides"><span class="eyebrow">guía paso a paso · cómo se hace exactamente</span>${all.map((g, i) => `<details class="guide"${i === 0 ? " open" : ""}><summary>${fmt(g.t)}</summary><ol>${g.s.map(x => `<li>${fmt(x)}</li>`).join("")}</ol>${g.learn ? `<p class="learn"><b>Lo que aprendiste:</b> ${fmt(g.learn)}</p>` : ""}</details>`).join("")}</div>`;
 }
 function nextAfter(u) {
   const nx = unitsOf(u.p)[u.i + 1];
