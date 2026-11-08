@@ -533,7 +533,7 @@ const LESSONS = [
   keys:["Puertos clave: 22 SSH, 53 DNS, 80 HTTP, 443 HTTPS.","Hay 65 536 puertos (0 a 65535).","Escanear puertos revela qué servicios hay."]
 },
 { id:"s10", w:2, day:"Sáb", title:"picoCTF y repaso largo",
-  goal:"Resolver 3 retos más de General Skills y repasar toda la semana mezclada.",
+  goal:"Resolver Wave a flag y Tab, Tab, Attack (y si da tiempo Python Wrangling) y repasar toda la semana mezclada.",
   sat:true,
   links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"]],
   concept:[
@@ -542,7 +542,7 @@ const LESSONS = [
   ],
   flow:["Leer dos veces","¿Qué me dan?","¿Qué categoría es?","Probar lo simple"],
   steps:[
-    "Bloque 1 (50 min): 3 retos nuevos de General Skills en la biblioteca de retos.",
+    "Bloque 1 (50 min): resuelve **Wave a flag** y **Tab, Tab, Attack** siguiendo sus guías. Si te sobra tiempo, **Python Wrangling** (es Medium: si no da tiempo, otro día).",
     "Descanso de 15 minutos lejos de la pantalla.",
     "Bloque 2 (50 min): repasa todas tus tarjetas pendientes y crea 3 nuevas con lo que te costó.",
     "Anota en el cuaderno qué reto te gustó más y por qué."
@@ -655,7 +655,7 @@ const LESSONS = [
   keys:["F12 abre las herramientas; Red muestra las peticiones.","Aplicación muestra las cookies.","304 = no modificado."]
 },
 { id:"s15", w:3, day:"Sáb", title:"picoCTF: Web Exploitation",
-  goal:"Resolver 2 o 3 retos web fáciles usando lo que sabes de HTTP.",
+  goal:"Resolver Insp3ct0r, where are the robots y Cookies usando lo que sabes de HTTP.",
   sat:true,
   links:[["Retos picoCTF: Web Exploitation","https://learn.cylabacademy.org/library"]],
   concept:[
@@ -665,10 +665,10 @@ const LESSONS = [
   ],
   flow:["Código fuente","CSS y JS","Cookies","robots.txt","Flag"],
   steps:[
-    "Bloque 1 (50 min): en la biblioteca de retos, filtra Web Exploitation y Difficulty: Easy, y empieza por el primero.",
-    "Revisa en orden: código fuente, archivos enlazados, cookies, robots.txt.",
+    "Bloque 1 (50 min): resuelve **Insp3ct0r** siguiendo su guía.",
+    "Sigue con **where are the robots**.",
     "Descanso de 15 minutos.",
-    "Bloque 2 (50 min): un segundo y, si da tiempo, un tercer reto web. Anota qué revisaste en cada uno."
+    "Bloque 2 (50 min): resuelve **Cookies**. Anota qué revisaste en cada reto y dónde estaba la flag."
   ],
   hint:"Si la flag parece partida en trozos, revisa cada archivo que carga la página: HTML, CSS y JS.",
   quiz:[
@@ -878,7 +878,7 @@ const LESSONS = [
   keys:["ROT13: cada letra avanza 13; tr lo hace con rangos.","xxd -r devuelve el binario; file dice cómo descomprimir.","Trabaja en una carpeta temporal."]
 },
 { id:"s24", w:5, day:"Jue", title:"picoCTF: Cryptography",
-  goal:"Resolver 2 retos fáciles de criptografía y entender por qué el cifrado César es débil.",
+  goal:"Resolver Mod 26 y The Numbers y entender por qué el cifrado César es débil.",
   links:[["Retos picoCTF: Cryptography","https://learn.cylabacademy.org/library"],["CyberChef","https://gchq.github.io/CyberChef/"]],
   concept:[
     "El **cifrado César** desplaza cada letra un número fijo de posiciones. ROT13 es un César con desplazamiento 13.",
@@ -887,8 +887,8 @@ const LESSONS = [
   ],
   flow:["Texto cifrado","Probar los 25 desplazamientos","Ver cuál tiene sentido","Flag"],
   steps:[
-    "En la biblioteca de retos, filtra Cryptography y Difficulty: Easy, y elige los dos primeros.",
-    "Usa CyberChef para probar codificaciones y desplazamientos.",
+    "Resuelve **Mod 26** siguiendo su guía (usarás CyberChef).",
+    "Resuelve **The Numbers**.",
     "Anota para cada reto qué tipo de codificación o cifrado era y cómo lo reconociste."
   ],
   hint:"En CyberChef, la receta ROT13 tiene un campo de cantidad: cámbialo y mira cuándo aparece texto con sentido.",
@@ -911,7 +911,7 @@ const LESSONS = [
   ],
   flow:["Elegir reto","20 min sin ayuda","Pista si hace falta","Anotar","Siguiente"],
   steps:[
-    "Bloque 1 (50 min): retos fáciles mezclando General Skills, Web y Cryptography. Usa el temporizador.",
+    "Bloque 1 (50 min) con el temporizador: **First Grep**, **Bases** y **Glory of the Garden** (sus guías son cortas a propósito: ya sabes más).",
     "Descanso de 15 minutos.",
     "Bloque 2 (50 min): sigue o vuelve a los que dejaste. Escribe la solución de uno como si se la explicaras a otra persona."
   ],
@@ -2192,12 +2192,12 @@ const PRACTICE = {
   s07: [[0,"Completa todas las tareas y, al final, repasa el esquema del modelo OSI que trae la sala."]],
   s08: [[0,"Haz solo la primera mitad de las tareas, hasta TCP y UDP incluidos."]],
   s09: [[0,"Termina las tareas que te faltan de la sala."]],
-  s10: [[0,"Resuelve 3 retos nuevos de General Skills. Activa Hide Solved para ocultar los que ya hiciste."]],
+  s10: [[0,"Busca cada reto por su nombre en Search y sigue su guía de abajo. Activa Hide Solved para ocultar los que ya hiciste."]],
   s11: [[0,"Completa todas las tareas. En la parte práctica usa la herramienta de consultas que trae la propia sala."]],
   s12: [[0,"Haz la primera mitad: peticiones, partes de una URL y métodos."]],
   s13: [[0,"Termina la sala: códigos de estado, cabeceras y cookies, incluida la web de práctica del final."]],
   s14: [["https://es.wikipedia.org/","Wikipedia (solo para observar)","Abre la página, pulsa F12, entra en la pestaña Red y recarga con F5. Localiza el método, el código de estado y la cabecera User-Agent de la primera petición."]],
-  s15: [[0,"En Challenge Library marca Category: Web Exploitation y Difficulty: Easy. Revisa en orden: código fuente (Ctrl + U), archivos CSS y JS, cookies y robots.txt."]],
+  s15: [[0,"Busca cada reto por su nombre (Insp3ct0r, where are the robots, Cookies) y sigue su guía. Revisa siempre en orden: código fuente (Ctrl + U), archivos CSS y JS, cookies y robots.txt."]],
   s16: [[0,"Lee el objetivo y conéctate desde PowerShell con ssh bandit0@bandit.labs.overthewire.org -p 2220. La contraseña viene en la propia página."]],
   s17: [[0,"Lee el objetivo del nivel 1 al 2 y resuélvelo."],[1,"Lee el objetivo del nivel 2 al 3 y resuélvelo."]],
   s18: [[0,"Nivel 3 al 4: busca el archivo oculto."],[1,"Nivel 4 al 5: usa file para encontrar el único archivo de texto."]],
@@ -2206,8 +2206,8 @@ const PRACTICE = {
   s21: [[0,"Completa todas las tareas de la sala."],[1,"Lee solo los nombres de los 10 riesgos y abre el primero."]],
   s22: [[0,"Completa todas las tareas de la sala."],[1,"Busca CVE-2021-44228 y anota su puntuación CVSS y qué software afectaba."]],
   s23: [[0,"Nivel 11 al 12: haz ROT13 con tr y rangos de letras."],[1,"Nivel 12 al 13: en una carpeta temporal, repite file y descomprimir hasta llegar al texto."]],
-  s24: [[0,"En Challenge Library marca Category: Cryptography y Difficulty: Easy, y resuelve los 2 primeros."],[1,"Usa la receta ROT13 y cambia la cantidad hasta que aparezca texto con sentido."]],
-  s25: [[0,"Juega una hora mezclando General Skills, Web y Cryptography. 20 minutos sin ayuda por reto."]],
+  s24: [[0,"Busca Mod 26 y The Numbers por su nombre y sigue sus guías."],[1,"La usarás en Mod 26: operación ROT13. También está como pestaña dentro del workspace."]],
+  s25: [[0,"Busca First Grep, Bases y Glory of the Garden por su nombre. 20 minutos sin ayuda por reto."]],
   s26: [["https://tryhackme.com/room/dnsindetail","DNS in Detail (repaso)","Solo si fallaste preguntas de DNS: vuelve a la tarea de tipos de registro."],["https://tryhackme.com/room/httpindetail","HTTP in Detail (repaso)","Solo si fallaste HTTP: vuelve a la tarea de códigos de estado."]],
   s27: [["https://overthewire.org/wargames/bandit/","OverTheWire Bandit","Si fallaste un comando, vuelve a hacer el nivel donde lo usaste."]],
   s28: [["#tarjetas","Tus tarjetas (en esta app)","Deja las tarjetas pendientes en cero."]],
@@ -2309,12 +2309,214 @@ const PLATFORM_GUIDES = {
     "Ya estás dentro de un servidor Linux. Lee en la página del nivel el apartado **Level Goal**: te dice dónde está la contraseña del siguiente nivel.",
     "Cuando la encuentres, selecciónala con el ratón (al seleccionar en PowerShell se copia) y guárdala en tu cuaderno. Sin ella no puedes volver a ese nivel.",
     "Escribe `exit` para salir y conéctate al siguiente nivel con su número y la contraseña que encontraste."
+  ]},
+  tarjetas: { t: "Cómo se usan las tarjetas de esta app, paso a paso", s: [
+    "Pulsa la pestaña **tarjetas** del menú. Arriba verás cuántas te tocan hoy.",
+    "Para crear una: en **Crear una tarjeta** escribe una **pregunta corta** y su **respuesta**, y pulsa **+ añadir tarjeta**. Buena tarjeta = una sola idea, pregunta clara (por ejemplo «¿Qué puerto usa HTTPS?» → «443»).",
+    "Para repasar pulsa **./repasar**. Te sale la pregunta: **di la respuesta en voz alta o en tu cabeza antes de mirarla**. Ese esfuerzo es lo que te hace recordar.",
+    "Pulsa **mostrar respuesta** (o la barra espaciadora) y compárala con lo que dijiste.",
+    "Califícate con sinceridad: **otra vez** (la fallaste: vuelve pronto), **bien** (la sabías con esfuerzo) o **fácil** (salió sola: tardará más en volver). Atajos: teclas 1, 2 y 3.",
+    "Sigue hasta que no queden pendientes y pulsa **← terminar repaso**. Las tarjetas vuelven solas en el día que toca: no tienes que acordarte tú."
+  ]},
+  progreso: { t: "Cómo leer tu progreso, paso a paso", s: [
+    "Pulsa la pestaña **progreso** del menú.",
+    "En **Las 4 fases** ves cuántas unidades llevas de cada fase y si vas a tiempo, adelantado o atrasado.",
+    "En **¿Lo estás haciendo bien?** mira la calidad de tu proceso: si escribiste lo que recordabas, si te lo explicaste en voz alta y si intentaste 20 minutos antes de pedir pista. Lo ideal es 4 o 5 de 5.",
+    "En **Revisión de esta semana** compara tus ganas y tu energía semana a semana. Úsalo para responder la decisión con datos, no con lo que sientes ese día."
+  ]},
+  devtools: { t: "Cómo se usan las herramientas del navegador (F12), paso a paso", s: [
+    "Abre la página que diga la sesión en Brave o Chrome y pulsa **F12**. Se abre un panel con pestañas (Elementos, Consola, Red…). Si te sale en inglés: Elements, Console, Network.",
+    "Haz clic en la pestaña **Red** (Network) y pulsa **F5** para recargar la página. Se llena una lista: cada fila es una petición que hizo el navegador.",
+    "Haz clic en la **primera fila** (la que tiene el nombre de la página). A la derecha, en **Encabezados** (Headers), verás el **método** (GET), el **código de estado** (200) y, más abajo, en los encabezados de la petición, el **User-Agent**.",
+    "Para ver el código de la página: **Ctrl + U** lo abre en otra pestaña. Para ver cookies: pestaña **Aplicación** (Application) → **Cookies** en la columna izquierda.",
+    "Solo mira: no cambies nada en páginas que no sean de práctica."
+  ]},
+  messer: { t: "Cómo se usan los videos de Professor Messer, paso a paso", s: [
+    "Abre el enlace. En el menú de arriba pulsa **Training Courses** y elige el curso **CompTIA Network+** (el número más reciente).",
+    "Se abre la lista de todos los videos del curso, ordenados por tema. Pulsa **Ctrl + F** y escribe la palabra del tema de hoy (por ejemplo `Subnet`, `DHCP`, `ARP` o `NAT`) para encontrarlo rápido.",
+    "Abre el video. Son cortos (5–15 minutos) y están en inglés: activa los subtítulos con el botón **CC** y, si quieres, pon la traducción automática al español en ⚙ → Subtítulos → Traducir automáticamente.",
+    "Míralo con tu cuaderno al lado. Pausa cada vez que diga una definición y escríbela con tus palabras.",
+    "Al terminar, sin mirar, escribe 3 cosas que recuerdes. Después revisa si eran correctas."
+  ]},
+  python: { t: "Cómo se instala y se usa Python en Windows, paso a paso", s: [
+    "Entra en python.org → **Downloads** → pulsa el botón amarillo **Download Python 3.x** (detecta que usas Windows).",
+    "Abre el instalador. **Antes de nada marca la casilla «Add python.exe to PATH»** (abajo). Luego pulsa **Install Now** y espera.",
+    "Comprueba que funciona: abre **PowerShell** y escribe `python --version`. Debe salir algo como `Python 3.13.1`. Si dice que no lo encuentra, reinstala marcando la casilla del paso anterior.",
+    "Para escribir programas usa **IDLE**, que viene con Python: tecla Windows → escribe `IDLE` → ábrelo.",
+    "En IDLE: **File → New File**. Escribe tu código, guárdalo con **Ctrl + S** en tu carpeta `Cuaderno-hacker` con un nombre terminado en `.py` (por ejemplo `hola.py`) y pulsa **F5** para ejecutarlo. El resultado sale en la otra ventana.",
+    "Si sale un error en rojo, lee la **última línea**: dice qué falló y en qué línea. El 90 % de las veces es un espacio de más, una comilla o dos puntos que faltan."
+  ]},
+  py4e: { t: "Cómo se sigue el curso Python for Everybody, paso a paso", s: [
+    "Abre py4e.com y pulsa **Lessons**. Cada lección es un capítulo del libro, con video, diapositivas y ejercicios.",
+    "Abre el capítulo que diga la sesión. Mira el video (en inglés, con subtítulos **CC**; puedes traducirlos en ⚙). Si prefieres leer, el libro gratis está en el enlace **Book** (también hay versión en español: busca «Python para todos» en la página).",
+    "Copia a mano en IDLE cada ejemplo del video y ejecútalo con **F5**. Escribirlo tú, no copiar y pegar, es lo que te enseña.",
+    "Cambia una cosa del ejemplo y adivina qué pasará antes de ejecutarlo. Si acertaste, lo entendiste.",
+    "Haz los ejercicios del final del capítulo en el libro. Guarda cada uno como archivo `.py` en tu cuaderno."
+  ]},
+  pydocs: { t: "Cómo se busca en la documentación de Python, paso a paso", s: [
+    "Abre docs.python.org. Arriba a la derecha hay una caja **Quick search**: escribe el nombre de lo que buscas (por ejemplo `hashlib` o `open`) y pulsa Enter.",
+    "En los resultados abre el que coincida exactamente. Baja hasta los **ejemplos de código**: suelen estar en recuadros grises.",
+    "Copia el ejemplo a IDLE, ejecútalo y cámbialo poco a poco hasta que haga lo que necesitas."
+  ]},
+  sqlbolt: { t: "Cómo se hace una lección de SQLBolt, paso a paso", s: [
+    "Abre sqlbolt.com y entra en la **lección 1**. Lee la explicación de arriba: es corta.",
+    "Abajo hay una tabla de datos y una lista de **Exercises** (tareas). Escribe tu consulta en el cuadro de texto, por ejemplo `SELECT title FROM movies;`.",
+    "La tabla de resultados se actualiza sola mientras escribes. Cuando tu consulta cumple una tarea, la tarea se marca en verde. Pasa a la siguiente.",
+    "Si te atascas, pulsa **Show solution** solo después de intentarlo 10 minutos, y luego vuelve a escribirla tú sin mirar.",
+    "Al completar todas las tareas pulsa **Continue** para ir a la siguiente lección."
+  ]},
+  portswigger: { t: "Cómo se usan Burp Suite y la Web Security Academy, paso a paso", s: [
+    "**Instalar Burp:** en portswigger.net/burp pulsa **Download**, elige **Community Edition** (gratis) y **Windows**. Abre el instalador y acepta todo con **Next**.",
+    "**Abrir Burp:** al arrancar elige **Temporary project** → **Next** → **Use Burp defaults** → **Start Burp**.",
+    "**Navegador de Burp:** pestaña **Proxy** → **Intercept**. Comprueba que el botón diga **Intercept is off** (si está en on, la página se queda cargando). Pulsa **Open browser**: se abre un Chrome que pasa por Burp.",
+    "**Ver el tráfico:** navega en ese navegador y luego mira **Proxy → HTTP history**. Cada fila es una petición; haz clic en una para ver la petición y la respuesta completas.",
+    "**Academy:** en portswigger.net/web-security crea tu cuenta gratis (**Sign up**) y entra. Elige el tema que diga la sesión (por ejemplo Access control) y lee la teoría de arriba abajo.",
+    "**Laboratorios:** al final de la teoría hay laboratorios. Abre uno marcado **APPRENTICE**, lee el objetivo y pulsa **Access the lab**: se abre una web solo para ti. Ábrela desde el navegador de Burp para ver todo lo que pasa.",
+    "Cuando cumples el objetivo, arriba aparece el aviso **Congratulations, you solved the lab!** y el laboratorio queda marcado como **Solved**.",
+    "Usa Burp **solo** con los laboratorios y con tus propias páginas. Nunca con webs ajenas."
+  ]},
+  owasp: { t: "Cómo se lee la lista OWASP Top 10, paso a paso", s: [
+    "Abre la página. Baja hasta la lista de los 10 riesgos (A01, A02…).",
+    "Haz clic en el que diga la sesión. Cada página tiene: **Overview** (de qué va), **Description** (cómo se ve el fallo), **How to Prevent** (cómo se corrige) y **Example Attack Scenarios** (ejemplos).",
+    "Lee primero los ejemplos: son lo más fácil de entender. Luego **How to Prevent**: eso es lo que pondrás en tus informes.",
+    "Si el inglés se hace pesado, usa el botón de traducir de Brave en la barra de direcciones."
+  ]},
+  mitre: { t: "Cómo se usa MITRE ATT&CK, paso a paso", s: [
+    "Abre attack.mitre.org. En el menú de arriba pulsa **Matrices → Enterprise**.",
+    "La matriz tiene columnas (**tácticas**: el *para qué* del atacante, como Initial Access) y dentro cada casilla es una **técnica** (el *cómo*, como Phishing).",
+    "Haz clic en la técnica que diga la sesión. Arriba verás su código (por ejemplo **T1566**).",
+    "Baja por la página: **Procedure Examples** (grupos reales que la usaron), **Mitigations** (cómo prevenirla) y **Detection** (cómo detectarla).",
+    "Anota en tu cuaderno: código, nombre, una mitigación y una forma de detectarla."
+  ]},
+  nvd: { t: "Cómo se calcula la gravedad de un fallo (CVSS), paso a paso", s: [
+    "Abre la calculadora CVSS del enlace (NVD). Verás grupos de botones: **Attack Vector**, **Attack Complexity**, **Privileges Required**, **User Interaction**, **Scope** y el impacto en **Confidentiality**, **Integrity** y **Availability**.",
+    "Para cada grupo elige la opción que describe tu hallazgo. Ejemplo: si se explota por internet, Attack Vector = **Network**; si no hace falta iniciar sesión, Privileges Required = **None**.",
+    "Arriba se calcula la nota (0 a 10) y su nivel: Low, Medium, High o Critical.",
+    "Copia la nota y la cadena de texto que empieza por `CVSS:3.1/...` en tu informe: así cualquiera puede comprobar tu cálculo."
+  ]},
+  ine: { t: "Cómo se empieza en INE para la eJPT, paso a paso", s: [
+    "Abre ine.com y crea tu cuenta gratis (**Sign up**). La versión gratuita (Starter Pass) incluye el curso para la eJPT.",
+    "En tu panel busca el **Learning Path** «Penetration Testing Student» (eJPT).",
+    "Abre la página del examen eJPT y lee el temario: cópialo en tu cuaderno y marca con ✓ lo que ya dominas y con ✗ lo que no.",
+    "Empieza por los temas con ✗. No compres el examen hasta que todos tengan ✓."
+  ]},
+  htb: { t: "Cómo se conecta y se juega Hack The Box (Starting Point), paso a paso", s: [
+    "Entra en app.hackthebox.com y crea tu cuenta (**Sign up**). Confirma el correo.",
+    "En el menú de la izquierda pulsa **Starting Point** y elige el **Tier** que diga la sesión.",
+    "Para llegar a las máquinas necesitas una VPN: pulsa **Connect to HTB** → **Starting Point** → **OpenVPN** → **Download VPN** (baja un archivo `.ovpn`).",
+    "Instala **OpenVPN Connect** para Windows desde openvpn.net. Ábrelo, pulsa **Upload File** / arrastra el archivo `.ovpn` y pulsa **Connect**. Cuando diga *Connected*, ya estás dentro.",
+    "En Starting Point, pulsa **Spawn Machine** en la máquina. Tras 1–2 minutos aparece su **IP**: es la única dirección que puedes atacar.",
+    "Cada máquina trae **tareas con preguntas** que te guían. Respóndelas en orden; la última pide la flag (`root.txt` o similar).",
+    "Al terminar, pulsa **Stop Machine** y desconecta la VPN."
+  ]},
+  hackerone: { t: "Cómo se usa HackerOne para aprender, paso a paso", s: [
+    "Abre hackerone.com. Para leer informes reales ve a **Hacktivity**: es la lista de fallos que las empresas dejaron publicar.",
+    "Abre un informe con estado **Disclosed**. Lee: qué encontró la persona, cómo lo demostró y cuánto le pagaron.",
+    "Para ver programas ve a **Opportunities** (o Directory). Abre uno y lee las pestañas **Policy** (reglas) y **Scope** (qué se puede probar y qué no).",
+    "Regla de oro: **solo pruebas lo que está dentro del Scope**, respetando las reglas. Fuera de eso es ilegal aunque el programa exista."
+  ]},
+  github: { t: "Cómo se crea tu portafolio en GitHub, paso a paso", s: [
+    "Entra en github.com y crea tu cuenta (**Sign up**). Elige un nombre de usuario profesional: lo verán las empresas.",
+    "Arriba a la derecha pulsa **+** → **New repository**. Ponle de nombre `portafolio`, márcalo como **Public** y marca **Add a README file**. Pulsa **Create repository**.",
+    "Para escribir en el README pulsa el **lápiz** ✏ (Edit). Escribe quién eres, qué estudias y qué has aprendido. Usa `#` para títulos y `-` para listas.",
+    "Pulsa **Commit changes** → **Commit changes** para guardar.",
+    "Para subir un writeup: **Add file → Create new file**, nombre `writeups/nombre-del-reto.md`, escribe y **Commit changes**."
+  ]},
+  linkedin: { t: "Cómo se usa LinkedIn para buscar trabajo, paso a paso", s: [
+    "Entra en linkedin.com y abre tu perfil (tu foto arriba → **Ver perfil**).",
+    "Pulsa el **lápiz** junto a tu nombre para editar el **titular**: por ejemplo «Estudiante de ciberseguridad · picoCTF · TryHackMe».",
+    "En **Información** pon el enlace a tu portafolio de GitHub.",
+    "Para buscar empleo pulsa **Empleos**, escribe el puesto (por ejemplo `junior security analyst`) y usa los filtros **Remoto** y **Nivel de experiencia: Prácticas / Sin experiencia**.",
+    "Pulsa **Guardar** en las ofertas que te interesen y compara qué piden: eso te dice qué estudiar después."
+  ]},
+  offsec: { t: "Cómo se revisa el camino a la OSCP, paso a paso", s: [
+    "Abre la página del curso **PEN-200** en offsec.com.",
+    "Lee los **requisitos previos** y el **temario** (syllabus). Cópialo en tu cuaderno.",
+    "Marca con ✓ lo que ya hiciste en Hack The Box y TryHackMe, y con ✗ lo que falta. Ese es tu plan de estudio para los próximos meses."
   ]}
 };
-const GUIDE_HOSTS = [["cylabacademy", "cylab"], ["tryhackme.com", "thm"], ["overthewire.org", "bandit"]];
+const GUIDE_HOSTS = [["cylabacademy", "cylab"], ["tryhackme.com", "thm"], ["overthewire.org", "bandit"], ["#tarjetas", "tarjetas"], ["#progreso", "progreso"], ["wikipedia.org", "devtools"], ["professormesser", "messer"], ["python.org/downloads", "python"], ["www.python.org", "python"], ["py4e.com", "py4e"], ["docs.python.org", "pydocs"], ["sqlbolt.com", "sqlbolt"], ["portswigger.net", "portswigger"], ["owasp.org", "owasp"], ["attack.mitre.org", "mitre"], ["nvd.nist.gov", "nvd"], ["ine.com", "ine"], ["hackthebox.com", "htb"], ["hackerone.com", "hackerone"], ["github.com", "github"], ["linkedin.com", "linkedin"], ["offsec.com", "offsec"]];
 
 /* Guías de retos concretos, por unidad. */
 const UNIT_GUIDES = {
+  s10: [
+    { t: "Reto · Wave a flag: ejecutar un programa y pedirle ayuda", s: [
+      "Busca `Wave a flag` (General Skills, Easy), ábrelo en el workspace y abre la terminal con **>_**.",
+      "Clic derecho en el enlace del programa → **Copiar dirección del enlace**. En la terminal: `wget ` + pegar + Enter.",
+      "Escribe `ls` para ver el nombre exacto del archivo (en este reto se llama `warm`).",
+      "Los archivos descargados no tienen permiso para ejecutarse. Dáselo con `chmod +x warm` (`chmod` cambia permisos; `+x` significa «ejecutable»).",
+      "Ejecútalo con `./warm`. El `./` significa «el programa que está en esta carpeta».",
+      "Lee lo que responde: te pide una opción. Las opciones van después del nombre con un guion, y la más común en Linux es `-h` (help, ayuda). Pruébala y aparecerá la flag."
+    ], learn: "`chmod +x` hace ejecutable un archivo, `./programa` lo ejecuta y `-h` pide la ayuda de casi cualquier herramienta." },
+    { t: "Reto · Tab, Tab, Attack: descomprimir y autocompletar con Tab", s: [
+      "Busca `Tab, Tab, Attack`, ábrelo y descarga el archivo `.zip` con `wget` (clic derecho en el enlace → Copiar dirección).",
+      "Escribe `unzip ` y las 3 primeras letras del archivo, y pulsa la tecla **Tab**: la terminal completa el nombre sola. Pulsa Enter. `unzip` descomprime archivos .zip.",
+      "Aparece una carpeta con un nombre larguísimo, y dentro hay más carpetas, una dentro de otra. Escribe `cd ` + las primeras letras + **Tab** + Enter. Repite: `ls` para ver qué hay y `cd` + Tab para entrar.",
+      "Truco: con `cd ` + letras + Tab, Tab, Tab… puedes completar varias carpetas de golpe.",
+      "En la última carpeta hay un programa. Ejecútalo con `./` + Tab + Enter. Si dice *Permission denied*, primero `chmod +x` + Tab."
+    ], learn: "La tecla **Tab** autocompleta nombres: ahorra tiempo y evita errores. `unzip` descomprime." },
+    { t: "Reto · Python Wrangling (Medium): ejecutar un script de Python", s: [
+      "Busca `Python Wrangling`. Te da 3 archivos: un **script** de Python, una **contraseña** y la **flag cifrada**. Descarga los 3 con `wget`, uno por uno.",
+      "Mira la contraseña con `cat` + el nombre del archivo de contraseña (Tab te ayuda). Selecciónala y cópiala.",
+      "Ejecuta el script sin nada más: `python3 ` + nombre del script. Te mostrará cómo se usa: con `-e` cifra y con `-d` descifra.",
+      "Ahora: `python3 nombre-del-script -d nombre-de-la-flag-cifrada`. Cuando pida la contraseña, pégala y pulsa Enter.",
+      "Sale la flag. Si dice que la contraseña es incorrecta, comprueba que no copiaste espacios de más."
+    ], learn: "`python3 script.py` ejecuta un programa de Python. Ejecutarlo sin opciones suele mostrar cómo se usa." }
+  ],
+  s15: [
+    { t: "Reto · Insp3ct0r: leer el código de una web", s: [
+      "Busca `Insp3ct0r` (Web Exploitation, Easy), ábrelo y pulsa **Launch Instance**. Aparece un enlace a la web del reto: ábrelo.",
+      "En esa web pulsa **Ctrl + U**: se abre el **código fuente** (el HTML que recibió tu navegador).",
+      "Busca **comentarios**: en HTML se escriben así `<!-- comentario -->`. Ahí está la primera parte de la flag.",
+      "La flag está en **3 partes**. Las otras dos están en los archivos de **estilos** (`.css`) y de **código** (`.js`). En el código fuente, haz clic en los enlaces a esos archivos y busca sus comentarios: en CSS y JS se escriben `/* así */` o `// así`.",
+      "Junta las 3 partes en orden, sin espacios, y envíala."
+    ], learn: "Todo lo que la web manda a tu navegador lo puedes leer: HTML, CSS, JavaScript y sus comentarios." },
+    { t: "Reto · where are the robots: el archivo robots.txt", s: [
+      "Busca `where are the robots`, pulsa **Launch Instance** y abre la web.",
+      "En la barra de direcciones, añade `/robots.txt` al final de la dirección (después del número de puerto) y pulsa Enter.",
+      "Verás líneas como `Disallow: /algo.html`. Son rutas que el dueño pidió a los buscadores **no mostrar**. Pero cualquiera puede abrirlas.",
+      "Cambia `/robots.txt` por esa ruta en la barra de direcciones y pulsa Enter. Ahí está la flag."
+    ], learn: "`robots.txt` no protege nada: solo pide a Google que no indexe. A veces revela rutas escondidas." },
+    { t: "Reto · Cookies: cambiar una cookie", s: [
+      "Busca `Cookies` (el primero, Easy), pulsa **Launch Instance** y abre la web. Escribe en la caja el nombre de galleta que sugiere (por ejemplo `snickerdoodle`) y pulsa el botón.",
+      "Pulsa **F12** → pestaña **Aplicación** (Application) → en la columna izquierda, **Cookies** → la dirección del reto. Verás una cookie llamada `name` con un **número** como valor.",
+      "Haz doble clic en el valor y cámbialo por otro número (1, 2, 3…). Pulsa Enter y recarga la página con **F5**: ahora te muestra otra galleta.",
+      "Ve probando números en orden y anótalos. Uno de ellos muestra la flag.",
+      "Piensa: el servidor decidió qué mostrarte según un número que **tú controlas**. Eso es un fallo: el servidor nunca debe confiar en lo que manda el navegador."
+    ], learn: "Las cookies las guarda tu navegador y puedes cambiarlas con F12. Un servidor seguro no se fía de ellas." }
+  ],
+  s24: [
+    { t: "Reto · Mod 26: ROT13 con CyberChef", s: [
+      "Busca `Mod 26` (Cryptography, Easy) y ábrelo. El enunciado trae un texto que parece una flag con las letras cambiadas. Cópialo **entero**, con las llaves.",
+      "Abre **CyberChef** (pestaña dentro del workspace o el enlace 2 de esta sesión). Pega el texto en el cuadro **Input**.",
+      "En **Operations** (izquierda) escribe `ROT13` y arrastra la operación al cuadro **Recipe** (centro).",
+      "En **Output** aparece `picoCTF{...}`. Esa es la flag.",
+      "Experimento: cambia **Amount** a otros números y mira cómo cambia el texto. Así entiendes por qué el César es débil: solo hay 25 opciones."
+    ], learn: "ROT13 desplaza cada letra 13 posiciones; aplicarlo dos veces devuelve el original (13 + 13 = 26)." },
+    { t: "Reto · The Numbers: números que son letras", s: [
+      "Busca `The Numbers` y abre el enlace **numbers** con clic normal: es una imagen.",
+      "Verás grupos de números con llaves `{ }`, como una flag. El primer grupo tiene 7 números: son las letras de PICOCTF.",
+      "Cada número es la **posición de una letra en el abecedario** inglés: 1 = A, 2 = B, 3 = C … 26 = Z. Escribe en tu cuaderno la letra de cada número.",
+      "Escribe la flag en **MAYÚSCULAS**, con las llaves: `PICOCTF{...}`. Si no la acepta, revisa que no tengas espacios."
+    ], learn: "Reconocer el patrón es la mitad de la criptografía: aquí, números del 1 al 26 = letras." }
+  ],
+  s25: [
+    { t: "Mini-CTF · First Grep (General Skills)", s: [
+      "Descarga el archivo del reto con `wget`.",
+      "Es muy largo para leerlo a mano. Usa `grep`, que busca un texto dentro de un archivo: `grep picoCTF nombre-del-archivo`.",
+      "Solo se muestra la línea que contiene la flag."
+    ], learn: "`grep texto archivo` encuentra una aguja en un pajar." },
+    { t: "Mini-CTF · Bases (General Skills)", s: [
+      "El enunciado trae un texto raro. Cópialo y pégalo en el **Input** de CyberChef.",
+      "Por las letras, números y mayúsculas mezcladas, prueba la operación `From Base64`.",
+      "El resultado va dentro de `picoCTF{ }` cuando lo envíes."
+    ], learn: "Base64 se reconoce por mezclar mayúsculas, minúsculas y números, a veces con `=` al final." },
+    { t: "Mini-CTF · Glory of the Garden (Forensics)", s: [
+      "Descarga la imagen `garden.jpg` con `wget`. Si la abres, solo ves un jardín.",
+      "Una imagen es un archivo binario, pero puede llevar texto escondido. `strings` saca todo el texto legible: `strings garden.jpg`.",
+      "Sale demasiado texto. Combínalo con `grep` usando la barra `|` (pipe), que pasa la salida de un comando al siguiente: `strings garden.jpg | grep pico`."
+    ], learn: "`strings` saca texto de archivos binarios; `|` encadena comandos." }
+  ],
   s05: [
     { t: "Reto 1 · Obedient Cat: descargar un archivo y leerlo", s: [
       "En la biblioteca (Category: General Skills, Difficulty: Easy) escribe `Obedient Cat` en **Search**, abre el reto y pulsa **Open in Workspace**. Abre la terminal con **>_**.",
