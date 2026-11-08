@@ -1,5 +1,5 @@
 /* Ruta Ciber: guarda la app para que abra sin internet. */
-const CACHE = "ruta-ciber-v6";
+const CACHE = "ruta-ciber-v7";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
@@ -8,7 +8,13 @@ self.addEventListener("fetch", e => {
   const req = e.request; if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin === self.location.origin) {
-    if (req.mode === "navigate") { e.respondWith(fetch(req).then(r => keep("./index.html", r)).catch(() => caches.match("./index.html"))); return; }
+    if (req.mode === "navigate") {
+      const scope = new URL(self.registration.scope).pathname, p = url.pathname;
+      const isApp = p === scope || p === scope + "index.html";
+      const key = isApp ? "./index.html" : url.origin + url.pathname;
+      e.respondWith(fetch(url.href, { cache: "no-cache", credentials: "same-origin" }).then(r => keep(key, r)).catch(() => caches.match(key).then(m => m || caches.match("./index.html"))));
+      return;
+    }
     e.respondWith(caches.match(req).then(m => m || fetch(req).then(r => keep(req, r))));
     return;
   }
