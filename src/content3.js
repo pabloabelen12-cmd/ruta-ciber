@@ -443,7 +443,7 @@ const P4 = [
 },
 { id:"p4u04", mod:"Comunidad", lvl:3, blocks:2, title:"CTF en equipo",
   goal:"Participar en una competencia CTF real con un equipo.",
-  links:[["CTFtime: calendario de competencias","https://ctftime.org/"],["picoCTF (competencia anual)","https://picoctf.org/"]],
+  links:[["CTFtime: calendario de competencias","https://ctftime.org/"],["picoCTF: la competencia anual (edición 2026; la de 2027 se anunciará en picoctf.org)","https://picoctf.org/competitions/2026-spring.html"]],
   concept:[
     "En una competencia **CTF en equipo** cada persona se especializa en una categoría (web, cripto, forense...) y se reparten los retos. Es como trabaja un equipo real.",
     "**CTFtime** lista competencias de todo el mundo, muchas en línea y gratuitas. picoCTF celebra una competencia anual cada primavera.",
