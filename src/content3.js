@@ -135,7 +135,7 @@ const P3 = [
 },
 { id:"p3u08", mod:"Web", lvl:3, blocks:3, title:"OWASP Top 10 en la práctica: Juice Shop",
   goal:"Recorrer los riesgos web más comunes en una tienda vulnerable a propósito.",
-  links:[["Sala “OWASP Juice Shop”",THM("owaspjuiceshop")],["OWASP Top 10","https://owasp.org/www-project-top-ten/"]],
+  links:[["Sala “OWASP Juice Shop”",THM("owaspjuiceshop")],["OWASP Top 10 (edición 2025, en español)","https://top10.owasp.org/2025/es/0x00_2025-Introduction/"]],
   concept:[
     "**OWASP Juice Shop** es una tienda en línea llena de fallos a propósito, creada por OWASP para aprender. Es legal y está hecha para esto.",
     "Cada reto corresponde a una categoría del OWASP Top 10. Al terminar cada uno, pregúntate: ¿qué categoría era y cómo lo arreglaría el programador?",
@@ -390,10 +390,11 @@ const P4 = [
   concept:[
     "**Hack The Box** tiene máquinas más realistas que TryHackMe. **Starting Point** es su recorrido de entrada, en tres niveles (Tiers).",
     "El **Tier 0** enseña a conectarte por VPN, enumerar puertos y servicios e interactuar con ellos. Cada máquina se centra en una herramienta o servicio.",
-    "Cada Tier mezcla máquinas gratuitas y de pago. Para avanzar con la cuenta gratuita basta con completar las gratuitas."
+    "Cada Tier mezcla máquinas gratuitas y de pago. Para avanzar con la cuenta gratuita basta con completar las gratuitas.",
+    "Aquí ya no tienes una terminal en el navegador como en TryHackMe o CyLab: montarás **Kali Linux dentro de Windows con WSL2** (gratis, oficial de Microsoft) para tener tus propias herramientas."
   ],
   flow:["Cuenta y VPN","Máquina del Tier 0","Enumerar","Interactuar con el servicio"],
-  steps:["Crea tu cuenta en Hack The Box y lee el artículo de Starting Point.","Configura la VPN siguiendo las instrucciones de la plataforma.","Completa las máquinas gratuitas del Tier 0, con notas de cada una."],
+  steps:["Monta tu laboratorio Linux dentro de Windows (WSL2 + Kali) siguiendo la primera guía de abajo.","Crea tu cuenta en Hack The Box y lee el artículo de Starting Point.","Conecta la VPN de Starting Point desde Kali siguiendo la guía.","Completa las máquinas gratuitas del Tier 0, con notas de cada una."],
   hint:"Si la VPN no conecta, revisa que solo tengas una VPN activa a la vez.",
   quiz:[
     {q:"¿Qué enseña el Tier 0 de Starting Point?",o:["Explotación avanzada","Conexión por VPN, enumeración y uso de servicios","Redacción de informes","Programación"],a:1,e:"Es el nivel de introducción."},
@@ -442,7 +443,7 @@ const P4 = [
 },
 { id:"p4u04", mod:"Comunidad", lvl:3, blocks:2, title:"CTF en equipo",
   goal:"Participar en una competencia CTF real con un equipo.",
-  links:[["CTFtime: calendario de competencias","https://ctftime.org/"],["picoCTF (competencia anual)","https://cylabacademy.org/competitors.html"]],
+  links:[["CTFtime: calendario de competencias","https://ctftime.org/"],["picoCTF (competencia anual)","https://picoctf.org/"]],
   concept:[
     "En una competencia **CTF en equipo** cada persona se especializa en una categoría (web, cripto, forense...) y se reparten los retos. Es como trabaja un equipo real.",
     "**CTFtime** lista competencias de todo el mundo, muchas en línea y gratuitas. picoCTF celebra una competencia anual cada primavera.",

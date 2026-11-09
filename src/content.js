@@ -153,7 +153,7 @@ const LESSONS = [
 },
 { id:"s07", w:2, day:"Mar", title:"Intro to Networking",
   goal:"Conocer el modelo OSI: las 7 capas por las que pasa cada mensaje.",
-  links:[["Sala “Intro to Networking”","https://tryhackme.com/room/introtonetworking"]],
+  links:[["Sala “Introductory Networking” (antes Intro to Networking)","https://tryhackme.com/room/introtonetworking"]],
   concept:[
     "El **modelo OSI** divide la comunicación en 7 capas. Cada capa tiene un trabajo y le pasa el mensaje a la siguiente.",
     "De arriba abajo: **7 Aplicación** (HTTP), **6 Presentación** (formato, cifrado), **5 Sesión**, **4 Transporte** (TCP, UDP), **3 Red** (IP), **2 Enlace de datos** (MAC), **1 Física** (cables, ondas).",
@@ -374,7 +374,7 @@ const LESSONS = [
 /* ───────── SEMANA 4 ───────── */
 { id:"s16", w:4, day:"Lun", title:"Bandit nivel 0: entrar por SSH",
   goal:"Conectarte a un servidor Linux remoto desde tu laptop con Windows.",
-  links:[["Bandit nivel 0","https://overthewire.org/wargames/bandit/bandit0.html"]],
+  links:[["Bandit: cómo entrar (nivel 0)","https://overthewire.org/wargames/bandit/bandit0.html"],["Bandit nivel 0 → 1","https://overthewire.org/wargames/bandit/bandit1.html"]],
   concept:[
     "**SSH** te da una terminal en otro equipo a través de internet, con la conexión cifrada. Es como sentarte delante de un servidor que está en otro país.",
     "Windows 10 y 11 ya traen el comando `ssh`. La opción `-p 2220` indica el puerto, porque Bandit no usa el 22 de siempre.",
@@ -399,10 +399,10 @@ const LESSONS = [
 },
 { id:"s17", w:4, day:"Mar", title:"Bandit niveles 1 y 2: nombres raros",
   goal:"Leer archivos con nombres que confunden a la terminal.",
-  links:[["Bandit nivel 1","https://overthewire.org/wargames/bandit/bandit1.html"],["Bandit nivel 2","https://overthewire.org/wargames/bandit/bandit2.html"]],
+  links:[["Bandit nivel 1 → 2","https://overthewire.org/wargames/bandit/bandit2.html"],["Bandit nivel 2 → 3","https://overthewire.org/wargames/bandit/bandit3.html"]],
   concept:[
     "En Linux, lo que empieza por un guion (`-`) se interpreta como una **opción** del comando. Si un archivo se llama así, hay que indicar que es un archivo, por ejemplo con su ruta: `./nombre`.",
-    "Si un nombre tiene **espacios**, la terminal cree que son varios archivos. Se resuelve poniendo el nombre entre comillas o con `\\` antes de cada espacio.",
+    "Si un nombre tiene **espacios**, la terminal cree que son varios archivos. Se resuelve poniendo el nombre entre comillas o con `\\` antes de cada espacio. Si además **empieza por guiones** (como `--spaces in this filename--`), las comillas no bastan: añade `./` delante (`cat ./\"--spaces…--\"`) o escribe `--` antes del nombre para decir «aquí acaban las opciones».",
     "La tecla **Tab** autocompleta nombres. Úsala siempre: evita errores y escapa los espacios por ti."
   ],
   flow:["Leer el objetivo del nivel","ls","Pensar por qué falla","Probar otra forma","Contraseña"],
@@ -424,7 +424,7 @@ const LESSONS = [
 },
 { id:"s18", w:4, day:"Mié", title:"Bandit niveles 3 y 4: ocultos y tipos",
   goal:"Encontrar archivos ocultos y averiguar qué tipo de archivo es cada uno.",
-  links:[["Bandit nivel 3","https://overthewire.org/wargames/bandit/bandit3.html"],["Bandit nivel 4","https://overthewire.org/wargames/bandit/bandit4.html"]],
+  links:[["Bandit nivel 3 → 4","https://overthewire.org/wargames/bandit/bandit4.html"],["Bandit nivel 4 → 5","https://overthewire.org/wargames/bandit/bandit5.html"]],
   concept:[
     "En Linux, los archivos cuyo nombre empieza por punto (`.oculto`) **no aparecen** con `ls`. Para verlos usa `ls -a`.",
     "`cd carpeta` entra en una carpeta y `cd ..` sube un nivel.",
@@ -448,7 +448,7 @@ const LESSONS = [
 },
 { id:"s19", w:4, day:"Jue", title:"Bandit niveles 5 y 6: buscar con find",
   goal:"Encontrar un archivo entre cientos usando sus características.",
-  links:[["Bandit nivel 5","https://overthewire.org/wargames/bandit/bandit5.html"],["Bandit nivel 6","https://overthewire.org/wargames/bandit/bandit6.html"]],
+  links:[["Bandit nivel 5 → 6","https://overthewire.org/wargames/bandit/bandit6.html"],["Bandit nivel 6 → 7","https://overthewire.org/wargames/bandit/bandit7.html"]],
   concept:[
     "`find` busca archivos por características: `-type f` (solo archivos), `-size` (tamaño), `-user` y `-group` (dueño). Ejemplo: `find . -type f -size 100c` busca archivos de exactamente 100 bytes.",
     "Cuando buscas en todo el sistema salen muchos errores de “permiso denegado”. Añadir `2>/dev/null` manda esos errores a la basura y deja solo los resultados.",
@@ -474,7 +474,7 @@ const LESSONS = [
 { id:"s20", w:4, day:"Sáb", title:"Bandit niveles 7 al 10",
   goal:"Filtrar texto con grep, sort, uniq y strings, y unir comandos con tuberías.",
   sat:true,
-  links:[["Bandit nivel 7","https://overthewire.org/wargames/bandit/bandit7.html"]],
+  links:[["Bandit nivel 7 → 8","https://overthewire.org/wargames/bandit/bandit8.html"]],
   concept:[
     "La **tubería** `|` manda la salida de un comando a la entrada del siguiente. Así combinas comandos pequeños para hacer algo grande.",
     "`grep palabra archivo` muestra solo las líneas que contienen esa palabra. `sort` ordena líneas. `uniq -c` cuenta líneas repetidas, pero solo si están juntas: por eso va después de `sort`.",
@@ -500,7 +500,7 @@ const LESSONS = [
 /* ───────── SEMANA 5 ───────── */
 { id:"s21", w:5, day:"Lun", title:"Web Security Essentials",
   goal:"Entender qué es una vulnerabilidad, una amenaza y un riesgo.",
-  links:[["Sala “Web Security Essentials”","https://tryhackme.com/room/websecurityessentials"],["OWASP Top 10","https://owasp.org/www-project-top-ten/"]],
+  links:[["Sala “Web Security Essentials”","https://tryhackme.com/room/websecurityessentials"],["OWASP Top 10 (edición 2025, en español)","https://top10.owasp.org/2025/es/0x00_2025-Introduction/"]],
   concept:[
     "**Vulnerabilidad:** un fallo que se puede aprovechar (una contraseña por defecto). **Amenaza:** quien podría aprovecharla (un atacante). **Riesgo:** la probabilidad de que pase por el daño que causaría.",
     "La **superficie de ataque** es todo lo que un atacante puede tocar: formularios, puertos abiertos, empleados, aplicaciones.",
@@ -546,7 +546,7 @@ const LESSONS = [
 },
 { id:"s23", w:5, day:"Mié", title:"Bandit niveles 11 y 12",
   goal:"Deshacer un cifrado por rotación y desenvolver un archivo comprimido varias veces.",
-  links:[["Bandit nivel 11","https://overthewire.org/wargames/bandit/bandit11.html"],["Bandit nivel 12","https://overthewire.org/wargames/bandit/bandit12.html"]],
+  links:[["Bandit nivel 11 → 12","https://overthewire.org/wargames/bandit/bandit12.html"],["Bandit nivel 12 → 13","https://overthewire.org/wargames/bandit/bandit13.html"]],
   concept:[
     "**ROT13** cambia cada letra por la que está 13 posiciones después (A pasa a N). Como el alfabeto tiene 26 letras, aplicarlo dos veces devuelve el original. El comando `tr` cambia unos caracteres por otros usando rangos.",
     "En el nivel 12 el archivo es un **volcado hexadecimal** de otro archivo que fue **comprimido varias veces**. `xxd -r` lo devuelve a binario; luego `file` te dice cada vez qué tipo de compresión tiene (gzip, bzip2, tar) para descomprimirlo con la herramienta correcta.",
@@ -684,7 +684,7 @@ const LESSONS = [
   test:true,
   links:[["Biblioteca de retos picoCTF","https://learn.cylabacademy.org/library"],["OverTheWire Bandit","https://overthewire.org/wargames/bandit/"]],
   concept:[
-    "Esta es tu prueba. Elige retos que **no hayas visto antes**: uno de General Skills, uno de Web Exploitation, uno de Cryptography y el siguiente nivel de Bandit.",
+    "Esta es tu prueba. Elige retos que **no hayas visto antes**: uno de General Skills, uno de Web Exploitation y uno de Cryptography. En Bandit, **rehaz desde cero y sin notas** el nivel 12 → 13 (el siguiente nivel necesita llaves SSH, que aprenderás en la Fase 2).",
     "Sin pistas ni soluciones. Si a los 30 minutos no lo tienes, márcalo como no resuelto y pasa al siguiente. El resultado no tiene que ser perfecto: tiene que ser real."
   ],
   steps:[

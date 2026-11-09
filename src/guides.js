@@ -16,7 +16,7 @@ const PLATFORM_GUIDES = {
     "La sala está dividida en **Tasks** (tareas). Haz clic en el título de cada tarea para desplegarla y lee el texto completo antes de responder.",
     "Al final de cada tarea hay preguntas con una casilla. Escribe la respuesta y pulsa **Submit**. Si es correcta, se pone en verde. Si una pregunta dice **No answer needed**, solo pulsa **Complete**.",
     "Si una tarea tiene un botón verde **Start Machine**, púlsalo y espera 1 o 2 minutos: arranca la máquina de práctica y aparece su dirección IP arriba.",
-    "Si necesitas una terminal para atacar esa máquina, pulsa el botón azul **Start AttackBox** (arriba de la página). Se abre una computadora Linux en el navegador; no tienes que instalar nada.",
+    "Si necesitas una terminal para atacar esa máquina, pulsa el botón azul **Start AttackBox** (arriba de la página). Se abre una computadora Linux en el navegador; no tienes que instalar nada. Con la cuenta gratis la AttackBox dura **1 hora al día**: ten la tarea leída antes de arrancarla y apágala al terminar.",
     "¿Atascado? Pulsa **Hint** junto a la pregunta, si lo hay. Si no, vuelve a leer la tarea: casi siempre la respuesta está en el texto.",
     "La sala está terminada cuando la barra de progreso de arriba llega al 100 %."
   ]},
@@ -26,7 +26,7 @@ const PLATFORM_GUIDES = {
     "La primera vez pregunta «Are you sure you want to continue connecting?» Escribe `yes` y Enter.",
     "Cuando pida **password**, pega la contraseña con **clic derecho** (en PowerShell el clic derecho pega). **No se ve nada mientras escribes o pegas**: es normal, es por seguridad. Pulsa Enter.",
     "Ya estás dentro de un servidor Linux. Lee en la página del nivel el apartado **Level Goal**: te dice dónde está la contraseña del siguiente nivel.",
-    "Cuando la encuentres, selecciónala con el ratón (al seleccionar en PowerShell se copia) y guárdala en tu cuaderno. Sin ella no puedes volver a ese nivel.",
+    "Cuando la encuentres, selecciónala con el ratón y pulsa **Ctrl + C** (con texto seleccionado, copia). Si no se copia, haz clic derecho sobre la selección. Guárdala en tu cuaderno: sin ella no puedes volver a ese nivel.",
     "Escribe `exit` para salir y conéctate al siguiente nivel con su número y la contraseña que encontraste."
   ]},
   tarjetas: { t: "Cómo se usan las tarjetas de esta app, paso a paso", s: [

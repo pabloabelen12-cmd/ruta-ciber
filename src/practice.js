@@ -28,7 +28,7 @@ const PRACTICE = {
   s26: [["https://tryhackme.com/room/dnsindetail","DNS in Detail (repaso)","Solo si fallaste preguntas de DNS: vuelve a la tarea de tipos de registro."],["https://tryhackme.com/room/httpindetail","HTTP in Detail (repaso)","Solo si fallaste HTTP: vuelve a la tarea de códigos de estado."]],
   s27: [["https://overthewire.org/wargames/bandit/","OverTheWire Bandit","Si fallaste un comando, vuelve a hacer el nivel donde lo usaste."]],
   s28: [["#tarjetas","Tus tarjetas (en esta app)","Deja las tarjetas pendientes en cero."]],
-  s29: [[0,"Elige 3 retos que no hayas visto: uno de General Skills, uno de Web Exploitation y uno de Cryptography."],[1,"Haz el siguiente nivel que te toque, sin mirar soluciones."]],
+  s29: [[0,"Elige 3 retos que no hayas visto: uno de General Skills, uno de Web Exploitation y uno de Cryptography."],[1,"Rehaz desde cero el nivel 12 → 13 sin mirar tus notas ni soluciones."]],
   s30: [["#progreso","Tu progreso (en esta app)","Revisa tus estadísticas y tus ganas semana a semana antes de responder la decisión."]],
 
   p2u01: [[0,"Pulsa Join Room y completa todas las tareas."]],
@@ -92,6 +92,6 @@ const PRACTICE = {
 };
 
 /* Pasos que se marcan solos: unidad → { nº de enlace de práctica (desde 0): nº de paso (desde 0) }. */
-const AUTO_STEP = { s01:{0:0,1:1}, s05:{0:0,1:1}, s02:{0:0}, s14:{0:0}, s21:{1:1}, p2u04:{0:0}, p2u19:{1:1}, p2u23:{0:0}, p3u03:{0:0}, p4u01:{0:0}, p4u09:{0:0} };
+const AUTO_STEP = { s01:{0:0,1:1}, s05:{0:0,1:1}, s02:{0:0}, s14:{0:0}, s21:{1:1}, p2u04:{0:0}, p2u19:{1:1}, p2u23:{0:0}, p3u03:{0:0}, p4u01:{0:1}, p4u09:{0:0} };
 /* Pasos que se marcan al entrar en una pestaña de la app. */
 const AUTO_ROUTE = { tarjetas: [["s01",3]] };
