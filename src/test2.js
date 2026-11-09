@@ -21,11 +21,11 @@ const out=[];
 }
 // ── 2. Recorrido completo ──
 const handlers=makeEnv({});
-const api=new Function(code+`;return {get state(){return state}, render, sess, UNIT, ALL, PH, GATES, unitsOf, isLocked, phaseOpen, phasePassed, activePhase, gateStatus, pace, nextUnit, ui, dueCards, procScore, reqItems};`)();
+const api=new Function(code+`;return {get state(){return state}, render, sess, UNIT, ALL, PH, GATES, unitsOf, isLocked, phaseOpen, phasePassed, activePhase, gateStatus, pace, nextUnit, ui, dueCards, procScore, reqItems, TRACKS, P5, routeUnits, curTrack};`)();
 const click=(attrs)=>{ const b={dataset:attrs}; b.closest=()=>b; handlers.click({target:{closest:()=>b}, preventDefault(){}}); };
 const go=h=>{ location.hash='#'+h; api.render(); };
 // todas las pantallas
-const routes=['hoy','ruta','horario','agenda','tarjetas','progreso','puerta-1','puerta-2','puerta-3','puerta-4',...api.ALL.map(u=>'u-'+u.id)];
+const routes=['hoy','ruta','horario','agenda','tarjetas','progreso','puerta-1','puerta-2','puerta-3','puerta-4','puerta-5',...api.ALL.map(u=>'u-'+u.id)];
 let rare=[];
 for(const r of routes){ go(r); if(!html||html.length<300) throw new Error('vacía '+r); const clean=html.replace(/data-[a-z-]+="[^"]*"/g,''); if(/undefined|NaN|\[object|null<|>null/.test(clean)) rare.push(r); }
 out.push('pantallas renderizadas: '+routes.length+(rare.length?' · texto raro en '+rare.join(','):' · sin texto raro'));
@@ -73,10 +73,18 @@ api.state.phases[3].ms={labs:3,reports:2,cert:true}; api.GATES[3].exam.forEach((
 click({action:'pass-gate',n:'3'}); out.push('fase 4 abierta: '+api.phaseOpen(4));
 for(const u of api.unitsOf(4)) complete(u);
 api.state.phases[4].ms={tier2:true,ctf:true,portfolio:true,cv:true}; api.GATES[4].exam.forEach((q,k)=>click({action:'pick',key:'gate4',q:String(k),o:String(q.a)})); click({action:'quiz-submit',key:'gate4',kind:'exam'});
-click({action:'pass-gate',n:'4'}); out.push('ruta completa: '+api.phasePassed(4)+' · aviso final: '+api.ui.unlocked+' · flags '+api.ALL.filter(u=>api.sess(u.id).done).length+'/'+api.ALL.length);
+click({action:'pass-gate',n:'4'}); out.push('fase 5 abierta: '+api.phaseOpen(5)+' · sin especialidad, unidades: '+api.unitsOf(5).length+' · puerta 5 ok: '+api.gateStatus(5).ok);
+go('hoy'); out.push('hoy pide elegir especialidad: '+/Elige tu especialidad/.test(html)); api.ui.rutaPhase=5; go('ruta'); out.push('ruta muestra las '+api.TRACKS.length+' especialidades: '+api.TRACKS.every(t=>html.includes(t.title)));
+const trk=api.TRACKS.find(t=>api.P5.some(u=>u.track===t.id));
+if (trk) { const other=api.P5.find(u=>u.track!==trk.id);
+  click({action:'track-pick',t:trk.id}); out.push('especialidad elegida: '+api.curTrack().id+' · unidades: '+api.unitsOf(5).length+(other?' · unidad de otra especialidad bloqueada: '+api.isLocked(other):''));
+  for(const u of api.unitsOf(5)) complete(u);
+  api.state.phases[5].ms={project:true,portfolio:true,next:true};
+  click({action:'pass-gate',n:'5'}); }
+out.push('ruta completa: '+api.phasePassed(5)+' · aviso final: '+api.ui.unlocked+' · flags '+api.routeUnits().filter(u=>api.sess(u.id).done).length+'/'+api.routeUnits().length);
 go('hoy'); out.push('hoy muestra ruta completa: '+/Ruta completa/.test(html));
 // ritmo
 api.state.phases[1].start='2026-10-01'; const p=api.pace(1); out.push('ritmo fase 1 (iniciada hace 5+ semanas, todo hecho): hechos '+p.done+'/'+p.total+' esperados '+p.expected+' atraso '+p.behind);
-for(const r of ['progreso','ruta','puerta-1','puerta-4','tarjetas']){ go(r); if(/undefined|NaN/.test(html.replace(/data-[a-z-]+="[^"]*"/g,''))) out.push('texto raro al final en '+r); }
+for(const r of ['progreso','ruta','puerta-1','puerta-4','puerta-5','tarjetas']){ go(r); if(/undefined|NaN/.test(html.replace(/data-[a-z-]+="[^"]*"/g,''))) out.push('texto raro al final en '+r); }
 out.push('tamaño del estado guardado: '+(JSON.stringify(api.state).length/1024).toFixed(1)+' KB (límite 256 KB)');
 console.log(out.join('\n'));

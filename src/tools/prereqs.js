@@ -2,11 +2,12 @@
 // También informa de lo que una unidad usa sin haberse enseñado antes. Uso: node tools/prereqs.js
 const fs = require("fs"), path = require("path");
 const dir = path.join(__dirname, "..");
-const files = ["content.js", "content2.js", "content3.js", "practice.js", "guides.js",
-  ...fs.readdirSync(dir).filter(f => /^guides_p\d\.js$/.test(f)).sort()];
+const files = ["content.js", "content2.js", "content3.js", "content5.js", "practice.js", "guides.js",
+  ...fs.readdirSync(dir).filter(f => /^guides_p\d\.js$/.test(f)).sort(), ...fs.readdirSync(dir).filter(f => /^p5_.*\.js$/.test(f)).sort()];
 const src = files.map(f => fs.readFileSync(path.join(dir, f), "utf8")).join("\n");
-const { LESSONS, P2, P3, P4, PRACTICE, UNIT_GUIDES } = new Function(src + "\nreturn {LESSONS,P2,P3,P4,PRACTICE,UNIT_GUIDES};")();
-const all = [...LESSONS, ...P2, ...P3, ...P4];
+const { LESSONS, P2, P3, P4, P5, TRACKS, PRACTICE, UNIT_GUIDES } = new Function(src + "\nreturn {LESSONS,P2,P3,P4,P5,TRACKS,PRACTICE,UNIT_GUIDES};")();
+// Cada especialidad de la Fase 5 sigue a la Fase 4: se recorre como una ruta propia.
+const core = [...LESSONS, ...P2, ...P3, ...P4];
 // [etiqueta visible, regex]
 const T = [
   ["la terminal de Linux", /\bterminal\b/], ["ls", /(^|[\s`'(])ls(\s|`|$)/], ["cd", /(^|[\s`'(])cd(\s|`|$)/], ["cat", /(^|[\s`'(])cat(\s|`|$)/],
@@ -28,21 +29,27 @@ const IGNORE = new Set(["s02:HTTP" /* solo dentro de una URL */, "s13:F12 (herra
   "p2u01:hash", "p3u08:XSS", "p3u08:inyección SQL", "s02:la terminal de Linux", "s03:la terminal de Linux" /* explicados en línea dentro de la guía */]);
 // Dónde se enseña de verdad (una mención anterior no cuenta como enseñanza).
 const TEACH_AT = { "la terminal de Linux": "s05", "ssh": "s10" };
-const idx = Object.fromEntries(all.map((u, i) => [u.id, i]));
-const firstTaught = {}, out = {}, issues = [];
 const NOT_TEACH = new Set(["s04", "s26", "s27", "s28"]); // tarjetas y repasos: mencionan, no enseñan
-all.forEach(u => {
-  const teach = NOT_TEACH.has(u.id) ? "" : low([...(u.concept || []), ...((u.cmds || []).map(c => c.join(" "))), ...guideLearn(u)].join("\n"));
-  const use = low([...(u.steps || []), ...practice(u), ...guideText(u)].join("\n"));
-  const need = [];
-  for (const [label, re] of T) {
-    const used = re.test(use), taught = re.test(teach) && !(TEACH_AT[label] && idx[u.id] < idx[TEACH_AT[label]]);
-    if (used && firstTaught[label] && firstTaught[label] !== u.id) need.push([label, firstTaught[label]]);
-    else if (used && !firstTaught[label] && !taught && !IGNORE.has(`${u.id}:${label}`)) issues.push(`${u.id}: usa «${label}» sin enseñarlo antes`);
-    if ((taught || (used && !TEACH_AT[label])) && !firstTaught[label]) firstTaught[label] = u.id;
-  }
-  if (need.length) out[u.id] = need.slice(0, 8);
-});
+const out = {}, issues = [];
+// Recorre una ruta en orden. «emit» decide de qué unidades se guardan requisitos y avisos.
+function walk(path, emit) {
+  const idx = Object.fromEntries(path.map((u, i) => [u.id, i])), firstTaught = {};
+  path.forEach(u => {
+    const teach = NOT_TEACH.has(u.id) ? "" : low([...(u.concept || []), ...((u.cmds || []).map(c => c.join(" "))), ...guideLearn(u)].join("\n"));
+    const use = low([...(u.steps || []), ...practice(u), ...guideText(u)].join("\n"));
+    const need = [];
+    for (const [label, re] of T) {
+      const used = re.test(use), taught = re.test(teach) && !(TEACH_AT[label] && idx[u.id] < idx[TEACH_AT[label]]);
+      if (used && firstTaught[label] && firstTaught[label] !== u.id) need.push([label, firstTaught[label]]);
+      else if (emit(u) && used && !firstTaught[label] && !taught && !IGNORE.has(`${u.id}:${label}`)) issues.push(`${u.id}: usa «${label}» sin enseñarlo antes`);
+      if ((taught || (used && !TEACH_AT[label])) && !firstTaught[label]) firstTaught[label] = u.id;
+    }
+    if (emit(u) && need.length) out[u.id] = need.slice(0, 8);
+  });
+}
+walk(core, () => true);
+// Cada especialidad de la Fase 5 continúa la ruta común.
+for (const t of TRACKS) { const tu = P5.filter(u => u.track === t.id); walk([...core, ...tu], u => u.track === t.id); }
 fs.writeFileSync(path.join(dir, "prereqs.js"), "/* Generado por tools/prereqs.js: no editar a mano. */\nconst PREREQS = " + JSON.stringify(out) + ";\n");
 console.log(`prereqs: ${Object.keys(out).length} unidades con requisitos · ${issues.length} avisos`);
 if (issues.length) console.log(issues.join("\n"));

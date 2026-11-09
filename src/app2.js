@@ -31,10 +31,18 @@ const PH = [
   { n: 1, title: "La prueba", sub: "30 sesiones", units: LESSONS, desc: "Descubre con datos si la ciberseguridad es lo tuyo: redes, web, Linux y tus primeros retos de hacking." },
   { n: 2, title: "Fundamentos sólidos", sub: `${P2.length} unidades`, units: P2, desc: "Redes a fondo, Linux, Python escrito por ti, criptografía y cómo funciona la web por dentro." },
   { n: 3, title: "Defensa y ataque", sub: `${P3.length} unidades`, units: P3, desc: "Cómo trabajan un pentester y un SOC, los fallos web más comunes y su defensa, y tu primera certificación." },
-  { n: 4, title: "Especialización ofensiva", sub: `${P4.length} unidades`, units: P4, desc: "Hack The Box, CTF en equipo, recompensas por fallos, portafolio y tus primeros ingresos." }
+  { n: 4, title: "Especialización ofensiva", sub: `${P4.length} unidades`, units: P4, desc: "Hack The Box, CTF en equipo, recompensas por fallos, portafolio y tus primeros ingresos." },
+  { n: 5, title: "Especialización avanzada", get sub() { const t = curTrack(); return t ? `${t.title.toLowerCase()} · ${trackUnits(t.id).length} unidades` : `elige 1 de ${TRACKS.length} especialidades`; },
+    get units() { return trackUnits(state.track); }, desc: "Eliges un camino y llegas a nivel avanzado: pentesting, web, defensa, nube o malware. Cada uno con su proyecto final y su certificación." }
 ];
-PH.forEach(ph => ph.units.forEach((u, i) => { u.p = ph.n; u.i = i; }));
-const ALL = PH.flatMap(ph => ph.units);
+const trackUnits = t => t ? P5.filter(u => u.track === t) : [];
+const curTrack = () => TRACKS.find(t => t.id === state.track) || null;
+PH.slice(0, 4).forEach(ph => ph.units.forEach((u, i) => { u.p = ph.n; u.i = i; }));
+TRACKS.forEach(t => trackUnits(t.id).forEach((u, i) => { u.p = 5; u.i = i; }));
+const ALL = [...PH.slice(0, 4).flatMap(ph => ph.units), ...P5];
+const CORE_N = ALL.length - P5.length;
+const routeUnits = () => [...PH.slice(0, 4).flatMap(ph => ph.units), ...trackUnits(state.track)];
+const siblings = u => u.p === 5 ? trackUnits(u.track) : unitsOf(u.p);
 const UNIT = Object.fromEntries(ALL.map(u => [u.id, u]));
 const unitsOf = n => PH[n - 1].units;
 const PASS = q => Math.ceil(q.length * 0.66);
@@ -53,7 +61,7 @@ const phaseBlank = () => ({ start: null, passedAt: null, override: false, ms: {}
 function defaultState() {
   return { v: 2, updatedAt: 0, sessions: {}, cards: [], reviews: {}, agenda: [], reviewLog: {}, decision: [null, null, null, null, null],
     test: [{ name: "General Skills", solved: false, min: "" }, { name: "Web Exploitation", solved: false, min: "" }, { name: "Cryptography", solved: false, min: "" }, { name: "Siguiente nivel de Bandit", solved: false, min: "" }],
-    phases: { 1: phaseBlank(), 2: phaseBlank(), 3: phaseBlank(), 4: phaseBlank() } };
+    phases: { 1: phaseBlank(), 2: phaseBlank(), 3: phaseBlank(), 4: phaseBlank(), 5: phaseBlank() }, track: null };
 }
 function normalize(s) {
   const d = defaultState();
@@ -63,7 +71,7 @@ function normalize(s) {
     const anyDone = Object.values(s.sessions || {}).some(x => x && x.done);
     if (anyDone) s.phases[1].start = s.start && s.start <= todayStr() ? s.start : todayStr();
   }
-  for (const n of [1, 2, 3, 4]) s.phases[n] = Object.assign(phaseBlank(), s.phases[n] || {});
+  for (const n of [1, 2, 3, 4, 5]) s.phases[n] = Object.assign(phaseBlank(), s.phases[n] || {});
   if ((s.v || 1) < 2) { s.reviewsOld = s.reviews; s.reviews = {}; s.v = 2; }
   delete s.start;
   for (const k of Object.keys(d)) if (s[k] === undefined) s[k] = d[k];
@@ -130,10 +138,10 @@ async function initSync() {
 /* ════════ Reglas de la ruta ════════ */
 const phaseOpen = n => n === 1 || !!state.phases[n - 1].passedAt;
 const phasePassed = n => !!state.phases[n].passedAt;
-const activePhase = () => { for (const n of [1, 2, 3, 4]) if (!phasePassed(n)) return n; return 4; };
-const allPassed = () => phasePassed(4);
-const prevUnit = u => u.i > 0 ? unitsOf(u.p)[u.i - 1] : (u.p > 1 ? unitsOf(u.p - 1).at(-1) : null);
-const isLocked = u => !phaseOpen(u.p) || (u.i > 0 && !sess(unitsOf(u.p)[u.i - 1].id).done);
+const activePhase = () => { for (const n of [1, 2, 3, 4, 5]) if (!phasePassed(n)) return n; return 5; };
+const allPassed = () => phasePassed(5);
+const prevUnit = u => u.i > 0 ? siblings(u)[u.i - 1] : (u.p > 1 ? unitsOf(u.p - 1).at(-1) : null);
+const isLocked = u => !phaseOpen(u.p) || (u.p === 5 && u.track !== state.track) || (u.i > 0 && !sess(siblings(u)[u.i - 1].id).done);
 const doneIn = n => unitsOf(n).filter(u => sess(u.id).done).length;
 const nextUnit = () => { if (allPassed()) return null; const n = activePhase(); return unitsOf(n).find(u => !sess(u.id).done) || null; };
 const recallOk = s => (s.recall || "").trim().length >= 15;
@@ -171,7 +179,8 @@ const avgProc = n => { const d = unitsOf(n).filter(u => sess(u.id).done); return
 function gateStatus(n) {
   const g = GATES[n], units = unitsOf(n), d = doneIn(n), ph = state.phases[n];
   const items = [];
-  items.push({ k: `Capturar las ${units.length} unidades de la fase`, ok: d === units.length, v: `${d}/${units.length}` });
+  if (n === 5) items.push({ k: "Elegir tu especialidad", ok: !!state.track, v: curTrack() ? curTrack().title : "pendiente" });
+  items.push({ k: `Capturar las ${units.length} unidades de la fase`, ok: units.length > 0 && d === units.length, v: `${d}/${units.length}` });
   const ap = avgProc(n);
   items.push({ k: `Calidad media del proceso de ${g.minProc} o más`, ok: d === units.length && ap >= g.minProc, v: d ? ap.toFixed(1) + "/5" : "–" });
   if (n === 1) {
@@ -184,7 +193,7 @@ function gateStatus(n) {
     items.push({ k: m.type === "check" ? m.label : `${m.label}: ${m.min} o más`, ok, v: m.type === "check" ? (v ? "hecho" : "pendiente") : `${+v || 0}/${m.min}` });
   }
   if (g.exam) { const ex = ph.exam; items.push({ k: `Examen de la fase: ${EXAM_PASS} de ${g.exam.length}`, ok: !!(ex && ex.best >= EXAM_PASS), v: ex ? `${ex.best}/${g.exam.length}` : "sin hacer" }); }
-  return { items, ok: items.every(x => x.ok), unitsDone: d === units.length };
+  return { items, ok: items.every(x => x.ok), unitsDone: units.length > 0 && d === units.length };
 }
 
 /* Ritmo según la fecha en que empezaste la fase (5 bloques por semana) */
@@ -292,14 +301,14 @@ function render() {
 let freshRoute = true;
 const cmdline = path => `<span class="prompt"><span class="u">pablo@ruta</span>:<span class="h">~/${esc(path)}</span>$ <span class="${freshRoute ? "typed" : ""}">./${esc(path.split("/").pop())}</span></span>`;
 function unlockOverlay(n) {
-  const last = n > 4;
+  const last = n > 5;
   return `<div class="unlock" role="dialog" aria-modal="true" aria-label="Fase desbloqueada"><div class="box">
 <pre>  ___  ___ ___ ___ ___ ___
  / _ \\/ __/ __| __/ __/ _ \\
 | (_) \\__ \\__ \\ _|\\__ \\ (_) |
  \\__\\_\\___/___/___|___/\\___/ </pre>
     <h2>${last ? "Ruta completa" : `Fase ${n} desbloqueada`}</h2>
-    <p class="muted">${last ? "Terminaste las 4 fases. Ahora toca tu especialidad: cuéntame tu plan de 12 meses y lo revisamos." : `${esc(PH[n - 1].title)}: ${esc(PH[n - 1].desc)}`}</p>
+    <p class="muted">${last ? "Terminaste las 5 fases y tu especialidad. Ahora toca la certificación y tu primer empleo: cuéntame tu plan y lo revisamos." : `${esc(PH[n - 1].title)}: ${esc(PH[n - 1].desc)}`}</p>
     <button class="btn primary" data-action="unlock-ok">${last ? "Ver mi progreso" : "Empezar la fase"}</button></div></div>`;
 }
 
@@ -309,15 +318,19 @@ function viewHoy() {
   const nb = nowBlock(), due = dueCards().length, n = activePhase(), nu = nextUnit(), started = !!state.phases[1].start;
   let hero;
   if (allPassed()) {
-    hero = termCard("ruta/completa", `<span class="eyebrow">4 de 4 fases</span><h2>Ruta completa</h2><p>Capturaste las ${ALL.length} unidades y abriste las 4 puertas. Ahora toca especializarte.</p><div class="row"><a class="btn primary" href="#progreso">Ver mi progreso</a></div>`, true);
+    hero = termCard("ruta/completa", `<span class="eyebrow">5 de 5 fases</span><h2>Ruta completa</h2><p>Capturaste las ${routeUnits().length} unidades y abriste las 5 puertas. Ahora toca certificarte y conseguir tu primer empleo.</p><div class="row"><a class="btn primary" href="#progreso">Ver mi progreso</a></div>`, true);
   } else if (!started && n === 1 && doneIn(1) === 0) {
     const u = LESSONS[0];
     hero = termCard("ruta/inicio", `<span class="eyebrow">fase 1 · la prueba</span><h2>Tu ruta empieza cuando tú digas</h2>
       <p>Pulsa el botón y hoy será tu día 1. El ritmo se calcula desde esa fecha, así que no importa qué día empieces.</p>
       <div class="row"><button class="btn primary" data-action="start-route">./empezar --hoy</button><a class="btn" href="#u-${u.id}">Ver la primera sesión</a></div>`, true);
+  } else if (n === 5 && !state.track) {
+    hero = termCard("fase-5/elegir", `<span class="eyebrow">fase 5 · especialización avanzada</span><h2>Elige tu especialidad</h2>
+      <p>Llegaste al nivel avanzado. Ahora eliges un camino: pentesting, web, defensa, nube o malware. Antes de empezar, pídeme que revise los enlaces: las plataformas cambian.</p>
+      <div class="row"><a class="btn primary" href="#ruta" data-action="ruta-phase" data-n="5">Ver las 5 especialidades</a></div>`, true);
   } else if (!nu) {
     hero = termCard(`fase-${n}/puerta`, `<span class="eyebrow">fase ${n} · todas las unidades capturadas</span><h2>La Puerta ${n} te espera</h2>
-      <p>${n < 4 ? `Para abrir la Fase ${n + 1}` : "Para completar la ruta"} tienes que demostrar que terminaste bien: calidad del proceso, hitos${GATES[n].exam ? " y examen" : " y decisión"}.</p>
+      <p>${n < 5 ? `Para abrir la Fase ${n + 1}` : "Para completar la ruta"} tienes que demostrar que terminaste bien: calidad del proceso, hitos${GATES[n].exam ? " y examen" : " y decisión"}.</p>
       <div class="row"><a class="btn flagbtn" href="#puerta-${n}">Ir a la Puerta ${n}</a></div>`, true);
   } else {
     const s = sess(nu.id), pg = recallOk(s) || s.steps.some(Boolean) || s.quiz;
@@ -460,7 +473,7 @@ function guidesHtml(u) {
   return `<div class="guides"><span class="eyebrow">guía paso a paso · cómo se hace exactamente</span>${all.map((g, i) => `<details class="guide"${i === 0 ? " open" : ""}><summary>${fmt(g.t)}</summary><ol>${g.s.map(x => `<li>${fmt(x)}</li>`).join("")}</ol>${g.learn ? `<p class="learn"><b>Lo que aprendiste:</b> ${fmt(g.learn)}</p>` : ""}</details>`).join("")}</div>`;
 }
 function nextAfter(u) {
-  const nx = unitsOf(u.p)[u.i + 1];
+  const nx = siblings(u)[u.i + 1];
   if (nx) return `<div class="row"><a class="btn primary" href="#u-${nx.id}">siguiente: ${esc(nx.title)}</a></div>`;
   return `<div class="row"><a class="btn primary" href="#puerta-${u.p}">ir a la Puerta ${u.p}</a></div>`;
 }
@@ -483,12 +496,12 @@ function decisionBlock() {
 
 /* ════════ Vista: Puerta ════════ */
 function viewGate(n) {
-  if (!(n >= 1 && n <= 4)) return `<div class="empty">Esa puerta no existe. <a href="#ruta">Volver a la ruta</a></div>`;
+  if (!(n >= 1 && n <= 5)) return `<div class="empty">Esa puerta no existe. <a href="#ruta">Volver a la ruta</a></div>`;
   const ph = state.phases[n], g = GATES[n], gs = gateStatus(n), open = phaseOpen(n);
   const head = `<div class="head"><div class="meta"><a class="btn ghost sm" href="#ruta">← ruta</a>${cmdline(`fase-${n}/puerta`)}</div><h1>Puerta ${n}</h1>
-    <p class="muted">${n < 4 ? `Cierra la Fase ${n} y abre la Fase ${n + 1}: ${esc(PH[n].title)}.` : "Cierra la Fase 4 y completa la ruta."} Solo se abre si terminaste bien, no solo rápido.</p></div>`;
+    <p class="muted">${n < 5 ? `Cierra la Fase ${n} y abre la Fase ${n + 1}: ${esc(PH[n].title)}.` : "Cierra tu especialidad y completa la ruta."} Solo se abre si terminaste bien, no solo rápido.</p></div>`;
   if (!open) return `${head}<div class="lockbox"><b>ACCESO DENEGADO</b><span>Primero tienes que pasar la Puerta ${n - 1}.</span></div>`;
-  if (ph.passedAt) return `${head}<div class="flagbox"><span class="eyebrow">puerta abierta · ${fmtShort(ph.passedAt)}</span><span class="mono">flag{puerta_${n}_abierta}</span>${n < 4 ? `<div class="row"><a class="btn primary" href="#ruta" data-action="ruta-phase" data-n="${n + 1}">ver la Fase ${n + 1}</a></div>` : ""}</div>`;
+  if (ph.passedAt) return `${head}<div class="flagbox"><span class="eyebrow">puerta abierta · ${fmtShort(ph.passedAt)}</span><span class="mono">flag{puerta_${n}_abierta}</span>${n < 5 ? `<div class="row"><a class="btn primary" href="#ruta" data-action="ruta-phase" data-n="${n + 1}">ver la Fase ${n + 1}</a></div>` : ""}</div>`;
   const low = unitsOf(n).filter(u => sess(u.id).done && procScore(u, sess(u.id)) < g.minProc);
   const checklist = `<div class="card"><h3>Condiciones</h3><div>${gs.items.map(x => `<div class="gitem"><span class="st ${x.ok ? "ok" : "no"}">${x.ok ? "[x]" : "[ ]"}</span><span>${esc(x.k)}</span><span class="pill ${x.ok ? "good" : ""}">${esc(x.v)}</span></div>`).join("")}</div>
     ${low.length ? `<div class="reveal"><span class="eyebrow">unidades con proceso por debajo de ${g.minProc}</span><p class="small muted">Puedes mejorarlas ahora: escribe tus notas, márcalas como explicadas en voz alta o completa lo que falte.</p><div class="links">${low.slice(0, 12).map(u => `<a class="btn sm" href="#u-${u.id}">${num(u.i)} · ${procScore(u, sess(u.id))}/5</a>`).join("")}</div></div>` : ""}</div>`;
@@ -504,7 +517,7 @@ function viewGate(n) {
   if (n === 1) { const yes = state.decision.filter(v => v === true).length;
     decision = `<div class="card"><h3>Decisión de la Fase 1</h3>${decisionBlock()}
     ${decisionOk() && yes < 4 ? `<div class="reveal"><p class="small">Tu decisión dio ${yes} de 5. Lo recomendable es hablarlo conmigo antes de seguir. Si aun así quieres continuar, puedes hacerlo por decisión propia.</p>${ph.override ? `<span class="pill good">sigues por decisión propia</span>` : `<button class="btn" data-action="override">Quiero seguir de todos modos</button>`}</div>` : ""}</div>`; }
-  const openBtn = `<div class="card"><div class="spread"><div><h3>${n < 4 ? `Abrir la Fase ${n + 1}` : "Completar la ruta"}</h3><p class="muted small">${gs.ok ? "Cumples todas las condiciones." : "Cuando todas las condiciones estén en [x], se activa el botón."}</p></div><button class="btn primary" data-action="pass-gate" data-n="${n}" ${gs.ok ? "" : "disabled"}>${n < 4 ? `./abrir --fase ${n + 1}` : "./completar"}</button></div></div>`;
+  const openBtn = `<div class="card"><div class="spread"><div><h3>${n < 5 ? `Abrir la Fase ${n + 1}` : "Completar la ruta"}</h3><p class="muted small">${gs.ok ? "Cumples todas las condiciones." : "Cuando todas las condiciones estén en [x], se activa el botón."}</p></div><button class="btn primary" data-action="pass-gate" data-n="${n}" ${gs.ok ? "" : "disabled"}>${n < 4 ? `./abrir --fase ${n + 1}` : "./completar"}</button></div></div>`;
   return `${head}${checklist}${decision}${ms}${exam}${openBtn}`;
 }
 
@@ -537,7 +550,7 @@ function viewRuta() {
     return `<button role="tab" aria-selected="${p.n === sel}" class="${p.n === sel ? "on" : ""} ${o ? "" : "lk"}" data-action="ruta-phase" data-n="${p.n}"><small>fase ${p.n} ${ps ? "· ⚑ cerrada" : o ? "· abierta" : "· bloqueada"}</small><span>${esc(p.title)}</span></button>`; }).join("")}</div>`;
   const total = ph.units.length, d = doneIn(sel);
   const header = `<div class="card"><div class="spread"><div><span class="eyebrow">fase ${sel} · ${esc(ph.sub)} · ${ph.units.reduce((a, u) => a + u.blocks, 0)} bloques</span><h2>${esc(ph.title)}</h2></div>${phasePassed(sel) ? `<span class="pill flag">⚑ cerrada ${fmtShort(state.phases[sel].passedAt)}</span>` : open ? `<span class="pill good">abierta</span>` : `<span class="pill bad">bloqueada</span>`}</div>
-    <p class="muted small">${esc(ph.desc)}</p><div class="ascii fl">${ascii(d / total, 22)}</div>
+    <p class="muted small">${esc(ph.desc)}</p><div class="ascii fl">${ascii(total ? d / total : 0, 22)}</div>
     ${open ? "" : `<div class="lockbox"><b>ACCESO DENEGADO</b><span>Se abre al pasar la Puerta ${sel - 1}. Puedes ver lo que contiene.</span></div>`}</div>`;
   const row = u => { const s = sess(u.id), lk = isLocked(u), nx = nu && nu.id === u.id;
     const status = s.done ? `<span class="pill flag">⚑ ${procScore(u, s)}/5</span>` : nx ? `<span class="pill good">siguiente</span>` : lk ? `<span class="pill">bloqueada</span>` : `<span class="pill cy">disponible</span>`;
@@ -545,11 +558,25 @@ function viewRuta() {
   let body;
   if (sel === 1) body = WEEKS.map(w => { const us = LESSONS.filter(l => l.w === w.n);
     return `<div class="card"><div class="spread"><div><span class="eyebrow">semana de estudio ${w.n}</span><h3>${esc(w.title)}</h3></div><span class="pill ${us.every(u => sess(u.id).done) ? "flag" : ""}">${us.filter(u => sess(u.id).done).length}/${us.length}</span></div><p class="muted small">${esc(w.goal)}</p><div class="list">${us.map(row).join("")}</div></div>`; }).join("");
+  else if (sel === 5) body = trackPicker(row);
   else { const chunks = []; for (let i = 0; i < ph.units.length; i += 6) chunks.push(ph.units.slice(i, i + 6));
     body = chunks.map((c, k) => `<div class="card"><div class="spread"><div><span class="eyebrow">tramo ${k + 1} de ${chunks.length}</span><h3>${["Arranque", "Construyendo", "Subiendo el nivel", "Cierre"][k] || "Tramo " + (k + 1)}</h3></div><span class="pill ${c.every(u => sess(u.id).done) ? "flag" : ""}">${c.filter(u => sess(u.id).done).length}/${c.length}</span></div><div class="list">${c.map(row).join("")}</div></div>`).join(""); }
-  const gate = `<a class="urow gate" href="#puerta-${sel}"><span class="num">⚿</span><span class="tt"><b>Puerta ${sel}</b><small>${sel < 4 ? `abre la Fase ${sel + 1}` : "completa la ruta"} · proceso, hitos${GATES[sel].exam ? " y examen" : " y decisión"}</small></span>${phasePassed(sel) ? `<span class="pill flag">abierta</span>` : `<span class="pill">cerrada</span>`}</a>`;
+  const gate = `<a class="urow gate" href="#puerta-${sel}"><span class="num">⚿</span><span class="tt"><b>Puerta ${sel}</b><small>${sel < 5 ? `abre la Fase ${sel + 1}` : "completa la ruta"} · proceso, hitos${GATES[sel].exam ? " y examen" : sel === 1 ? " y decisión" : ""}</small></span>${phasePassed(sel) ? `<span class="pill flag">abierta</span>` : `<span class="pill">cerrada</span>`}</a>`;
   return `<div class="head">${cmdline("ruta")}<h1>Tu ruta<span class="cur"></span></h1><p class="muted">De lo más fácil a lo más difícil. Cada fase se abre al pasar la puerta de la anterior.</p></div>
     ${tabs}${header}${body}${gate}${methodCard()}`;
+}
+function trackPicker(row) {
+  const open = phaseOpen(5), cur = state.track, pv = ui.trackPreview || cur || TRACKS[0].id;
+  const tabs = `<div class="tracks">${TRACKS.map(t => { const n = trackUnits(t.id).length, d = trackUnits(t.id).filter(u => sess(u.id).done).length;
+    return `<button class="track ${t.id === pv ? "on" : ""} ${t.id === cur ? "mine" : ""}" data-action="track-preview" data-t="${t.id}" aria-pressed="${t.id === pv}"><span class="ti">${t.icon}</span><b>${esc(t.title)}</b><small>${esc(t.sub)}</small><small class="mono">${t.id === cur ? `tu especialidad · ${d}/${n}` : `${n} unidades`}</small></button>`; }).join("")}</div>`;
+  const t = TRACKS.find(x => x.id === pv), us = trackUnits(pv), mine = pv === cur;
+  const action = !open ? `<p class="muted small">Se abre al pasar la Puerta 4. Puedes ver todas las especialidades desde ya.</p>`
+    : mine ? `<div class="row"><span class="pill good">es tu especialidad</span></div>`
+    : `<div class="row"><button class="btn primary" data-action="track-pick" data-t="${pv}">${cur ? "Cambiar a esta especialidad" : "Elegir esta especialidad"}</button>${cur ? `<span class="muted small">Tu avance en la otra no se pierde.</span>` : ""}</div>`;
+  return `<div class="card"><span class="eyebrow">especialidades · elige una</span><h3>¿Qué camino quieres dominar?</h3>
+    <p class="muted small">No tienes que decidir hoy: mira cada una. Cuando llegues, antes de empezar, pídeme que revise sus enlaces, porque las plataformas y los precios cambian.</p>${tabs}</div>
+    <div class="card"><div class="spread"><div><span class="eyebrow">${esc(t.sub)}</span><h3>${t.icon} ${esc(t.title)}</h3></div></div>
+    <p class="small">${esc(t.para)}</p>${action}<div class="list">${us.length ? us.map(row).join("") : `<div class="empty">Esta especialidad todavía no tiene unidades.</div>`}</div></div>`;
 }
 function methodCard() {
   return `<div class="card"><h3>Por qué la ruta está hecha así</h3><ul class="small">
@@ -654,7 +681,7 @@ function viewTarjetas() {
 
 /* ════════ Vista: Progreso ════════ */
 function viewProgreso() {
-  const done = ALL.filter(u => sess(u.id).done), t = todayStr();
+  const done = routeUnits().filter(u => sess(u.id).done), t = todayStr();
   const avg = done.length ? done.reduce((a, u) => a + procScore(u, sess(u.id)), 0) / done.length : 0;
   const qz = done.filter(u => u.quiz && sess(u.id).quiz);
   const firstPct = qz.length ? Math.round(qz.reduce((a, u) => a + sess(u.id).quiz.first / u.quiz.length, 0) / qz.length * 100) : null;
@@ -664,12 +691,12 @@ function viewProgreso() {
   const hist = Object.keys(state.reviews).sort().slice(-10).map(k => ({ k, g: state.reviews[k].ganas })).filter(x => x.g);
   return `<div class="head">${cmdline("progreso")}<h1>Progreso<span class="cur"></span></h1><p class="muted">No solo cuánto haces: también si sigues bien el método.</p></div>
     <div class="stats">
-      <div class="stat"><b>${done.length}/${ALL.length}</b><span>flags capturadas</span></div>
+      <div class="stat"><b>${done.length}/${routeUnits().length}</b><span>flags capturadas${state.track ? "" : " (sin la Fase 5)"}</span></div>
       <div class="stat"><b>${done.length ? avg.toFixed(1) : "–"}</b><span>calidad del proceso (de 5)</span></div>
       <div class="stat"><b>${firstPct === null ? "–" : firstPct + "%"}</b><span>aciertos al primer intento</span></div>
       <div class="stat"><b>${active7}/7</b><span>días activos esta semana</span></div>
       <div class="stat"><b>${due}</b><span>tarjetas pendientes</span></div></div>
-    <div class="card"><h3>Las 4 fases</h3><div class="list">${PH.map(p => `<div class="spread"><span class="mono small" style="min-width:210px">fase ${p.n} · ${esc(p.title.toLowerCase())}</span><span class="ascii ${phasePassed(p.n) ? "fl" : ""}">${phaseOpen(p.n) ? ascii(doneIn(p.n) / p.units.length, 20) : "[ bloqueada ]"}</span></div>`).join("")}</div></div>
+    <div class="card"><h3>Las 5 fases</h3><div class="list">${PH.map(p => `<div class="spread"><span class="mono small" style="min-width:210px">fase ${p.n} · ${esc(p.title.toLowerCase())}</span><span class="ascii ${phasePassed(p.n) ? "fl" : ""}">${phaseOpen(p.n) ? (p.units.length ? ascii(doneIn(p.n) / p.units.length, 20) : "[ elige especialidad ]") : "[ bloqueada ]"}</span></div>`).join("")}</div></div>
     <div class="card"><h3>¿Lo estás haciendo bien?</h3>${(() => { const ds = diagnostics(done, firstPct, due); return ds.length ? `<div class="diag">${ds.map(d => `<span class="pill ${d.c}">${d.t}</span><div><b>${esc(d.h)}</b><p class="muted small">${esc(d.p)}</p></div>`).join("")}</div>` : `<div class="empty">Aparecerá aquí cuando captures tu primera unidad.</div>`; })()}</div>
     <div class="card" id="review"><div class="spread"><h3>Revisión de esta semana</h3><span class="pill">semana del ${fmtShort(wk)}</span></div>
       <div class="grid2"><label class="f" for="rl-${wk}">lo que más me gustó<textarea id="rl-${wk}" data-bind="reviews.${wk}.liked">${esc(r.liked)}</textarea></label>
@@ -785,10 +812,12 @@ document.addEventListener("click", e => {
     case "pass-gate": {
       const n = +b.dataset.n; if (!gateStatus(n).ok || phasePassed(n)) return;
       state.phases[n].passedAt = todayStr();
-      if (n < 4) { state.phases[n + 1].start = todayStr(); ui.rutaPhase = n + 1; }
+      if (n < 5) { state.phases[n + 1].start = todayStr(); ui.rutaPhase = n + 1; }
       save(); ui.unlocked = n + 1; break;
     }
-    case "unlock-ok": { const n = ui.unlocked; ui.unlocked = null; location.hash = n <= 4 ? "u-" + unitsOf(n)[0].id : "progreso"; render(); return; }
+    case "unlock-ok": { const n = ui.unlocked; ui.unlocked = null; location.hash = n <= 5 && unitsOf(n).length ? "u-" + unitsOf(n)[0].id : n === 5 ? "ruta" : "progreso"; render(); return; }
+    case "track-preview": ui.trackPreview = b.dataset.t; break;
+    case "track-pick": { if (!phaseOpen(5)) return; state.track = b.dataset.t; ui.trackPreview = b.dataset.t; save(); toast("Especialidad elegida: " + curTrack().title); break; }
     case "ruta-phase": ui.rutaPhase = +b.dataset.n; if (route() !== "ruta") return; break;
     case "t-start": timer.startedAt = Date.now(); timer.running = true; paintTimer(); return;
     case "t-pause": timer.acc = timerElapsed(); timer.running = false; paintTimer(); return;
