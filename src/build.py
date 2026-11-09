@@ -1,7 +1,9 @@
 import json, os
 os.makedirs('app', exist_ok=True)
 R=lambda f: open(f,encoding='utf-8').read()
-content = R('content.js')+'\n'+R('content2.js')+'\n'+R('content3.js')+'\n'+R('practice.js')+'\n'+R('guides.js')
+import glob, subprocess
+subprocess.run(['node', 'tools/prereqs.js'], check=True)
+content = '\n'.join(R(f) for f in ['content.js','content2.js','content3.js','practice.js','guides.js'] + sorted(glob.glob('guides_p[0-9].js')) + ['prereqs.js'])
 app = R('app2.js')
 shell = R('shell2.html')
 body = shell.replace('/*CONTENT*/',content).replace('/*APP*/',app)

@@ -363,7 +363,7 @@ function viewUnit(u) {
   const head = `<div class="head"><div class="meta"><a class="btn ghost sm" href="#ruta">← ruta</a>${cmdline(`fase-${u.p}/${slug}-${num(u.i)}`)}</div>
     <h1>${esc(u.title)}</h1>
     <div class="meta"><span class="pill cy">${esc(u.mod)}</span><span class="lvl" title="Dificultad">${lvlBar(u.lvl)}</span><span class="pill">${u.p === 1 && u.blocks === 2 ? "sesión larga" : u.blocks > 1 ? `${u.blocks} bloques` : "1 bloque"}</span>${s.done ? `<span class="pill flag">⚑ capturada</span>` : locked ? `<span class="pill bad">bloqueada</span>` : ""}</div>
-    <p class="muted">${esc(u.goal)}</p></div>`;
+    <p class="muted">${esc(u.goal)}</p>${prereqHtml(u)}</div>`;
   if (closed) {
     return `${head}<div class="lockbox"><b>ACCESO DENEGADO · fase ${u.p} cerrada</b><span>Esta unidad se abre cuando pases la Puerta ${u.p - 1}. Puedes leer de qué trata, pero todavía no se puede hacer.</span><div class="row"><a class="btn" href="#puerta-${u.p - 1}">Ver la Puerta ${u.p - 1}</a></div></div>
       <div class="card"><h3>Lo que aprenderás</h3><div class="concept">${u.concept.map(x => `<p>${fmt(x)}</p>`).join("")}</div></div>`;
@@ -446,6 +446,11 @@ function practiceHtml(u) {
     let host = "en esta app"; if (!internal) { try { host = new URL(p.url).hostname.replace(/^www\./, ""); } catch (e) { host = ""; } }
     return `<div class="prac"><span class="pn">${k + 1}</span><div class="pb"><b>${esc(p.t)}</b><small>${esc(host)}</small>${p.d ? `<p>${fmt(p.d)}</p>` : ""}</div><a class="btn sm ${internal ? "" : "primary"}" href="${esc(p.url)}" data-action="open-link" data-id="${u.id}" data-li="${k}"${internal ? "" : ' target="_blank" rel="noopener"'}>${internal ? "ir" : "abrir ↗"}</a></div>`;
   }).join("")}</div>`;
+}
+function prereqHtml(u) {
+  const need = (typeof PREREQS !== "undefined" && PREREQS[u.id]) || [];
+  if (!need.length) return "";
+  return `<div class="prereq"><span class="eyebrow">antes necesitas saber · toca para repasar</span><div class="chips">${need.map(([label, id]) => { const v = UNIT[id], ok = v && sess(id).done; return `<a class="chip${ok ? " ok" : ""}" href="#u-${id}" title="${esc(v ? v.title : id)}">${ok ? "✓" : "○"} ${esc(label)} <small>${esc(id)}</small></a>`; }).join("")}</div></div>`;
 }
 function guidesHtml(u) {
   const urls = [...practiceItems(u).map(p => p.url), ...(u.links || []).map(l => l[1])];
