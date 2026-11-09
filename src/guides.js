@@ -153,8 +153,16 @@ const PLATFORM_GUIDES = {
     "Lee los **requisitos previos** y el **temario** (syllabus). Cópialo en tu cuaderno.",
     "Marca con ✓ lo que ya hiciste en Hack The Box y TryHackMe, y con ✗ lo que falta. Ese es tu plan de estudio para los próximos meses."
   ]}
+,
+  aws: { t: "Cómo moverte por la consola de AWS, paso a paso", s: [
+    "Entra en **aws.amazon.com** y pulsa **Sign In to the Console** (arriba a la derecha). Para el trabajo diario inicia sesión con tu **usuario IAM**, no con root.",
+    "Arriba del todo hay un **buscador de servicios**: escribe el nombre del servicio que te pida la unidad (por ejemplo `S3`, `IAM`, `CloudTrail`, `Budgets`) y pulsa Enter.",
+    "A la izquierda, en **Region** (un nombre como «N. Virginia»), fíjate en qué región estás: los recursos viven en una región concreta. Usa siempre la misma mientras practicas.",
+    "Si una opción no está donde la guía dice, usa el buscador de arriba: AWS cambia la interfaz a menudo, pero el nombre del servicio se mantiene.",
+    "Regla de oro: al terminar una práctica, vuelve al servicio y **borra o apaga** lo que encendiste, para no generar coste."
+  ] }
 };
-const GUIDE_HOSTS = [["cylabacademy", "cylab"], ["tryhackme.com", "thm"], ["overthewire.org", "bandit"], ["#tarjetas", "tarjetas"], ["#progreso", "progreso"], ["wikipedia.org", "devtools"], ["professormesser", "messer"], ["python.org/downloads", "python"], ["www.python.org", "python"], ["py4e.com", "py4e"], ["docs.python.org", "pydocs"], ["sqlbolt.com", "sqlbolt"], ["portswigger.net", "portswigger"], ["owasp.org", "owasp"], ["attack.mitre.org", "mitre"], ["nvd.nist.gov", "nvd"], ["ine.com", "ine"], ["hackthebox.com", "htb"], ["hackerone.com", "hackerone"], ["github.com", "github"], ["linkedin.com", "linkedin"], ["offsec.com", "offsec"]];
+const GUIDE_HOSTS = [["cylabacademy", "cylab"], ["tryhackme.com", "thm"], ["overthewire.org", "bandit"], ["#tarjetas", "tarjetas"], ["#progreso", "progreso"], ["wikipedia.org", "devtools"], ["professormesser", "messer"], ["python.org/downloads", "python"], ["www.python.org", "python"], ["py4e.com", "py4e"], ["docs.python.org", "pydocs"], ["sqlbolt.com", "sqlbolt"], ["portswigger.net", "portswigger"], ["owasp.org", "owasp"], ["attack.mitre.org", "mitre"], ["nvd.nist.gov", "nvd"], ["ine.com", "ine"], ["hackthebox.com", "htb"], ["hackerone.com", "hackerone"], ["github.com", "github"], ["linkedin.com", "linkedin"], ["offsec.com", "offsec"], ["aws.amazon.com", "aws"], ["awspolicygen", "aws"]];
 
 /* Guías de retos concretos, por unidad. */
 const UNIT_GUIDES = {
