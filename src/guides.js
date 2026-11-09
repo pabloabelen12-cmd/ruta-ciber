@@ -15,7 +15,7 @@ const PLATFORM_GUIDES = {
     "Abre el enlace de la sala y pulsa el botón **Join Room** (unirte a la sala). Si te pide iniciar sesión, entra con tu cuenta.",
     "La sala está dividida en **Tasks** (tareas). Haz clic en el título de cada tarea para desplegarla y lee el texto completo antes de responder.",
     "Al final de cada tarea hay preguntas con una casilla. Escribe la respuesta y pulsa **Submit**. Si es correcta, se pone en verde. Si una pregunta dice **No answer needed**, solo pulsa **Complete**.",
-    "Si una tarea tiene un botón verde **Start Machine**, púlsalo y espera 1 o 2 minutos: arranca la máquina de práctica y aparece su dirección IP arriba.",
+    "Si una tarea tiene un botón verde **Start Machine** (en muchas salas ahora dice **Start Lab Machine**), púlsalo y espera 1 o 2 minutos: arranca la máquina de práctica y aparece su dirección IP arriba.",
     "Si necesitas una terminal para atacar esa máquina, pulsa el botón azul **Start AttackBox** (arriba de la página). Se abre una computadora Linux en el navegador; no tienes que instalar nada. Con la cuenta gratis la AttackBox dura **1 hora al día**: ten la tarea leída antes de arrancarla y apágala al terminar.",
     "¿Atascado? Pulsa **Hint** junto a la pregunta, si lo hay. Si no, vuelve a leer la tarea: casi siempre la respuesta está en el texto.",
     "La sala está terminada cuando la barra de progreso de arriba llega al 100 %."
@@ -51,7 +51,7 @@ const PLATFORM_GUIDES = {
     "Solo mira: no cambies nada en páginas que no sean de práctica."
   ]},
   messer: { t: "Cómo se usan los videos de Professor Messer, paso a paso", s: [
-    "Abre el enlace. En el menú de arriba pulsa **Training Courses** y elige el curso **CompTIA Network+** (el número más reciente).",
+    "Abre el enlace. Si llegas a la portada, en el menú de arriba elige **N10-009 Network+** → **Free Network+ Videos**: es el índice de todos los videos del curso.",
     "Se abre la lista de todos los videos del curso, ordenados por tema. Pulsa **Ctrl + F** y escribe la palabra del tema de hoy (por ejemplo `Subnet`, `DHCP`, `ARP` o `NAT`) para encontrarlo rápido.",
     "Abre el video. Son cortos (5–15 minutos) y están en inglés: activa los subtítulos con el botón **CC** y, si quieres, pon la traducción automática al español en ⚙ → Subtítulos → Traducir automáticamente.",
     "Míralo con tu cuaderno al lado. Pausa cada vez que diga una definición y escríbela con tus palabras.",
@@ -81,13 +81,13 @@ const PLATFORM_GUIDES = {
     "Abre sqlbolt.com y entra en la **lección 1**. Lee la explicación de arriba: es corta.",
     "Abajo hay una tabla de datos y una lista de **Exercises** (tareas). Escribe tu consulta en el cuadro de texto, por ejemplo `SELECT title FROM movies;`.",
     "La tabla de resultados se actualiza sola mientras escribes. Cuando tu consulta cumple una tarea, la tarea se marca en verde. Pasa a la siguiente.",
-    "Si te atascas, pulsa **Show solution** solo después de intentarlo 10 minutos, y luego vuelve a escribirla tú sin mirar.",
-    "Al completar todas las tareas pulsa **Continue** para ir a la siguiente lección."
+    "Si te atascas, abre el enlace **Solution** solo después de intentarlo 10 minutos, y luego vuelve a escribir la consulta tú sin mirar.",
+    "Al completar todas las tareas pulsa el enlace **Next – SQL Lesson …** para ir a la siguiente lección."
   ]},
   portswigger: { t: "Cómo se usan Burp Suite y la Web Security Academy, paso a paso", s: [
     "**Instalar Burp:** en portswigger.net/burp pulsa **Download**, elige **Community Edition** (gratis) y **Windows**. Abre el instalador y acepta todo con **Next**.",
     "**Abrir Burp:** al arrancar elige **Temporary project** → **Next** → **Use Burp defaults** → **Start Burp**.",
-    "**Navegador de Burp:** pestaña **Proxy** → **Intercept**. Comprueba que el botón diga **Intercept is off** (si está en on, la página se queda cargando). Pulsa **Open browser**: se abre un Chrome que pasa por Burp.",
+    "**Navegador de Burp:** pestaña **Proxy** → **Intercept**. Comprueba que el interruptor diga **Intercept off** (si dice **Intercept on**, la página se queda cargando). Pulsa **Open browser**: se abre un Chrome que pasa por Burp.",
     "**Ver el tráfico:** navega en ese navegador y luego mira **Proxy → HTTP history**. Cada fila es una petición; haz clic en una para ver la petición y la respuesta completas.",
     "**Academy:** en portswigger.net/web-security crea tu cuenta gratis (**Sign up**) y entra. Elige el tema que diga la sesión (por ejemplo Access control) y lee la teoría de arriba abajo.",
     "**Laboratorios:** al final de la teoría hay laboratorios. Abre uno marcado **APPRENTICE**, lee el objetivo y pulsa **Access the lab**: se abre una web solo para ti. Ábrela desde el navegador de Burp para ver todo lo que pasa.",

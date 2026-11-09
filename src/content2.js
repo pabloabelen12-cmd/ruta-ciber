@@ -40,7 +40,7 @@ const P2 = [
 },
 { id:"p2u03", mod:"Redes", lvl:2, blocks:2, title:"Subredes y CIDR",
   goal:"Saber cuántos equipos caben en una red a partir de su máscara.",
-  links:[["Professor Messer: videos gratuitos de redes","https://www.professormesser.com"]],
+  links:[["Professor Messer: índice del curso Network+ (N10-009)","https://www.professormesser.com/network-plus/n10-009/n10-009-video/n10-009-training-course/"],["Video: IPv4 Subnet Masks","https://www.professormesser.com/network-plus/n10-009/n10-009-video/ipv4-subnet-masks-n10-009/"],["Video: Calculating IPv4 Subnets and Hosts","https://www.professormesser.com/network-plus/n10-009/n10-009-video/calculating-ipv4-subnets-and-hosts-n10-009/"]],
   concept:[
     "Una IPv4 tiene 32 bits. La notación **CIDR** dice cuántos de esos bits son de la red: en `192.168.1.0/24`, los primeros 24 bits son la red y quedan 8 bits para los equipos.",
     "Con 8 bits hay 2⁸ = 256 direcciones. Se restan 2 (la de red y la de difusión), así que caben **254 equipos**. Un `/24` equivale a la máscara `255.255.255.0`.",
@@ -60,7 +60,7 @@ const P2 = [
 },
 { id:"p2u04", mod:"Redes", lvl:2, blocks:1, title:"DHCP, ARP y NAT",
   goal:"Entender cómo un equipo consigue su IP, encuentra a otros en la red y sale a internet.",
-  links:[["Professor Messer: videos gratuitos de redes","https://www.professormesser.com"]],
+  links:[["Video: DHCP","https://www.professormesser.com/network-plus/n10-009/n10-009-video/dhcp-n10-009/"],["Video: ARP and DNS Poisoning (primera parte: ARP)","https://www.professormesser.com/network-plus/n10-009/n10-009-video/arp-and-dns-poisoning-n10-009/"],["Video: Network Address Translation","https://www.professormesser.com/network-plus/n10-009/n10-009-video/network-address-translation-n10-009/"]],
   concept:[
     "**DHCP** reparte las IP automáticamente. Sigue cuatro pasos: Discover, Offer, Request y Acknowledge (DORA).",
     "**ARP** traduce una IP a la dirección MAC dentro de tu red local. Sin ARP, tu laptop no sabría a qué tarjeta de red enviar los datos.",
@@ -99,14 +99,14 @@ const P2 = [
 },
 { id:"p2u06", mod:"Linux", lvl:2, blocks:2, title:"Permisos en Linux",
   goal:"Leer y cambiar permisos, la base de cómo Linux protege cada archivo.",
-  links:[["Buscar “Linux Fundamentals Part 2” y “Part 3” en TryHackMe","https://tryhackme.com/hacktivities"]],
+  links:[["Linux Journey: permisos de archivos","https://linuxjourney.com/lesson/file-permissions"],["Linux Journey: cambiar permisos","https://linuxjourney.com/lesson/modifying-permissions"],["Terminal de práctica (CyLab)","https://learn.cylabacademy.org/library"]],
   concept:[
     "`ls -l` muestra algo como `-rwxr-xr--`. Son tres grupos de tres letras: **dueño**, **grupo** y **otros**. r = leer, w = escribir, x = ejecutar.",
     "En números: r = 4, w = 2, x = 1, y se suman. `755` = rwx r-x r-x. `644` = rw- r-- r--. `600` = solo el dueño lee y escribe: así deben estar las llaves privadas.",
     "`chmod` cambia permisos y `chown` cambia el dueño. Muchos fallos de seguridad reales son simplemente permisos mal puestos."
   ],
   flow:["Dueño rwx","Grupo r-x","Otros r-x","= 755"],
-  steps:["Busca y haz las salas “Linux Fundamentals Part 2” y “Part 3”.","Traduce a números estos permisos: rw-r--r--, rwx------, rwxr-xr-x.","Explica en voz alta por qué una llave privada debe tener permisos 600."],
+  steps:["Lee las dos lecciones de permisos de Linux Journey y practica `ls -l` y `chmod` en la terminal de CyLab siguiendo la guía (las salas Linux Fundamentals Part 2 y 3 ahora son de pago).","Traduce a números estos permisos: rw-r--r--, rwx------, rwxr-xr-x.","Explica en voz alta por qué una llave privada debe tener permisos 600."],
   hint:"Suma por grupos de tres: rwx = 4+2+1 = 7; r-x = 4+0+1 = 5.",
   quiz:[
     {q:"¿Qué significa 644?",o:["rwxr--r--","rw-r--r--","rw-rw-rw-","r--r--r--"],a:1,e:"6 = 4+2 (rw-), 4 = r--."},
@@ -118,7 +118,7 @@ const P2 = [
 },
 { id:"p2u07", mod:"Linux", lvl:2, blocks:1, title:"Bandit 13: entrar con una llave",
   goal:"Usar una llave SSH en vez de una contraseña.",
-  links:[["Bandit nivel 13","https://overthewire.org/wargames/bandit/bandit13.html"]],
+  links:[["Bandit nivel 13 → 14","https://overthewire.org/wargames/bandit/bandit14.html"]],
   concept:[
     "Además de contraseñas, SSH acepta **llaves**: un par formado por una llave pública (que se deja en el servidor) y una privada (que guardas tú, como una llave de casa).",
     "Con `ssh -i archivo_llave usuario@servidor` te conectas usando la llave privada.",
@@ -158,7 +158,7 @@ const P2 = [
 },
 { id:"p2u09", mod:"Linux", lvl:3, blocks:2, title:"Bandit 14 y 15: hablar con un puerto",
   goal:"Enviar datos a un servicio en un puerto, primero sin cifrado y luego con TLS.",
-  links:[["Bandit nivel 14","https://overthewire.org/wargames/bandit/bandit14.html"],["Bandit nivel 15","https://overthewire.org/wargames/bandit/bandit15.html"]],
+  links:[["Bandit nivel 14 → 15","https://overthewire.org/wargames/bandit/bandit15.html"],["Bandit nivel 15 → 16","https://overthewire.org/wargames/bandit/bandit16.html"]],
   concept:[
     "Cada servicio escucha en un puerto. Con **netcat** (`nc`) puedes conectarte a cualquier puerto y escribirle texto directamente, como si fueras el programa cliente.",
     "Si el servicio usa **TLS** (cifrado), netcat no sirve: hay que hablar con él usando una herramienta que cifre, como `openssl s_client`.",
@@ -197,14 +197,14 @@ const P2 = [
 },
 { id:"p2u11", mod:"Criptografía", lvl:2, blocks:2, title:"Cifrado y hash",
   goal:"Distinguir cifrado simétrico, asimétrico y hash, y saber para qué sirve cada uno.",
-  links:[["Sala “Encryption - Crypto 101”",THM("encryptioncrypto101")],["CyberChef","https://gchq.github.io/CyberChef/"]],
+  links:[["Sala “Encryption - Crypto 101”",THM("encryptioncrypto101")],["CyberChef","https://gchq.github.io/CyberChef/"],["Sala “Cryptography Concepts” (gratis, fácil)",THM("cryptographyconcepts")]],
   concept:[
     "**Cifrado simétrico** (como AES): la misma llave cifra y descifra. Es rápido, pero hay que compartir la llave de forma segura.",
     "**Cifrado asimétrico** (como RSA): una llave pública cifra y solo la privada descifra. HTTPS lo usa para acordar una llave simétrica de forma segura.",
     "Un **hash** (como SHA-256) convierte cualquier dato en una huella de tamaño fijo y **no se puede deshacer**. Las contraseñas se guardan como hash, con una **sal** (un valor aleatorio) para que dos contraseñas iguales no den el mismo hash."
   ],
   flow:["Simétrico: 1 llave","Asimétrico: pública + privada","Hash: huella sin vuelta atrás"],
-  steps:["Haz la sala “Encryption - Crypto 101”.","En CyberChef, calcula el SHA-256 de tu nombre y luego de tu nombre con una letra cambiada. Compara.","Explica en voz alta por qué las contraseñas se guardan como hash con sal y no cifradas."],
+  steps:["Haz primero la sala “Cryptography Concepts” y después “Encryption - Crypto 101”.","En CyberChef, calcula el SHA-256 de tu nombre y luego de tu nombre con una letra cambiada. Compara.","Explica en voz alta por qué las contraseñas se guardan como hash con sal y no cifradas."],
   hint:"Pregúntate siempre: ¿necesito recuperar el dato original? Si sí, es cifrado. Si no, es hash.",
   quiz:[
     {q:"¿Qué tipo de cifrado usa la misma llave para cifrar y descifrar?",o:["Asimétrico","Simétrico","Hash","Base64"],a:1,e:"Simétrico: una sola llave compartida."},
@@ -216,7 +216,7 @@ const P2 = [
 },
 { id:"p2u12", mod:"Linux", lvl:3, blocks:2, title:"Bandit 16 y 17: qué escucha y qué cambió",
   goal:"Descubrir qué puertos están abiertos en el servidor de práctica y comparar archivos.",
-  links:[["Bandit nivel 16","https://overthewire.org/wargames/bandit/bandit16.html"],["Bandit nivel 17","https://overthewire.org/wargames/bandit/bandit17.html"]],
+  links:[["Bandit nivel 16 → 17","https://overthewire.org/wargames/bandit/bandit17.html"],["Bandit nivel 17 → 18","https://overthewire.org/wargames/bandit/bandit18.html"]],
   concept:[
     "En el nivel 16 tienes que averiguar qué puertos de un rango están escuchando en el propio servidor de Bandit, y cuál de ellos habla TLS. Es tu primer **escaneo de puertos**, dentro de un entorno donde tienes permiso.",
     "En el nivel 17 aparece `diff`, que compara dos archivos y muestra solo las líneas distintas.",
@@ -236,7 +236,7 @@ const P2 = [
 },
 { id:"p2u13", mod:"Windows", lvl:2, blocks:2, title:"Windows por dentro",
   goal:"Entender usuarios, servicios y registros de eventos de Windows, el sistema de casi todas las empresas.",
-  links:[["Sala “Windows Fundamentals 2”",THM("windowsfundamentals2x0x")],["Buscar “Windows Fundamentals 1” en TryHackMe","https://tryhackme.com/hacktivities"]],
+  links:[["Sala “Windows Fundamentals 2”",THM("windowsfundamentals2x0x")],["Sala “Windows Fundamentals 1”",THM("windowsfundamentals1xbx")]],
   concept:[
     "Casi todas las empresas usan Windows en sus computadoras. Defenderlas o evaluarlas exige conocerlo por dentro.",
     "**Usuarios y grupos:** un usuario del grupo Administradores puede cambiar todo. El **Control de cuentas de usuario (UAC)** pide confirmación antes de acciones con privilegios.",
@@ -275,7 +275,7 @@ const P2 = [
 },
 { id:"p2u15", mod:"Linux", lvl:3, blocks:3, title:"Bandit 18 a 20: comandos remotos y setuid",
   goal:"Ejecutar un comando por SSH sin abrir sesión y entender los programas setuid.",
-  links:[["Bandit nivel 18","https://overthewire.org/wargames/bandit/bandit18.html"],["Bandit nivel 19","https://overthewire.org/wargames/bandit/bandit19.html"],["Bandit nivel 20","https://overthewire.org/wargames/bandit/bandit20.html"]],
+  links:[["Bandit nivel 18 → 19","https://overthewire.org/wargames/bandit/bandit19.html"],["Bandit nivel 19 → 20","https://overthewire.org/wargames/bandit/bandit20.html"],["Bandit nivel 20 → 21","https://overthewire.org/wargames/bandit/bandit21.html"]],
   concept:[
     "Con SSH puedes ejecutar **un solo comando** en el servidor sin abrir una sesión interactiva, escribiéndolo al final del comando ssh.",
     "Un programa con permiso **setuid** se ejecuta con los permisos de su **dueño**, no de quien lo lanza. Es útil, pero si está mal hecho permite hacer cosas que no deberías. Por eso los defensores revisan qué programas tienen setuid.",
@@ -314,14 +314,14 @@ const P2 = [
 },
 { id:"p2u17", mod:"Web", lvl:2, blocks:2, title:"Cómo se construye una web",
   goal:"Entender las piezas de una aplicación web: lo que ves, lo que corre en el servidor y la base de datos.",
-  links:[["Sala “Web Application Basics”",THM("webapplicationbasics")],["Sala “How Websites Work”",THM("howwebsiteswork")]],
+  links:[["Sala “Web Application Basics”",THM("webapplicationbasics")],["Cómo funciona la web (MDN, en español)","https://developer.mozilla.org/es/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works"]],
   concept:[
     "El **front-end** es lo que corre en tu navegador: HTML (estructura), CSS (estilo) y JavaScript (comportamiento).",
     "El **back-end** corre en el servidor: recibe tus peticiones, aplica las reglas y consulta la **base de datos**, donde se guardan usuarios, productos o mensajes.",
     "Casi todas las vulnerabilidades web aparecen en la frontera entre estas piezas: cuando el servidor confía en algo que vino del navegador."
   ],
   flow:["Navegador (HTML, CSS, JS)","Servidor (reglas)","Base de datos"],
-  steps:["Haz la sala “How Websites Work”.","Haz la sala “Web Application Basics”.","Dibuja las tres piezas de una tienda en línea y qué datos pasan entre ellas."],
+  steps:["Lee el artículo de MDN «Cómo funciona la web» y haz la mini-web de la guía.","Haz la sala “Web Application Basics”.","Dibuja las tres piezas de una tienda en línea y qué datos pasan entre ellas."],
   hint:"Si dudas si algo es front-end o back-end, pregúntate: ¿lo puedo ver con Ctrl + U? Si sí, es front-end.",
   quiz:[
     {q:"¿Qué parte de una web corre en tu navegador?",o:["Back-end","Front-end","Base de datos","Servidor DNS"],a:1,e:"HTML, CSS y JavaScript corren en el navegador."},
@@ -371,10 +371,10 @@ const P2 = [
 },
 { id:"p2u20", mod:"Web", lvl:3, blocks:2, title:"Control de acceso: tus primeros laboratorios web",
   goal:"Entender el fallo web más común y resolver tus primeros laboratorios de PortSwigger.",
-  links:[["Teoría y laboratorios de control de acceso","https://portswigger.net/web-security/access-control"],["OWASP Top 10","https://owasp.org/www-project-top-ten/"]],
+  links:[["Teoría y laboratorios de control de acceso","https://portswigger.net/web-security/access-control"],["OWASP Top 10 (edición 2025, en español)","https://top10.owasp.org/2025/es/0x00_2025-Introduction/"]],
   concept:[
     "El **control de acceso** decide quién puede hacer qué. Está roto cuando, por ejemplo, un usuario normal puede ver la página de administración o los datos de otro usuario.",
-    "Es el número 1 del OWASP Top 10 de 2021. La protección es siempre la misma: **el servidor comprueba los permisos en cada petición**, no solo esconde botones.",
+    "Es el número 1 del OWASP Top 10, tanto en la edición de 2021 como en la de 2025. La protección es siempre la misma: **el servidor comprueba los permisos en cada petición**, no solo esconde botones.",
     "Los laboratorios de PortSwigger están hechos para practicar esto legalmente. Lee la teoría antes de cada uno."
   ],
   flow:["Leer la teoría","Laboratorio Apprentice","Anotar la causa","Anotar la defensa"],
@@ -383,10 +383,10 @@ const P2 = [
   quiz:[
     {q:"¿Qué es un control de acceso roto?",o:["Una contraseña débil","Que un usuario pueda hacer o ver lo que no debería","Un servidor lento","Un virus"],a:1,e:"Fallan las reglas de quién puede hacer qué."},
     {q:"¿Cuál es la defensa correcta?",o:["Esconder el botón","Que el servidor compruebe los permisos en cada petición","Cambiar el color","Usar HTTPS"],a:1,e:"Esconder algo en la interfaz no lo protege."},
-    {q:"¿Qué posición ocupa en el OWASP Top 10 de 2021?",o:["1","3","7","10"],a:0,e:"Broken Access Control es el número 1."}
+    {q:"¿Qué posición ocupa en el OWASP Top 10 (2021 y 2025)?",o:["1","3","7","10"],a:0,e:"Broken Access Control es el número 1."}
   ],
-  cards:[["Defensa contra el control de acceso roto","El servidor comprueba los permisos en cada petición."],["Número 1 del OWASP Top 10 de 2021","Control de acceso roto (Broken Access Control)."]],
-  keys:["Control de acceso = quién puede hacer qué.","Esconder un botón no protege.","Es el n.º 1 del OWASP Top 10 (2021)."]
+  cards:[["Defensa contra el control de acceso roto","El servidor comprueba los permisos en cada petición."],["Número 1 del OWASP Top 10 (2021 y 2025)","Control de acceso roto (Broken Access Control)."]],
+  keys:["Control de acceso = quién puede hacer qué.","Esconder un botón no protege.","Es el n.º 1 del OWASP Top 10 (2021 y 2025)."]
 },
 { id:"p2u21", mod:"Redes", lvl:3, blocks:2, title:"Wireshark: mira tu propio tráfico de red",
   goal:"Capturar y leer el tráfico de tu laptop, como hace un analista de redes.",

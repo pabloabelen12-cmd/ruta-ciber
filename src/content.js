@@ -180,7 +180,8 @@ const LESSONS = [
   concept:[
     "**TCP** es fiable: confirma que cada pedazo llegó y lo reenvía si se pierde. Lo usan la web, el correo y las descargas.",
     "**UDP** es rápido pero no confirma nada. Lo usan las videollamadas, los juegos en línea y el streaming, donde llegar a tiempo importa más que llegar todo.",
-    "Una conexión TCP empieza con el **saludo de tres pasos**: el cliente manda **SYN**, el servidor responde **SYN-ACK** y el cliente cierra con **ACK**."
+    "Una conexión TCP empieza con el **saludo de tres pasos**: el cliente manda **SYN**, el servidor responde **SYN-ACK** y el cliente cierra con **ACK**.",
+    "Tanto TCP como UDP usan **puertos**: números del 0 al 65535 que indican a qué programa de la computadora va cada mensaje. Si la IP es la dirección del edificio, el puerto es el número del apartamento."
   ],
   flow:["Cliente: SYN","Servidor: SYN-ACK","Cliente: ACK","Conexión abierta"],
   steps:[

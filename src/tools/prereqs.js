@@ -23,6 +23,12 @@ const low = s => (s || "").toString().toLowerCase();
 const practice = u => (PRACTICE[u.id] || []).map(x => typeof x[0] === "number" ? x[1] : x[2]);
 const guideText = u => (UNIT_GUIDES[u.id] || []).flatMap(g => [g.t, ...g.s]);
 const guideLearn = u => (UNIT_GUIDES[u.id] || []).map(g => g.learn || "");
+// Falsos positivos revisados a mano: la palabra aparece, pero no se pide usarlo.
+const IGNORE = new Set(["s02:HTTP" /* solo dentro de una URL */, "s13:F12 (herramientas del navegador)" /* la guía dice que se deja para s14 */, "p2u13:VPN" /* «no necesitas VPN» */,
+  "p2u01:hash", "p3u08:XSS", "p3u08:inyección SQL", "s02:la terminal de Linux", "s03:la terminal de Linux" /* explicados en línea dentro de la guía */]);
+// Dónde se enseña de verdad (una mención anterior no cuenta como enseñanza).
+const TEACH_AT = { "la terminal de Linux": "s05", "ssh": "s10" };
+const idx = Object.fromEntries(all.map((u, i) => [u.id, i]));
 const firstTaught = {}, out = {}, issues = [];
 const NOT_TEACH = new Set(["s04", "s26", "s27", "s28"]); // tarjetas y repasos: mencionan, no enseñan
 all.forEach(u => {
@@ -30,10 +36,10 @@ all.forEach(u => {
   const use = low([...(u.steps || []), ...practice(u), ...guideText(u)].join("\n"));
   const need = [];
   for (const [label, re] of T) {
-    const used = re.test(use), taught = re.test(teach);
+    const used = re.test(use), taught = re.test(teach) && !(TEACH_AT[label] && idx[u.id] < idx[TEACH_AT[label]]);
     if (used && firstTaught[label] && firstTaught[label] !== u.id) need.push([label, firstTaught[label]]);
-    else if (used && !firstTaught[label] && !taught) issues.push(`${u.id}: usa «${label}» sin enseñarlo antes`);
-    if ((taught || used) && !firstTaught[label]) firstTaught[label] = u.id;
+    else if (used && !firstTaught[label] && !taught && !IGNORE.has(`${u.id}:${label}`)) issues.push(`${u.id}: usa «${label}» sin enseñarlo antes`);
+    if ((taught || (used && !TEACH_AT[label])) && !firstTaught[label]) firstTaught[label] = u.id;
   }
   if (need.length) out[u.id] = need.slice(0, 8);
 });
